@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Freestyle Lab — Logo Sting</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+    <!--
+      Font embedding (per shot-plan.customize.font_embedding):
+      - Landing face "Helvetica Neue" / Helvetica / Arial all alias to HF's pre-bundled
+        embedded Inter (typography.md alias table) — zero network, deterministic, safe
+        for local AND cloud/Lambda renders. No <link> needed for it.
+      - Cycle face "Bebas Neue" aliases to pre-bundled League Gothic (400 only) — also
+        zero network. No <link> needed for it either.
+      - The other 8 cycle faces (Anton, Bungee, Righteous, Permanent Marker, Monoton,
+        Press Start 2P, Alfa Slab One, Pacifico) are NOT in HF's 18-family bundle. They
+        are declared here exactly as the live site declares them (freestyle-lab-html/
+        index.html:9) so HF's compiler resolves + embeds them at build time. This trips
+        an expected font_family_without_font_face lint warning per face (8 warnings) and
+        is fail-closed on distributed/cloud renders if fonts.gstatic.com is unreachable
+        at build time — prefer a local render for this composition, or confirm network
+        reachability before a cloud render.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Righteous&family=Permanent+Marker&family=Monoton&family=Press+Start+2P&family=Alfa+Slab+One&family=Pacifico&display=swap" rel="stylesheet">
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #14121a;
+      }
+
+      #stage {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background:
+          radial-gradient(896px 518px at 50% -8%, rgba(255, 46, 99, 0.16), transparent 62%),
+          radial-gradient(680px 461px at 100% 12%, rgba(255, 201, 77, 0.075), transparent 60%),
+          radial-gradient(616px 480px at 0% 78%, rgba(91, 224, 166, 0.06), transparent 62%),
+          #14121a;
+      }
+
+      .scene-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 160px 120px;
+        gap: 24px;
+        box-sizing: border-box;
+      }
+
+      /* ONE persistent two-line wordmark element — same DOM shape across both scenes
+         (customize.wordmark_structure). Only font-family / --sp-scale / the .landed
+         class change; there is no scene-to-scene DOM swap and therefore no reflow at
+         the 1.8s cut. */
+      #wordmark {
+        --sp-base: clamp(64px, 15vw, 132px);
+        --sp-scale: 1;
+        font-family: "Anton", sans-serif; /* CSS fallback before JS runs; JS drives this every frame */
+        font-weight: 400;
+        font-size: calc(var(--sp-base) * var(--sp-scale, 1));
+        line-height: 0.9;
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+        text-align: center;
+        white-space: nowrap;
+        max-width: 100%;
+        transform-origin: 50% 50%;
+        -webkit-font-smoothing: antialiased;
+
+        /* cycle-scene fill: neutral paper gradient, background-clip:text — the swap
+           reads by SHAPE, not color (customize.cycle_sequence.color_during_cycle) */
+        background: linear-gradient(180deg, #f2eef7, #cfc6dc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+
+        /* constant low-key rest glow, present throughout the cycle (customize.glow.rest) */
+        filter:
+          drop-shadow(0 0 28px rgba(255, 46, 99, 0.55))
+          drop-shadow(0 8px 46px rgba(255, 46, 99, 0.3));
+      }
+
+      /* landing state (customize.landing) — hard cut at t=1.8s onto the SAME element:
+         solid bone-white FREE/LAB, letter-spacing tightens, weight goes bold. Applied
+         via a class toggle driven by the same discrete-text-sequence state array as the
+         font cycle, so it snaps instantly with no CSS transition. */
+      #wordmark.landed {
+        letter-spacing: -0.005em;
+        font-weight: 700;
+        background: none;
+        -webkit-background-clip: initial;
+        background-clip: initial;
+        color: #f2eef7;
+        -webkit-text-fill-color: #f2eef7;
+      }
+
+      #wordmark .st {
+        /* FIX (finalize pass): background-clip:text does NOT cascade to descendants —
+           only `color`/`-webkit-text-fill-color` inherit, and inheriting `transparent`
+           with no background of its own left this span's glyphs painting nothing
+           (hyperframes check: text_not_painted #styleSpan, t=0.22-1.56s). Redeclare the
+           same paper gradient + clip here so the span has its own paint source during
+           the cycle scene; reads identically to the parent by design (shape carries the
+           swap, not color — customize.cycle_sequence.color_during_cycle). */
+        background: linear-gradient(180deg, #f2eef7, #cfc6dc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+      #wordmark.landed .st {
+        color: #ff2e63;
+        -webkit-text-fill-color: #ff2e63;
+      }
+
+      /* Font warm-up sentinel (finalize pass, robustness improvement — not required by
+         `check`, which passed 0 errors on font resolution). The other 8 cycle faces are
+         only ever referenced as JS string literals (wordmark.style.fontFamily = ...),
+         never in a real CSS rule, so HF's static font scanner can't see them and only
+         embedded "Anton" deterministically — the rest currently depend on the browser's
+         live network fetch via the <link> tag at render time, which works locally but
+         is the exact fail-closed risk the Builder flagged for cloud/Lambda renders.
+         Declaring every face here as a literal font-family, on an invisible zero-size
+         element, gives the static scanner something real to embed for all 9 — same
+         visual result, safer render. */
+      #font-warmup {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+      }
+      #font-warmup .f1 {
+        font-family: "Bungee", sans-serif;
+      }
+      #font-warmup .f2 {
+        font-family: "Righteous", sans-serif;
+      }
+      #font-warmup .f3 {
+        font-family: "Permanent Marker", sans-serif;
+      }
+      #font-warmup .f4 {
+        font-family: "Monoton", sans-serif;
+      }
+      #font-warmup .f5 {
+        font-family: "Press Start 2P", sans-serif;
+      }
+      #font-warmup .f6 {
+        font-family: "Alfa Slab One", sans-serif;
+      }
+      #font-warmup .f7 {
+        font-family: "Pacifico", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-tugk" id="stage" data-composition-id="logo-sting" data-start="0" data-duration="4" data-fps="30" data-width="1080" data-height="1920">
+      <!-- one full-duration clip per kinetic-type category module; no per-scene .group
+           because the wordmark is a single continuous DOM element across both scenes -->
+      <div data-hf-id="hf-z2jt" class="clip" id="wordmark-clip" data-start="0" data-duration="4" data-track-index="1">
+        <div data-hf-id="hf-cn5c" class="scene-content">
+          <div data-hf-id="hf-w6nz" id="wordmark">Free<span data-hf-id="hf-eo96" class="st" id="styleSpan">style</span><br data-hf-id="hf-x5px">Lab</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-qmwa" id="font-warmup" aria-hidden="true">
+      <span data-hf-id="hf-ybxo" class="f1">.</span><span data-hf-id="hf-nlg5" class="f2">.</span><span data-hf-id="hf-3sd6" class="f3">.</span><span data-hf-id="hf-emw3" class="f4">.</span><span data-hf-id="hf-yz7k" class="f5">.</span><span data-hf-id="hf-o8q1" class="f6">.</span><span data-hf-id="hf-0dny" class="f7">.</span>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const wordmark = document.getElementById("wordmark");
+
+      // --- discrete-text-sequence: sparse {t, font, scale} states, reverse-search per
+      // frame, INSTANT jumps (no crossfade) — per hyperframes-animation rules/
+      // discrete-text-sequence.md. The 10th entry (t=1.8) IS the landing state; it is
+      // not a separate mechanism, just the final jump in the same array
+      // (shot-plan.customize.cycle_sequence.states).
+      const STATES = [
+        { t: 0.0, font: '"Anton", sans-serif', scale: 1.0 },
+        { t: 0.2, font: '"Bebas Neue", "Anton", sans-serif', scale: 1.01 },
+        { t: 0.4, font: '"Bungee", "Anton", sans-serif', scale: 0.95 },
+        { t: 0.6, font: '"Righteous", "Anton", sans-serif', scale: 0.95 },
+        { t: 0.8, font: '"Permanent Marker", "Anton", sans-serif', scale: 0.92 },
+        { t: 1.0, font: '"Monoton", "Anton", sans-serif', scale: 0.85 },
+        { t: 1.2, font: '"Press Start 2P", "Anton", sans-serif', scale: 0.6 },
+        { t: 1.4, font: '"Alfa Slab One", "Anton", sans-serif', scale: 0.86 },
+        { t: 1.6, font: '"Pacifico", "Anton", sans-serif', scale: 0.8 },
+        {
+          t: 1.8,
+          font: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+          scale: 0.8,
+          landing: true,
+        },
+      ];
+
+      function stateAt(t) {
+        for (let i = STATES.length - 1; i >= 0; i--) {
+          if (t >= STATES[i].t) return STATES[i];
+        }
+        return STATES[0];
+      }
+
+      function applyState(t) {
+        const s = stateAt(t);
+        wordmark.style.fontFamily = s.font;
+        wordmark.style.setProperty("--sp-scale", s.scale);
+        wordmark.classList.toggle("landed", !!s.landing);
+      }
+
+      applyState(0);
+
+      // linear time driver — MUST be ease:"none" so the reverse-search proxy tracks
+      // wall-clock timeline time 1:1 (discrete-text-sequence.md's documented pattern)
+      const driver = { t: 0 };
+      tl.to(
+        driver,
+        {
+          t: 4,
+          duration: 4,
+          ease: "none",
+          onUpdate: () => applyState(driver.t),
+        },
+        0,
+      );
+
+      // per-swap jitter — motion-vocabulary `shake`, scaled down to a faint sell of
+      // instability, fired at each of the 9 cycle swap onsets (NOT at the 1.8s landing
+      // cut — that transition uses the press-release-spring below instead).
+      const SHAKE_ONSETS = [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6];
+      SHAKE_ONSETS.forEach((t) => {
+        tl.to(
+          wordmark,
+          { keyframes: [{ x: -1.5 }, { x: 1.5 }, { x: 0 }], duration: 0.08, ease: "none" },
+          t,
+        );
+      });
+
+      // --- press-release-spring landing punch (customize.landing_motion), mapped to
+      // the site's literal sp-lock keyframes: 0.93 dip (arrives already compressed at
+      // the hard-cut instant) -> 1.05 overshoot at +0.28s (peak glow, same beat) ->
+      // 1.0 settle at +0.5s total. Two adjacent fromTo() tweens so scale continuity
+      // holds under any seek direction (builder-contract.md correctness rule).
+      const REST_GLOW =
+        "drop-shadow(0 0 28px rgba(255,46,99,.55)) drop-shadow(0 8px 46px rgba(255,46,99,.3))";
+      const PEAK_GLOW =
+        "drop-shadow(0 0 36px rgba(255,46,99,.95)) drop-shadow(0 8px 50px rgba(255,46,99,.5))";
+
+      // press: arrives compressed at the hard-cut instant (no press-in tween needed)
+      tl.set(wordmark, { scale: 0.93, transformOrigin: "50% 50%" }, 1.8);
+
+      // release phase 1: overshoot to 1.05, synced with the glow ramp to peak
+      tl.fromTo(
+        wordmark,
+        { scale: 0.93 },
+        { scale: 1.05, duration: 0.28, ease: "power1.in" },
+        1.8,
+      );
+      tl.fromTo(
+        wordmark,
+        { filter: REST_GLOW },
+        { filter: PEAK_GLOW, duration: 0.28, ease: "power1.in" },
+        1.8,
+      );
+
+      // release phase 2: settle to 1.0, glow eases back to rest — RELEASE_START = 2.08,
+      // exactly adjacent to phase 1's end, so both scale and glow continuity hold
+      tl.fromTo(
+        wordmark,
+        { scale: 1.05 },
+        { scale: 1.0, duration: 0.22, ease: "back.out(1.6)" },
+        2.08,
+      );
+      tl.fromTo(
+        wordmark,
+        { filter: PEAK_GLOW },
+        { filter: REST_GLOW, duration: 0.22, ease: "power2.out" },
+        2.08,
+      );
+
+      // exit: clean static hold from 2.3s -> 4.0s (customize.exit) — no further tweens
+      // are scheduled past 2.3s, so the composition holds dead static, seek-safe by
+      // construction.
+
+      window.__timelines["logo-sting"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

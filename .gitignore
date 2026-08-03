@@ -1,0 +1,7 @@
+# Local Netlify folder
+.netlify
+
+# Artefactos regenerables de HyperFrames (proof frames, thumbnails de preview)
+videos/*/.thumbnails/
+videos/*/snapshots/
+videos/*/preview.log

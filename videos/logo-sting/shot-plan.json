@@ -1,0 +1,114 @@
+{
+  "category": "kinetic-type",
+  "category_note": "Conceptually this is a logo-reveal/brand-lockup sting (typographic chaos resolving into the FREE STYLE LAB wordmark, with scale-punch + glow on landing). Classified as kinetic-type instead because logo-reveal's contract expects a supplied logo asset (`content.logo: <asset path>`, `asset_needs` = a logo `source`), and there is none here — the site has no exported logo image/SVG, only styled live text defined in CSS (font-family + two hex colors). Since text is the hero and the piece is fully asset-free, kinetic-type's `scenes[]` shape is the correct fit; the settle beat borrows logo-reveal vocabulary (`glow` bloom, `scale_punch`/press-release landing) rather than the `logo-outro` block, since that block expects a real logo element to assemble/mask.",
+  "duration_s": 4,
+  "fps": 30,
+  "canvas": { "w": 1080, "h": 1920, "aspect": "9:16" },
+  "style": "Freestyle/battle urban energy, confident but not aggressive (the aggressive register is reserved for a later 'Modo Bestia' clip in this series). Typographic chaos-to-order: a rapid 9-font identity cycle that reads as searching/battling for form, snapping into the calm, settled brand lockup on landing. Dark stage with subtle radial color bleed, like stage lighting.",
+  "palette": ["#14121A", "#1E1B26", "#FF2E63", "#FFC94D", "#B4A9C4", "#F2EEF7"],
+  "font": "Helvetica Neue",
+  "beats": [1.8, 2.08, 2.3],
+  "export": "mp4",
+  "asset_needs": [],
+  "block": null,
+  "customize": {
+    "reuse_summary": "No catalog block matches a multi-face typeface-cycle build-up (catalog-map.md's kinetic-typo row only lists the 18 caption-* blocks, none of which do font-family substitution) — confirmed gap, hand-authored. Two hyperframes-animation RULES are reused (not invented) for the underlying mechanics: `discrete-text-sequence` drives the whole-shot state array (9 font/scale swaps + the final landing state, all whole-state jumps at time thresholds — exactly the rule's documented scope per rules-index.md: 'hard-cut / flash word swaps, in-place token cycle, whole-line state swaps at time thresholds → discrete-text-sequence'); `press-release-spring` is reused for the landing scale-punch+glow because the wordmark is already resting on screen when it lands (a reaction, not an arrival-from-nothing — `spring-pop-entrance` was considered and rejected for this reason per its own doc: 'distinct from press-release-spring — a click/press → release feedback chain on an element that already rests on screen'). The `kinetic-type-beats` blueprint's shot-structure philosophy (Scene1 first-beat-lands / Scene2..N beats-replace-in-place / SceneN resolve-and-hold, `kinetic-type-to-logo-reveal` Hook role) is borrowed for pacing/scene-shape, not copy-pasted verbatim (no sub-variant covers a 9-face cycle). `ambient-glow-bloom` was considered for the landing glow and rejected in favor of applying motion-vocabulary's plain `glow` primitive (`filter:drop-shadow` pulse) directly on the type, because the wordmark text is itself the glow source (site reference below) — ambient-glow-bloom's separate backing-halo layer is built for a card/logo hero, not gradient-fill type.",
+    "fidelity_source": "BRIEF.md's Notes section already summarizes the relevant palette/gradients; to nail exact numbers for the parts director.md Part 2 must design (background gradient recipe, the 9-font scale-compensation table, and the landing scale-punch/glow curve) I cross-referenced the live site's own CSS/JS at C:\\Users\\asfura\\Desktop\\freestyle-lab-html\\index.html (the splash screen this clip reproduces) — not a scrape for new content, just reading the exact values the site already uses so the recreation is pixel/timing-accurate. Cited by line number below.",
+    "layout": {
+      "canvas": "1080x1920, hero-frame, flex column centered both axes",
+      "wordmark_structure": "ONE persistent two-line element, unchanged in DOM shape across both scenes — only font-family/scale/color update. Line 1: 'FREE' + 'STYLE' as one word 'FREESTYLE' (STYLE is an inline span for independent color control). Line 2: 'LAB'. This reconciles the draft's scene text ('FREESTYLE LAB' cycle vs 'FREE STYLE LAB' settle, which read like 3 separate words) against the actual site markup at index.html:749 — `<div class=\"sp-brand\">Free<span class=\"st\">style</span><br>Lab</div>` — a single wordmark, 'style' is a colored substring of 'Freestyle', not its own word. Kept as one continuous element (no scene-to-scene DOM swap) so there is zero layout reflow at the 1.8s cut — only the font/scale/color state changes, which is also cheaper and matches 'single wordmark held center-stage' in the original brief.",
+      "type_size": "--sp-base: clamp(64px, 15vw, 132px) scaled up from the site's web clamp(40px,13vw,84px) for full-bleed 1080x1920 video legibility (per typography.md's in-feed/full-screen sizing guidance); actual rendered size = sp-base * per-font scale (see sequence below)",
+      "safe_margins": "≥120px each side; wordmark never exceeds ~85% canvas width at any cycle font (Anton, the widest at scale 1, is the sizing anchor)"
+    },
+    "background": {
+      "base": "#14121A",
+      "radials": [
+        { "label": "pink, top", "color": "rgba(255,46,99,.16)", "position": "50% -8%", "size_ref": "900px 520px at the site's viewport — scale proportionally to canvas (~83% canvas width x 27% canvas height)", "source": "index.html:21" },
+        { "label": "gold, right", "color": "rgba(255,201,77,.075)", "position": "100% 12%", "size_ref": "680px 460px (~63% x 24%)", "source": "index.html:22" },
+        { "label": "green, bottom-left", "color": "rgba(91,224,166,.06)", "position": "0% 78%", "size_ref": "620px 480px (~57% x 25%)", "source": "index.html:23" }
+      ],
+      "note": "Very low opacity (.06-.16) so the wordmark stays the hero — matches the site's own hero background exactly, per BRIEF.md Notes. The site's full body bg has a 4th near-duplicate pink layer at 50% 108% (index.html:24); omitted here since BRIEF.md's Notes section names only 3 gradients — optional for the Builder to add if the bottom of frame reads too empty at 9:16."
+    },
+    "cycle_sequence": {
+      "engine": "discrete-text-sequence (sparse {t, state} array, reverse-search per frame, INSTANT jumps — no crossfade between fonts, per the rule's core constraint)",
+      "note": "scale factors below are the site's own per-font compensation table (index.html:2304-2308) — each display face has different intrinsic width/x-height, so a flat font-size swap makes the wordmark visibly grow/shrink face to face; the scale keeps apparent size roughly constant across the cycle.",
+      "states": [
+        { "t": 0.0, "font": "Anton", "scale": 1.0 },
+        { "t": 0.2, "font": "Bebas Neue", "scale": 1.01 },
+        { "t": 0.4, "font": "Bungee", "scale": 0.95 },
+        { "t": 0.6, "font": "Righteous", "scale": 0.95 },
+        { "t": 0.8, "font": "Permanent Marker", "scale": 0.92 },
+        { "t": 1.0, "font": "Monoton", "scale": 0.85 },
+        { "t": 1.2, "font": "Press Start 2P", "scale": 0.60 },
+        { "t": 1.4, "font": "Alfa Slab One", "scale": 0.86 },
+        { "t": 1.6, "font": "Pacifico", "scale": 0.80 },
+        { "t": 1.8, "font": "Helvetica Neue", "scale": 0.80, "event": "hard-cut into landing state — triggers landing_motion below" }
+      ],
+      "color_during_cycle": "text stays neutral throughout (paper gradient #F2EEF7 -> #cfc6dc top-to-bottom, background-clip:text, matching index.html:533) — the 'STYLE' span inherits the same gradient, no color split yet; the swap reads by SHAPE not color, exactly per the draft's original intent",
+      "per_swap_jitter": {
+        "primitive": "motion-vocabulary `shake`, scaled down from its default to a faint sell of instability per the draft brief ('faint per-swap shake or 1-2px jitter')",
+        "recipe": "gsap keyframes [{x:-1.5},{x:1.5},{x:0}], ease:none, duration ~0.08s, fired at each of the 9 swap onsets (t = 0, 0.2, 0.4 ... 1.6). NOT fired on the 1.8s landing cut — that transition uses landing_motion instead, a shake there would fight the press-release settle."
+      }
+    },
+    "landing": {
+      "markup_note": "same element as the cycle, no new DOM — only font-family, --sp-scale, and the STYLE span's color change",
+      "font_stack": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "weight": 700,
+      "case": "uppercase",
+      "letter_spacing": "-0.005em (index.html:540)",
+      "colors": { "FREE": "#F2EEF7", "LAB": "#F2EEF7", "STYLE": "#FF2E63" },
+      "trigger_t": 1.8
+    },
+    "landing_motion": {
+      "rule": "press-release-spring, mapped to the site's exact sp-lock @keyframes (index.html:542-547) rather than the rule's generic PRESS_SCALE/RELEASE_DUR defaults — using the literal site curve for 1:1 fidelity since this is a recreation, not a fresh design:",
+      "timeline": [
+        { "t": 1.8, "scale": 0.93, "note": "press/dip — arrives already compressed at the hard-cut instant (no separate linear press-in tween needed; the cut itself lands here)" },
+        { "t": 2.08, "scale": 1.05, "glow": "peak", "note": "release overshoot — 55% keyframe, ~0.28s after cut" },
+        { "t": 2.3, "scale": 1.0, "glow": "rest", "note": "settle — 100% keyframe, 0.5s total duration after the 1.8s cut" }
+      ],
+      "easing": "cubic-bezier(.2,.9,.25,1) as ONE continuous curve across all 3 stops (matches the site's single CSS @keyframes animation) — if the Builder's GSAP timeline needs two discrete tweens instead, use power1.in for 1.8->2.08 and back.out(1.6) for 2.08->2.3 as the press-release-spring equivalent, RELEASE_START = 2.08 exactly adjacent to the press tween's end so scale continuity holds",
+      "transform_origin": "50% 50% (center anchor, per press-release-spring's critical constraint)"
+    },
+    "glow": {
+      "primitive": "motion-vocabulary `glow`, implemented as filter:drop-shadow (NOT text-shadow) because the wordmark uses background-clip:text gradient fill — text-shadow does not render correctly on transparent-fill text; drop-shadow operates on the rendered glyph alpha shape regardless of fill technique. Two stacked drop-shadow layers, matching index.html:534/545-547 exactly:",
+      "rest": "drop-shadow(0 0 28px rgba(255,46,99,.55)) drop-shadow(0 8px 46px rgba(255,46,99,.3))",
+      "peak": "drop-shadow(0 0 36px rgba(255,46,99,.95)) drop-shadow(0 8px 50px rgba(255,46,99,.5))",
+      "timing": "rest throughout the cycle scene (constant, low-key presence glow even mid-cycle, per the site) -> ramps to peak at t=2.08 (synced with the scale overshoot, same beat) -> eases back to rest by t=2.3 and holds static to the end"
+    },
+    "exit": {
+      "choice": "clean static hold, no fade-to-black — per dispatch guidance this sting may lead into other clips in the series and should stay loop/cut-friendly",
+      "window": "2.3s -> 4.0s (1.7s hold, well past press-release-spring's >=1s climax-dwell constraint)",
+      "behavior": "wordmark fully settled (scale 1.0, rest glow, STYLE locked pink), zero further motion — deterministic single frame held, no idle loop baked in (kinetic-type-beats' 'Scene N: resolve and HOLD... settle only, no further scale-out' and CTA variant's 'End-card holds dead static' both point the same direction, and it keeps the render trivially seek-safe)"
+    },
+    "font_embedding": {
+      "landing_font": "\"Helvetica Neue\" aliases to embedded Inter per typography.md's alias table — pre-bundled, zero network, deterministic, safe for local AND cloud/Lambda renders.",
+      "cycle_fonts_status": "Of the 9 cycle faces, only Bebas Neue is in HF's pre-bundled/aliased set (Bebas Neue -> League Gothic, pre-bundled, weight 400 — a near-identical visual substitute since League Gothic is metrically close to Bebas Neue, so this alias is effectively lossless). The remaining 8 (Anton, Bungee, Righteous, Permanent Marker, Monoton, Press Start 2P, Alfa Slab One, Pacifico) are NOT in HF's 18-family pre-bundled list — they are kept as-is, unsubstituted, because they are exactly the real fonts the live site already loads via Google Fonts (index.html:9) and the whole concept of this scene IS the visual variety across genuinely different display genres (condensed/grotesque, comic-bold, marker-script, pixel, slab-serif, brush-script); substituting them onto HF's bundled set (which has no comparable variety — only Oswald/League Gothic/Archivo Black as non-banned display options) would gut the shot's entire premise.",
+      "caveat_for_builder": "Per typography.md, a real Google Font not in the 18-family bundle still renders (HF fetches + embeds it at build time) but (a) trips a font_family_without_font_face lint warning per font — expected here, not a bug — and (b) is fail-closed on distributed/cloud (Lambda) renders if fonts.gstatic.com is unreachable at build time. Recommend a local render for this composition, or confirm network reachability before a cloud render. All 9 names should be written exactly as listed (Google Fonts family names), each with a `,\"Anton\",sans-serif` fallback chain matching the site's own pattern (index.html:2316) since Anton is already the project's established display fallback."
+    }
+  },
+  "content": {
+    "scenes": [
+      {
+        "id": "cycle",
+        "start": 0,
+        "end": 1.8,
+        "text": "FREESTYLE\nLAB",
+        "emphasis_words": [],
+        "emotion": "restless, searching, competitive energy",
+        "motion": "single two-line wordmark ('FREESTYLE' / 'LAB') held dead-center; font-family + per-font scale swap every 0.2s via discrete-text-sequence through Anton, Bebas Neue, Bungee, Righteous, Permanent Marker, Monoton, Press Start 2P, Alfa Slab One, Pacifico (in that order, see customize.cycle_sequence) with a hard INSTANT cut on each swap — no crossfade, no tween on the text itself. Color stays neutral paper-gradient throughout (identity of the swap is the shape, not the color). A faint 1.5px shake fires at each swap onset (customize.cycle_sequence.per_swap_jitter) to sell instability. A constant low-key pink glow (customize.glow.rest) sits behind the type the whole scene, per the site reference.",
+        "beats": [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6]
+      },
+      {
+        "id": "settle",
+        "start": 1.8,
+        "end": 4.0,
+        "text": "FREESTYLE\nLAB",
+        "emphasis_words": ["STYLE"],
+        "emotion": "arrival, confident resolve",
+        "motion": "hard cut from Pacifico (last cycle font) into the landing state on the SAME element (no DOM swap) — Helvetica Neue/Arial Bold, uppercase, letter-spacing -0.005em: 'FREE' and 'LAB' in bone white (#F2EEF7), the 'STYLE' substring in stage pink (#FF2E63). Lands with the press-release-spring scale curve (customize.landing_motion: 0.93 dip at cut -> 1.05 overshoot at +0.28s with peak glow -> settle to 1.0 at +0.5s with rest glow), synced 1:1 with the glow ramp (customize.glow). Holds fully static from t=2.3s to the end — clean hold, no fade (customize.exit) — background is #14121A with the 3 very-subtle radial gradients from customize.background (pink top, gold right, green bottom-left), kept low-contrast so the wordmark stays the hero.",
+        "beats": [1.8, 2.08, 2.3]
+      }
+    ]
+  },
+  "shot_brief": "A 4-second, 9:16 logo sting for Freestyle Lab. For the first 1.8s, the two-line wordmark 'FREESTYLE / LAB' rapid-cycles through nine distinct display typefaces at 0.2s per font, each swap an instant hard cut with a faint 1-2px jitter — a visual stutter reading as typographic chaos or a battle for identity, held in a single neutral paper-gradient color so the shape-shifting itself is the spectacle, with a constant low-key pink glow underneath. At 1.8s it hard-cuts and locks into the real brand lockup on the same element: 'FREE' and 'LAB' in bone white, 'STYLE' in hot pink, set in uppercase Helvetica Neue/Arial Bold, landing with a press-release-spring scale punch (dip to 0.93, overshoot to 1.05, settle to 1.0 over 0.5s) synced to a glow bloom that peaks at the overshoot and eases to a steady rest glow, then holds clean and fully static through the out — no fade-to-black, since this clip may lead into others in the series. The single dominant motion idea is resolution: visual noise collapsing into a confident, legible brand identity, staged on a near-black background with faint pink/gold/green radial bleed. Tone is freestyle/battle-urban with energy but restraint — punchy, not aggressive."
+}

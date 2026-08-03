@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cabeza Cantando — componente limpio</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Extraído de "Cabeza Cantando.html" (página bundled) y limpiado.
+     Vectorial + CSS puro: sin librerías, sin imágenes, ~8 KB.
+     Retematizado con la paleta de Freestyle Lab. */
+  :root{
+    --ink:#14121A; --paper:#F2EEF7; --mist:#B4A9C4; --stage:#FF2E63;
+  }
+  body{background:var(--ink);margin:0;display:grid;place-items:center;min-height:100vh}
+
+  /* ---- el componente ---- */
+  .cabeza{
+    --om-cycle:2.4s;              /* tempo de la animación */
+    --om-trazo:var(--paper);      /* color de línea */
+    --om-acento:var(--stage);     /* boca, ondas y palabras destacadas */
+    position:relative;width:460px;height:560px}
+  .cabeza svg{position:absolute;inset:0;overflow:visible;
+    animation:om-bob var(--om-cycle) ease-in-out infinite}
+  .om-onda{transform-origin:252px 356px;animation:om-shout var(--om-cycle) ease-out infinite}
+  .om-onda.b{animation-delay:calc(var(--om-cycle) * .21)}
+  .om-jaw{transform-box:view-box;transform-origin:150px 330px;
+    animation:om-jaw var(--om-cycle) cubic-bezier(.34,1.4,.5,1) infinite}
+  .om-brow{transform-box:view-box;transform-origin:276px 220px;
+    animation:om-brow var(--om-cycle) ease-in-out infinite}
+  .om-eye{transform-box:view-box;transform-origin:278px 248px;
+    animation:om-eye var(--om-cycle) ease-in-out infinite}
+  .om-throat{transform-box:view-box;transform-origin:177px 478px;
+    animation:om-throat var(--om-cycle) ease-in-out infinite}
+
+  .om-palabras{position:absolute;left:330px;top:336px;width:0;height:0;
+    font-family:"Anton",sans-serif;font-weight:700;white-space:nowrap}
+  .om-palabras span{position:absolute;color:var(--om-trazo);
+    animation:om-emit calc(var(--om-cycle) * 1.08) linear infinite}
+  .om-palabras .ac{color:var(--om-acento)}
+  .om-palabras .dim{color:var(--mist)}
+
+  @keyframes om-jaw{
+    0%{transform:rotate(2deg)}   12%{transform:rotate(20deg)} 26%{transform:rotate(4deg)}
+    40%{transform:rotate(24deg)} 52%{transform:rotate(8deg)}  66%{transform:rotate(26deg)}
+    80%{transform:rotate(6deg)}  92%{transform:rotate(16deg)} 100%{transform:rotate(2deg)}}
+  @keyframes om-bob{
+    0%{transform:translate(0,0) rotate(0deg)}
+    15%{transform:translate(-10px,-16px) rotate(-3deg)}
+    40%{transform:translate(6px,10px) rotate(2.5deg)}
+    62%{transform:translate(-6px,-10px) rotate(-2deg)}
+    85%{transform:translate(8px,6px) rotate(3deg)}
+    100%{transform:translate(0,0) rotate(0deg)}}
+  @keyframes om-brow{
+    0%{transform:translateY(0) rotate(0deg)}
+    20%{transform:translateY(-16px) rotate(-7deg)}
+    45%{transform:translateY(-4px) rotate(2deg)}
+    70%{transform:translateY(-18px) rotate(-9deg)}
+    100%{transform:translateY(0) rotate(0deg)}}
+  @keyframes om-eye{
+    0%,30%{transform:scaleY(1)} 38%{transform:scaleY(.25)} 48%,100%{transform:scaleY(1)}}
+  @keyframes om-throat{
+    0%{transform:scale(1)} 15%{transform:scale(1.5)} 40%{transform:scale(1.1)}
+    66%{transform:scale(1.6)} 100%{transform:scale(1)}}
+  @keyframes om-shout{
+    0%{opacity:0;transform:scale(.5)} 20%{opacity:.8;transform:scale(1)}
+    100%{opacity:0;transform:scale(1.9)}}
+  @keyframes om-emit{
+    0%{opacity:0;transform:translate(0,0) scale(.45) rotate(0deg);filter:blur(0)}
+    8%{opacity:1;transform:translate(calc(var(--dx) * .1),calc(var(--dy) * .1)) scale(1.05) rotate(calc(var(--rot) * .12));filter:blur(0)}
+    45%{opacity:.95;filter:blur(1.5px)}
+    100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6) rotate(var(--rot));filter:blur(12px)}}
+
+  @media (prefers-reduced-motion:reduce){
+    .cabeza *{animation:none!important} .om-palabras{display:none}}
+</style>
+</head>
+<body>
+
+<div class="cabeza">
+  <svg viewBox="0 0 460 560" width="460" height="560" fill="none"
+       stroke="var(--om-trazo)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle class="om-onda"   cx="252" cy="356" r="52" stroke="var(--om-acento)" stroke-width="2"/>
+    <circle class="om-onda b" cx="252" cy="356" r="52" stroke="var(--om-acento)" stroke-width="2"/>
+    <!-- perfil de la cabeza -->
+    <path d="M120 372 C 96 330, 92 258, 126 200 C 160 130, 232 100, 282 130 C 320 152, 328 198, 322 226 L 308 238 C 322 256, 342 288, 346 306 C 349 318, 340 324, 328 322 L 300 318 C 312 330, 308 340, 294 342 L 252 346"/>
+    <!-- mandíbula -->
+    <path class="om-jaw" d="M 252 366 C 276 372, 290 386, 282 406 C 272 432, 240 452, 202 452 C 166 452, 142 428, 136 380"/>
+    <!-- oreja -->
+    <path d="M 176 302 C 160 300, 152 288, 156 274 C 160 260, 176 256, 186 264" stroke-width="2.5"/>
+    <!-- ceja y ojo -->
+    <path class="om-brow" d="M 254 222 C 272 210, 292 214, 300 226" stroke-width="4"/>
+    <path class="om-eye"  d="M 260 250 C 274 240, 290 244, 296 254" stroke-width="2.5"/>
+    <!-- cuello -->
+    <path d="M 132 452 L 132 540 M 210 454 L 210 540" stroke-width="3.5"/>
+    <path class="om-throat" d="M 148 470 C 168 486, 190 488, 206 478" stroke-width="2.5"/>
+    <!-- mechones -->
+    <path d="M 148 168 C 178 140, 226 128, 262 140" stroke-width="2.5" opacity=".6"/>
+    <path d="M 128 214 C 150 172, 190 150, 224 148" stroke-width="2.5" opacity=".45"/>
+    <!-- boca -->
+    <path d="M 252 348 C 270 352, 274 358, 252 364 C 236 366, 232 354, 252 348"
+          fill="var(--om-acento)" stroke="none"/>
+  </svg>
+
+  <div class="om-palabras">
+    <span         style="--dx:300px;--dy:-240px;--rot:-9deg; font-size:40px;animation-delay:0s">melodía</span>
+    <span class="ac"  style="--dx:360px;--dy:-70px; --rot:6deg;  font-size:28px;animation-delay:.22s">eco</span>
+    <span         style="--dx:250px;--dy:150px; --rot:11deg; font-size:34px;animation-delay:.43s">humo</span>
+    <span class="dim" style="--dx:400px;--dy:-330px;--rot:-13deg;font-size:24px;animation-delay:.65s">verso</span>
+    <span         style="--dx:300px;--dy:40px;  --rot:3deg;  font-size:46px;animation-delay:.86s">azul</span>
+    <span class="ac"  style="--dx:230px;--dy:-150px;--rot:-5deg; font-size:26px;animation-delay:1.08s">ritmo</span>
+    <span         style="--dx:410px;--dy:210px; --rot:14deg; font-size:30px;animation-delay:1.3s">silencio</span>
+    <span class="dim" style="--dx:190px;--dy:-290px;--rot:-10deg;font-size:36px;animation-delay:1.51s">girar</span>
+    <span         style="--dx:370px;--dy:110px; --rot:8deg;  font-size:25px;animation-delay:1.73s">coral</span>
+    <span class="ac"  style="--dx:270px;--dy:-380px;--rot:-4deg; font-size:32px;animation-delay:1.94s">luz</span>
+    <span         style="--dx:430px;--dy:-20px; --rot:7deg;  font-size:42px;animation-delay:2.16s">aire</span>
+    <span class="dim" style="--dx:210px;--dy:260px; --rot:12deg; font-size:27px;animation-delay:2.38s">temblar</span>
+  </div>
+</div>
+
+</body>
+</html>
