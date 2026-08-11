@@ -108,13 +108,13 @@
   .hero-title .accent{color:var(--stage);-webkit-text-fill-color:var(--stage)}
   .hero-desc{margin:var(--sp-4) auto 0;max-width:430px;font-size:15px;line-height:1.62;color:var(--mist)}
   .hero-desc b{color:var(--paper)}
-  .cards-home{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .cards-home{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
   /* cada técnica tiene su color: --tc. Sin glow: el color y el borde hacen el trabajo. */
   .tcard{--tc:var(--stage);--rot:0deg;
     display:flex;flex-direction:column;text-align:left;
     background:var(--surface);
     background:linear-gradient(165deg,color-mix(in srgb,var(--tc) 8%,transparent),transparent 48%),var(--surface);
-    border:1px solid var(--line);border-radius:var(--radius-md);padding:16px 15px 14px;cursor:pointer;position:relative;overflow:hidden;
+    border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 13px 11px;cursor:pointer;position:relative;overflow:hidden;
     box-shadow:0 6px 22px rgba(0,0,0,.32),0 1px 0 rgba(255,255,255,.04) inset;
     transform:rotate(var(--rot));
     /* transform y box-shadow ya no llevan transition CSS: el hover ahora lo maneja
@@ -141,13 +141,13 @@
   .tcard:hover .tcard-peel{border-width:0 30px 30px 0}
   /* usa var(--ink): en Bestia/Principiante esa variable ya cambia de tono con el tema,
      así que la esquina despegada revela el fondo correcto sin reglas aparte */
-  .tcard-tag{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:8px}
-  .tcard-time{position:absolute;top:14px;right:13px;font-family:"Space Mono",monospace;font-size:10px;font-weight:700;
+  .tcard-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:6px}
+  .tcard-time{position:absolute;top:12px;right:11px;font-family:"Space Mono",monospace;font-size:9.5px;font-weight:700;
     color:var(--mist);background:var(--surface-2);border:1px solid var(--line);border-radius:100px;padding:2px 7px}
-  .tcard-title{font-family:"Anton",sans-serif;font-size:19px;line-height:1.05;letter-spacing:.01em;margin-bottom:7px;text-transform:uppercase}
+  .tcard-title{font-family:"Anton",sans-serif;font-size:17px;line-height:1.08;letter-spacing:.01em;margin-bottom:5px;text-transform:uppercase}
   .tcard-title span{color:var(--tc)}
-  .tcard-desc{flex:1;font-size:12px;color:var(--mist);line-height:1.46;margin-bottom:12px}
-  .tcard-go{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.02em}
+  .tcard-desc{flex:1;font-size:11.5px;color:var(--mist);line-height:1.4;margin-bottom:9px}
+  .tcard-go{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.02em}
   /* paleta por técnica — el rosa y el violeta salen de la lámina de marca */
   #cardMulti{--tc:#FF2E63}  #cardCamaleon{--tc:#5BE0A6} #cardTempo{--tc:#FFC94D}
   #cardCadena{--tc:#8B5CF6} #cardAlit{--tc:#4EC5F1}     #cardTT{--tc:#F2542D}
@@ -157,6 +157,59 @@
   #cardMandibula{--tc:#4F7CFF}
   #cardVocales{--tc:#22D3EE}
   #cardRutina{--tc:#D97757}
+  /* ===== PERSONALIZACIÓN POR FAMILIA =====
+     Cada familia (Rima/Voz/Ingenio/Disciplina/Cuerpo) tiene su propia letra de
+     título (todas ya cargadas arriba para el ciclo del splash, cero peso extra)
+     y un motivo/ícono de marca de agua en la esquina, para que el tipo de
+     técnica se sienta distinto de un vistazo, no solo por el color de borde. */
+  .fam-rima .tcard-title{font-family:"Bungee",sans-serif;font-size:13.5px;line-height:1.24;letter-spacing:0}
+  .fam-voz .tcard-title{font-family:"Righteous",sans-serif;font-size:16px;line-height:1.14}
+  .fam-ingenio .tcard-title{font-family:"Permanent Marker",cursive;font-size:15.5px;line-height:1.2;letter-spacing:0}
+  .fam-disciplina .tcard-title{font-family:"Alfa Slab One",serif;font-size:14.5px;line-height:1.12}
+  .fam-cuerpo .tcard-title{font-family:"Anton",sans-serif} /* letra original: le queda bien al calentamiento físico */
+
+  .tcard-motif{position:absolute;right:-6px;bottom:-8px;width:48px;height:48px;
+    background:var(--tc);opacity:.1;pointer-events:none;
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;
+    -webkit-mask-position:center;mask-position:center;transition:opacity .22s}
+  .tcard:hover .tcard-motif{opacity:.18}
+  .fam-rima .tcard-motif{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='7' width='11' height='7.5' rx='3.75'/%3E%3Crect x='11' y='9.5' width='11' height='7.5' rx='3.75'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='7' width='11' height='7.5' rx='3.75'/%3E%3Crect x='11' y='9.5' width='11' height='7.5' rx='3.75'/%3E%3C/svg%3E")}
+  .fam-voz .tcard-motif{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Cline x1='3' y1='10' x2='3' y2='14'/%3E%3Cline x1='8.5' y1='5' x2='8.5' y2='19'/%3E%3Cline x1='14' y1='2' x2='14' y2='22'/%3E%3Cline x1='19.5' y1='6' x2='19.5' y2='18'/%3E%3Cline x1='24' y1='9' x2='24' y2='15'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Cline x1='3' y1='10' x2='3' y2='14'/%3E%3Cline x1='8.5' y1='5' x2='8.5' y2='19'/%3E%3Cline x1='14' y1='2' x2='14' y2='22'/%3E%3Cline x1='19.5' y1='6' x2='19.5' y2='18'/%3E%3Cline x1='24' y1='9' x2='24' y2='15'/%3E%3C/svg%3E")}
+  .fam-ingenio .tcard-motif{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z'/%3E%3Ccircle cx='12' cy='12' r='3.2'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z'/%3E%3Ccircle cx='12' cy='12' r='3.2'/%3E%3C/svg%3E")}
+  .fam-disciplina .tcard-motif{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cline x1='12' y1='1' x2='12' y2='5'/%3E%3Cline x1='12' y1='19' x2='12' y2='23'/%3E%3Cline x1='1' y1='12' x2='5' y2='12'/%3E%3Cline x1='19' y1='12' x2='23' y2='12'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cline x1='12' y1='1' x2='12' y2='5'/%3E%3Cline x1='12' y1='19' x2='12' y2='23'/%3E%3Cline x1='1' y1='12' x2='5' y2='12'/%3E%3Cline x1='19' y1='12' x2='23' y2='12'/%3E%3C/svg%3E")}
+  .fam-cuerpo .tcard-motif{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1,12 6,12 9,4 14,20 17,12 23,12'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1,12 6,12 9,4 14,20 17,12 23,12'/%3E%3C/svg%3E")}
+
+  /* ===== ENTRADA ESCALONADA =====
+     body.cards-in lo agrega el JS del splash justo cuando se cierra la portada
+     (no en la carga de la página, porque ahí las tarjetas todavía están tapadas
+     por el splash y la animación terminaría antes de que se vean). Si por lo
+     que sea la clase nunca llega, .tcard ya es visible por defecto — no hay
+     riesgo de que una tarjeta quede invisible para siempre. */
+  @keyframes cardIn{0%{opacity:0;transform:translateY(16px) rotate(var(--rot))}
+    100%{opacity:1;transform:translateY(0) rotate(var(--rot))}}
+  body.cards-in .cards-home .tcard{animation:cardIn .5s cubic-bezier(.22,.8,.24,1) both}
+  body.cards-in .cards-home .tcard:nth-of-type(1){animation-delay:0ms}
+  body.cards-in .cards-home .tcard:nth-of-type(2){animation-delay:45ms}
+  body.cards-in .cards-home .tcard:nth-of-type(3){animation-delay:90ms}
+  body.cards-in .cards-home .tcard:nth-of-type(4){animation-delay:135ms}
+  body.cards-in .cards-home .tcard:nth-of-type(5){animation-delay:180ms}
+  body.cards-in .cards-home .tcard:nth-of-type(6){animation-delay:225ms}
+  body.cards-in .cards-home .tcard:nth-of-type(7){animation-delay:270ms}
+  body.cards-in .cards-home .tcard:nth-of-type(8){animation-delay:315ms}
+  body.cards-in .cards-home .tcard:nth-of-type(9){animation-delay:360ms}
+  body.cards-in .cards-home .tcard:nth-of-type(10){animation-delay:405ms}
+  body.cards-in .cards-home .tcard:nth-of-type(11){animation-delay:450ms}
+  body.cards-in .cards-home .tcard:nth-of-type(12){animation-delay:495ms}
+  body.cards-in .cards-home .tcard:nth-of-type(13){animation-delay:540ms}
+  body.cards-in .cards-home .tcard:nth-of-type(14){animation-delay:585ms}
+  body.cards-in .cards-home .tcard:nth-of-type(15){animation-delay:630ms}
+  body.cards-in .cards-home .tcard:nth-of-type(16){animation-delay:675ms}
+
   .tcard:last-child:nth-child(odd){grid-column:1/-1}
   /* cabecera de familia: agrupa las tarjetas por lo que entrenan (rima/voz/ingenio/disciplina).
      Rediseño 10-ago: la línea que crece a la derecha del label le da peso editorial
@@ -169,7 +222,7 @@
     box-shadow:0 0 10px color-mix(in srgb,var(--fc,var(--stage)) 70%,transparent)}
   .fam-head::after{content:"";flex:1;height:1px;
     background:linear-gradient(90deg,color-mix(in srgb,var(--fc,var(--stage)) 45%,var(--line)),transparent)}
-  @media (max-width:430px){ .cards-home{gap:10px} .tcard{padding:14px 12px 12px} .tcard-title{font-size:17px} .tcard-desc{font-size:11.5px;line-height:1.42}
+  @media (max-width:430px){ .cards-home{gap:9px} .tcard{padding:11px 11px 10px} .tcard-title{font-size:15px} .tcard-desc{font-size:11px;line-height:1.38}
     /* en dos columnas estrechas "Técnica NN" y la insignia quedan a 5px: se les da aire */
     .tcard-tag{font-size:9px;margin-bottom:6px;letter-spacing:.13em}
     .tcard-time{font-size:9.5px;padding:2px 6px;top:13px;right:11px} }
@@ -562,6 +615,11 @@
 
   .notice{font-size:12.5px;line-height:1.5;color:var(--mist);background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:12px 14px;margin-top:16px}
   .notice b{color:var(--paper)}
+  /* pista de fondo al azar durante la grabación — suena una de las 7 de pistas/, no es UI clicable */
+  .pista-now{margin-top:14px;text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;
+    color:var(--gold)}
+  .pista-now-tip{color:var(--mist);font-weight:400}
+  .pista-now.hide{display:none}
   .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:8px}
   @keyframes spin{to{transform:rotate(360deg)}}
   /* ===== CABEZA CANTANDO — aparece detrás del reloj mientras grabas =====
@@ -575,34 +633,34 @@
     opacity:0;transition:opacity .55s ease}
   body.recording .singer.in-clock{opacity:.5}
   .singer.in-clock .cabeza{left:0;top:70px}
-  /* variante 2 — en el menú: dos cabezas enfrentadas cantándose, con fuego en medio */
-  .singer.in-hero{--cs:.32;display:flex;align-items:center;justify-content:center;gap:14px;
-    position:relative;width:100%;height:260px;overflow:hidden;margin:0 0 20px;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 13%,#000 87%,transparent);
-    mask-image:linear-gradient(90deg,transparent,#000 13%,#000 87%,transparent)}
-  .singer.in-hero .lado{position:relative;flex:0 0 auto;
-    width:calc(460px * var(--cs));height:calc(560px * var(--cs))}
-  .singer.in-hero .cabeza{left:0;top:0;transform:scale(var(--cs));transform-origin:0 0}
-  /* la de la derecha va espejada: se ancla en su borde derecho y crece hacia la izquierda */
-  .singer.in-hero .lado.der .cabeza{left:100%;transform:scaleX(-1) scale(var(--cs))}
-  /* ...y el texto se contra-espeja, si no las palabras se leerían al revés */
-  .singer.in-hero .lado.der .om-palabras i{display:inline-block;transform:scaleX(-1);font-style:normal}
-
-  /* ---- la llama ---- */
-  .llama{position:relative;flex:0 0 auto;align-self:center;
-    width:calc(460px * var(--cs) * .52);height:calc(560px * var(--cs) * .64);
-    filter:drop-shadow(0 0 14px rgba(255,201,77,.5)) drop-shadow(0 0 34px rgba(236,48,19,.32))}
-  .llama svg{width:100%;height:100%;display:block}
-  .llama path{transform-origin:50% 100%}
-  /* burbujas: solo en modo principiante, ahí se esconde el fuego */
-  .llama .burbujas{display:none;position:absolute;inset:0}
-  .llama .bu{fill:rgba(255,255,255,.55);stroke:#8FD3F0;stroke-width:2.6}
-  .llama .bu.rosa{stroke:#F58FBB}
-  body.novato-on .llama .fuego{display:none}
-  body.novato-on .llama .burbujas{display:block}
-  body.novato-on .llama{filter:drop-shadow(0 0 12px rgba(143,211,240,.55))}
+  /* ---- variante 2 — en el menú: la ilustración real de las bocas (marca/bocas.svg)
+     enfrentadas, con palabras que salen de cada una y se cruzan al medio ---- */
+  .duelo-bocas{position:relative;width:100%;height:230px;margin:0 0 20px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+  .duelo-bocas img{position:absolute;left:50%;top:50%;height:200px;width:auto;max-width:none;
+    transform:translate(-50%,-50%);animation:duelo-bob 3.6s ease-in-out infinite}
+  @keyframes duelo-bob{0%,100%{transform:translate(-50%,-50%) scale(1)}
+    50%{transform:translate(-50%,-52%) scale(1.015)}}
+  .choque-palabras{position:absolute;inset:0;pointer-events:none}
+  .choque-palabras span{position:absolute;top:var(--top);left:2%;
+    font-family:"Anton",sans-serif;font-size:var(--fs,24px);letter-spacing:.01em;
+    text-transform:uppercase;white-space:nowrap;color:var(--paper);opacity:0}
+  .choque-palabras span.ac{color:var(--stage)}
+  .choque-palabras span.gold{color:var(--gold)}
+  .choque-palabras span.izq{animation:cp-va-der var(--dur,3.2s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+  .choque-palabras span.der{animation:cp-va-izq var(--dur,3.2s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+  @keyframes cp-va-der{0%{left:2%;opacity:0;transform:rotate(-6deg) scale(.8)}
+    18%{opacity:1;transform:rotate(-2deg) scale(1)}
+    50%{left:62%;opacity:1;transform:rotate(3deg) scale(1.06)}
+    72%{opacity:0} 100%{left:80%;opacity:0}}
+  @keyframes cp-va-izq{0%{left:92%;opacity:0;transform:rotate(6deg) scale(.8)}
+    18%{opacity:1;transform:rotate(2deg) scale(1)}
+    50%{left:32%;opacity:1;transform:rotate(-3deg) scale(1.06)}
+    72%{opacity:0} 100%{left:14%;opacity:0}}
   @media (max-width:430px){
-    .singer.in-hero{--cs:.24;height:210px;gap:8px} }
+    .duelo-bocas{height:170px} .duelo-bocas img{height:148px}
+    .choque-palabras span{font-size:calc(var(--fs, 24px) * .74)} }
 
   /* ---- batalla de barras: un verso a la vez, se atribuye a la izq o a la der
      con la alineación y el color del borde (mismo truco que .lado.izq/.der,
@@ -734,8 +792,8 @@
     .hero{text-align:left}
     .hero-title{font-size:clamp(52px,5.4vw,74px)}
     .hero-desc{margin:26px 0 0;max-width:none;font-size:16px}
-    .singer.in-hero{grid-column:2;height:300px;margin:0}
-    .singer.in-hero{--cs:.36}
+    .duelo-bocas{grid-column:2;height:300px;margin:0}
+    .duelo-bocas img{height:260px}
     /* sin esto, el globo de la batalla caía en la columna 1 sola (auto-placement
        del grid), apretado contra el párrafo del hero — tenía que abarcar las 2 */
     .battle-mc{grid-column:1/-1;margin-top:18px}
@@ -761,7 +819,8 @@
 
   @media (min-width:1240px){
     .app{max-width:1200px}
-    .singer.in-hero{--cs:.42;height:340px}
+    .duelo-bocas{height:340px}
+    .duelo-bocas img{height:300px}
   }
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
@@ -793,16 +852,13 @@
   .bg .b3{animation:deriva-c 78s ease-in-out infinite!important}
   .bg .b4{animation:deriva-b 61s ease-in-out infinite reverse!important}
 
-  /* ---- llama: tres capas con ritmos distintos para que titile de forma orgánica ---- */
-  @keyframes fuego-a{0%,100%{transform:scale(1,1)} 22%{transform:scale(.93,1.08) translateY(-2px)}
-    48%{transform:scale(1.06,.94)} 72%{transform:scale(.97,1.05) translateY(-1px)}}
-  @keyframes fuego-b{0%,100%{transform:scale(1,1) translateX(0)} 30%{transform:scale(1.07,.93) translateX(2px)}
-    55%{transform:scale(.9,1.1) translateX(-2px)} 80%{transform:scale(1.03,.97) translateX(1px)}}
-  @keyframes fuego-c{0%,100%{transform:scale(1,1);opacity:1} 25%{transform:scale(.86,1.14);opacity:.75}
-    50%{transform:scale(1.1,.9);opacity:1} 75%{transform:scale(.92,1.06);opacity:.85}}
-  .llama .fl-out{animation:fuego-a 1.15s ease-in-out infinite!important}
-  .llama .fl-mid{animation:fuego-b .83s ease-in-out infinite!important}
-  .llama .fl-core{animation:fuego-c .61s ease-in-out infinite!important}
+  /* ---- duelo de bocas: el balanceo y las palabras que chocan son el efecto
+     pedido (no un adorno), así que también se exceptúan de "reducir movimiento" ---- */
+  .duelo-bocas img{animation:duelo-bob 3.6s ease-in-out infinite!important}
+  .choque-palabras span.izq{animation:cp-va-der var(--dur,3.2s) ease-in-out infinite!important;
+    animation-delay:var(--delay,0s)!important}
+  .choque-palabras span.der{animation:cp-va-izq var(--dur,3.2s) ease-in-out infinite!important;
+    animation-delay:var(--delay,0s)!important}
 
   /* ---- burbujas del modo principiante ---- */
   @keyframes flotar{
@@ -964,24 +1020,23 @@
         <p class="hero-desc">Tu gimnasio para el freestyle. Cada técnica es un ejercicio con cronómetro y puntaje: eliges, entrenas, te mides — y sales con más filo del que entraste. Porque improvisar no es cuestión de suerte: es un <b>músculo</b>. Ven a entrenarlo.</p>
       </div>
     </div>
-    <!-- dos cabezas cantándose con fuego en medio; las cabezas se clonan por JS -->
-    <div class="singer in-hero" id="singerHero" aria-hidden="true">
-      <div class="lado izq"></div>
-      <div class="llama">
-        <svg class="burbujas" viewBox="0 0 100 140" fill="none">
-          <circle class="bu bu-a" cx="50" cy="99" r="19"/>
-          <circle class="bu bu-b rosa" cx="30" cy="63" r="12"/>
-          <circle class="bu bu-c" cx="68" cy="54" r="14"/>
-          <circle class="bu bu-d rosa" cx="45" cy="27" r="9"/>
-          <circle class="bu bu-e" cx="73" cy="98" r="8"/>
-        </svg>
-        <svg class="fuego" viewBox="0 0 100 140" fill="none">
-          <path class="fl-out"  d="M50 138 C 14 122, 6 88, 22 60 C 32 42, 40 30, 38 10 C 58 24, 76 44, 82 66 C 92 96, 80 124, 50 138 Z" fill="var(--brand-red)" opacity=".85"/>
-          <path class="fl-mid"  d="M50 132 C 26 120, 22 94, 34 72 C 42 58, 48 46, 47 30 C 62 44, 72 58, 76 78 C 82 100, 70 122, 50 132 Z" fill="var(--stage)" opacity=".9"/>
-          <path class="fl-core" d="M50 124 C 38 116, 34 100, 42 86 C 48 76, 52 68, 52 56 C 62 70, 68 84, 68 96 C 68 110, 60 120, 50 124 Z" fill="var(--gold)"/>
-        </svg>
+    <!-- duelo de bocas: ilustración real (marca/bocas.svg, provista por el usuario) +
+         palabras que salen de cada boca y se cruzan/chocan al medio. Sin fuego/rayo:
+         la energía del duelo la cargan las palabras, no un efecto aparte. -->
+    <div class="duelo-bocas" id="duelBocas" aria-hidden="true">
+      <img src="marca/bocas.svg" alt="">
+      <div class="choque-palabras">
+        <span class="izq"     style="--top:8%;  --fs:30px; --dur:3.2s; --delay:0s">flow</span>
+        <span class="der ac"  style="--top:22%; --fs:22px; --dur:3.6s; --delay:.3s">eco</span>
+        <span class="izq gold"style="--top:38%; --fs:26px; --dur:3s;   --delay:.6s">rima</span>
+        <span class="der"     style="--top:52%; --fs:20px; --dur:3.4s; --delay:.9s">verso</span>
+        <span class="izq ac"  style="--top:64%; --fs:34px; --dur:3.1s; --delay:1.2s">barra</span>
+        <span class="der gold"style="--top:14%; --fs:24px; --dur:3.5s; --delay:1.6s">ritmo</span>
+        <span class="izq"     style="--top:78%; --fs:22px; --dur:3.3s; --delay:1.9s">silencio</span>
+        <span class="der"     style="--top:46%; --fs:28px; --dur:3s;   --delay:2.2s">punchline</span>
+        <span class="izq ac"  style="--top:30%; --fs:20px; --dur:3.6s; --delay:2.5s">tempo</span>
+        <span class="der gold"style="--top:70%; --fs:26px; --dur:3.2s; --delay:2.8s">luz</span>
       </div>
-      <div class="lado der"></div>
     </div>
 
     <!-- batalla de barras: las cabezas se responden con versos completos, alternando -->
@@ -991,28 +1046,32 @@
 
     <div class="cards-home">
       <div class="fam-head" style="--fc:#FF2E63">Rima · construye rimas</div>
-      <button class="tcard" id="cardMulti">
+      <button class="tcard fam-rima" id="cardMulti">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30-45s</span>
         <div class="tcard-tag">Rima</div>
         <div class="tcard-title">Multisílabas <span>&</span> Palabras</div>
         <div class="tcard-desc">Encadena rimas de dos o más sílabas y mete palabras al vuelo. Con 4 niveles de dificultad.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardCadena">
+      <button class="tcard fam-rima" id="cardCadena">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Rima</div>
         <div class="tcard-title">Cadena de <span>Rimas</span></div>
         <div class="tcard-desc">Encadena rimas sin frenar. Cada palabra que rima con la anterior suma; si cortas la cadena, vuelves a cero.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardMetricas">
+      <button class="tcard fam-rima" id="cardMetricas">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30s</span>
         <div class="tcard-tag">Rima</div>
         <div class="tcard-title">Métricas</div>
         <div class="tcard-desc">Rima por vocales, no por sílabas: cuenta cuántas vocales finales de la palabra objetivo repites. Mientras más vocales calcen, más puntos.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardEnc">
+      <button class="tcard fam-rima" id="cardEnc">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Rima</div>
         <div class="tcard-title">Encadenado <span>Silábico</span></div>
@@ -1021,28 +1080,32 @@
       </button>
 
       <div class="fam-head" style="--fc:#4EC5F1">Voz · sonido, velocidad y aire</div>
-      <button class="tcard" id="cardAire">
+      <button class="tcard fam-voz" id="cardAire">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
         <div class="tcard-tag">Voz</div>
         <div class="tcard-title">Resistencia de <span>Exhalación</span></div>
         <div class="tcard-desc">Lee una lista entera en una sola exhalación, sin volver a tomar aire. Medimos cuánto aguantas y si la voz decae al final.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardAlit">
+      <button class="tcard fam-voz" id="cardAlit">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30s</span>
         <div class="tcard-tag">Voz</div>
         <div class="tcard-title">Aliteración</div>
         <div class="tcard-desc">Un sonido objetivo y todas tus palabras empezando por él. Cuenta el sonido, no la letra: casa y queso son la misma.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardTT">
+      <button class="tcard fam-voz" id="cardTT">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
         <div class="tcard-tag">Voz</div>
         <div class="tcard-title">Traba<span>lenguas</span></div>
         <div class="tcard-desc">Repite el trabalenguas las más veces posibles sin trabarte. Medimos vueltas completas, precisión y velocidad.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardTempo">
+      <button class="tcard fam-voz" id="cardTempo">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
         <div class="tcard-tag">Voz</div>
         <div class="tcard-title">Doble Tempo</div>
@@ -1051,21 +1114,24 @@
       </button>
 
       <div class="fam-head" style="--fc:#5BE0A6">Ingenio · esconder y sostener</div>
-      <button class="tcard" id="cardCamaleon">
+      <button class="tcard fam-ingenio" id="cardCamaleon">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Ingenio</div>
         <div class="tcard-title">Palabra Camaleón</div>
         <div class="tcard-desc">Una palabra objetivo que debes esconder en tu flow de mil formas. La app cuenta cuántas logras.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardDoble">
+      <button class="tcard fam-ingenio" id="cardDoble">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Ingenio</div>
         <div class="tcard-title">Doble <span>Sentido</span></div>
         <div class="tcard-desc">Una palabra, varios significados. Dila las veces que quieras, pero solo suma cuando cambias lo que significa.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardTema">
+      <button class="tcard fam-ingenio" id="cardTema">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Ingenio</div>
         <div class="tcard-title">Temática <span>Obligada</span></div>
@@ -1074,14 +1140,16 @@
       </button>
 
       <div class="fam-head" style="--fc:#F97316">Disciplina · lo que no debes decir</div>
-      <button class="tcard" id="cardRep">
+      <button class="tcard fam-disciplina" id="cardRep">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
         <div class="tcard-tag">Disciplina</div>
         <div class="tcard-title">Sin <span>Repetir</span></div>
         <div class="tcard-desc">45 segundos sin decir dos veces la misma palabra. Cuenta tu vocabulario real y te caza las muletillas.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardMul">
+      <button class="tcard fam-disciplina" id="cardMul">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
         <div class="tcard-tag">Disciplina</div>
         <div class="tcard-title">Sin <span>Muletillas</span></div>
@@ -1090,21 +1158,24 @@
       </button>
 
       <div class="fam-head" style="--fc:#4F7CFF">Cuerpo · calentamiento físico y facial</div>
-      <button class="tcard" id="cardMandibula">
+      <button class="tcard fam-cuerpo" id="cardMandibula">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Cuerpo</div>
         <div class="tcard-title">Calentamiento de <span>Mandíbula</span></div>
         <div class="tcard-desc">Usa tu cámara: abre y cierra bien la boca frente al espejo digital. Ideal antes de hablar en público — abogados, profes, vendedores.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardVocales">
+      <button class="tcard fam-cuerpo" id="cardVocales">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
         <div class="tcard-tag">Cuerpo</div>
         <div class="tcard-title">Espejo de <span>Vocales</span></div>
         <div class="tcard-desc">Marca las 5 vocales bien exageradas frente a tu cámara. Calienta la articulación completa de la boca, no solo la mandíbula.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard" id="cardRutina">
+      <button class="tcard fam-cuerpo" id="cardRutina">
+        <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
         <div class="tcard-tag">Cuerpo</div>
         <div class="tcard-title">Rutina <span>Pre-Audiencia</span></div>
@@ -1206,20 +1277,16 @@
       <!-- cabeza cantando: solo decorativa, se anima mientras grabas -->
       <div class="singer in-clock" id="singer" aria-hidden="true">
         <div class="cabeza">
-          <svg viewBox="0 0 460 560" width="460" height="560" fill="none"
-               stroke="var(--om-trazo)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="om-onda" cx="252" cy="356" r="52" stroke="var(--om-acento)" stroke-width="2"/>
-            <circle class="om-onda b" cx="252" cy="356" r="52" stroke="var(--om-acento)" stroke-width="2"/>
-            <path d="M120 372 C 96 330, 92 258, 126 200 C 160 130, 232 100, 282 130 C 320 152, 328 198, 322 226 L 308 238 C 322 256, 342 288, 346 306 C 349 318, 340 324, 328 322 L 300 318 C 312 330, 308 340, 294 342 L 252 346"/>
-            <path class="om-jaw" d="M 252 366 C 276 372, 290 386, 282 406 C 272 432, 240 452, 202 452 C 166 452, 142 428, 136 380"/>
-            <path d="M 176 302 C 160 300, 152 288, 156 274 C 160 260, 176 256, 186 264" stroke-width="2.5"/>
-            <path class="om-brow" d="M 254 222 C 272 210, 292 214, 300 226" stroke-width="4"/>
-            <path class="om-eye" d="M 260 250 C 274 240, 290 244, 296 254" stroke-width="2.5"/>
-            <path d="M 132 452 L 132 540 M 210 454 L 210 540" stroke-width="3.5"/>
-            <path class="om-throat" d="M 148 470 C 168 486, 190 488, 206 478" stroke-width="2.5"/>
-            <path d="M 148 168 C 178 140, 226 128, 262 140" stroke-width="2.5" opacity=".6"/>
-            <path d="M 128 214 C 150 172, 190 150, 224 148" stroke-width="2.5" opacity=".45"/>
-            <path d="M 252 348 C 270 352, 274 358, 252 364 C 236 366, 232 354, 252 348" fill="var(--om-acento)" stroke="none"/>
+          <svg viewBox="0 0 460 560" width="460" height="560" fill="none">
+            <!-- boca minimal: nada de cara, solo el labio como forma llena.
+                 El fuego/rayo del centro es lo que carga el peso visual del duelo. -->
+            <path d="M136 356 C136 314 188 290 252 290 C316 290 368 314 368 356
+                     C368 404 312 442 252 442 C192 442 136 404 136 356 Z"
+                  fill="var(--om-trazo)" stroke="none"/>
+            <path d="M174 354 C174 328 210 314 252 314 C294 314 330 328 330 354
+                     C330 386 294 414 252 414 C210 414 174 386 174 354 Z"
+                  fill="var(--ink)" stroke="none"/>
+            <ellipse cx="252" cy="382" rx="22" ry="12" fill="var(--om-acento)" stroke="none"/>
           </svg>
           <div class="om-palabras">
             <span            style="--dx:300px;--dy:-240px;--rot:-9deg; font-size:40px;animation-delay:0s">flow</span>
@@ -1247,6 +1314,8 @@
         <span class="timer" id="timer">00:30</span>
       </button>
     </div>
+    <div class="pista-now hide" id="pistaNow">🎵 <span id="pistaNowNombre"></span> <span class="pista-now-tip">— usa audífonos si estás grabando tu voz</span></div>
+    <audio id="pistaAudio" preload="none"></audio>
 
     </div><div class="tr-der">
 
@@ -2506,6 +2575,22 @@ function dtScheduler(){
 }
 function startBeat(){ ensureAudio(); beatStep=0; nextNoteTime=audioCtx.currentTime+0.12; clearInterval(beatTimer); beatTimer=setInterval(dtScheduler,25); }
 function stopBeat(){ clearInterval(beatTimer); beatTimer=null; document.querySelectorAll("#metro .beat-dot").forEach(d=>d.classList.remove("on")); }
+
+/* ----- pista de fondo al azar: suena mientras grabas, para tener con qué orientarte.
+   "Doble Tempo" ya trae su propio clic de metrónomo (startBeat), así que no suma pista encima. ----- */
+function startPistaFondo(){
+  if(activeTech==="tempo") return;
+  const p=PISTAS[Math.floor(Math.random()*PISTAS.length)];
+  const au=$("pistaAudio");
+  au.src=p.archivo; au.loop=true; au.volume=.55; au.currentTime=0;
+  au.play().catch(()=>{}); /* autoplay puede fallar sin gesto previo — no rompe la grabación si pasa */
+  $("pistaNowNombre").textContent=p.nombre;
+  $("pistaNow").classList.remove("hide");
+}
+function stopPistaFondo(){
+  const au=$("pistaAudio"); au.pause(); au.currentTime=0;
+  $("pistaNow").classList.add("hide");
+}
 function flashBeat(q){ const dots=document.querySelectorAll("#metro .beat-dot"); if(!dots.length) return; dots.forEach(d=>d.classList.remove("on")); if(dots[q]){ dots[q].classList.add("on"); setTimeout(()=>{ if(dots[q]) dots[q].classList.remove("on"); },150); } }
 
 /* ============ ESTADO + GRABACIÓN ============ */
@@ -3057,6 +3142,7 @@ async function startRec(){
   mediaRecorder=null; recog=null;
   if(activeTech==="mandibula"||activeTech==="vocales"||activeTech==="rutina"){
     isRec=true; restartSinger(); document.body.classList.add("recording"); $("recLabel").textContent="Detener"; $("verdictHost").innerHTML="";
+    startPistaFondo();
     remaining=roundSeconds;
     /* async: si la cámara falla, cada startCamXxx muestra su propio mensaje sin frenar el reloj */
     if(activeTech==="mandibula") startCamMandibula();
@@ -3133,12 +3219,13 @@ async function startRec(){
   }
 
   isRec=true; restartSinger(); document.body.classList.add("recording"); $("recLabel").textContent="Detener"; $("verdictHost").innerHTML="";
+  startPistaFondo();
   remaining=roundSeconds;
   if(activeTech==="multi" && multiMode==="palabras") schedulePalabras();
   ticking=setInterval(()=>{ remaining-=0.1; if(remaining<=0){remaining=0;$("timer").textContent=fmt(0);setRing(0);stopRec();return;} $("timer").textContent=fmt(remaining); setRing(remaining/roundSeconds); },100);
 }
 function stopRec(){
-  isRec=false; clearInterval(ticking); clearReveals(); stopBeat();
+  isRec=false; clearInterval(ticking); clearReveals(); stopBeat(); stopPistaFondo();
   clearInterval(aireSampleTimer); if(aireSource){ try{aireSource.disconnect()}catch(_){} aireSource=null; }
   document.body.classList.remove("recording"); $("recLabel").textContent="Grabar";
   if(activeTech==="mandibula"||activeTech==="vocales"||activeTech==="rutina"){
@@ -3167,7 +3254,7 @@ function stopRec(){
   $("primaryBtn").disabled=false;
 }
 function stopEverything(){
-  clearInterval(ticking); clearReveals(); stopBeat(); stopCam();
+  clearInterval(ticking); clearReveals(); stopBeat(); stopPistaFondo(); stopCam();
   clearInterval(aireSampleTimer); if(aireSource){ try{aireSource.disconnect()}catch(_){} aireSource=null; }
   if(mediaRecorder && mediaRecorder.state!=="inactive"){ try{mediaRecorder.stop()}catch(_){} }
   if(recog){ try{recog.stop()}catch(_){} recog=null; }
@@ -3656,6 +3743,7 @@ setTimeout(cicloBatalla,1200);
     setTimeout(()=>{
       sp.classList.add("gone");
       document.body.classList.remove("splash-on");
+      document.body.classList.add("cards-in"); /* dispara la entrada escalonada de las tarjetas */
       setTimeout(()=>{ if(sp.parentNode) sp.parentNode.removeChild(sp); },700);
     },560);
   }
