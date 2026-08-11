@@ -16,11 +16,11 @@ En vivo: https://freestyle-lab-app.netlify.app
 
 | Campo | Valor |
 |---|---|
-| Último commit en master | `0a17315` (02-ago) — commit inicial del repo |
-| Feature actual | ✅ Sección pistas gratis (7 beats, 10-ago) — **sin commitear aún** |
-| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a78fc7edd545d4d98ad75b2`, 10-ago) |
+| Último commit en master | `b09b19f` (10-ago) — sincroniza técnicas nuevas, duelo animado, pistas gratis y rediseño |
+| Feature actual | ✅ Rediseño de orden visual (tokens espaciado/radio, fam-head) — portada/menú/tarjetas hecho, falta trainer/modales/auth-bar |
+| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a78fc7edd545d4d98ad75b2`, 10-ago) — el commit `b09b19f` aún no está deployado a Netlify |
 | Técnicas implementadas | 16 (Aire, Vocales, Palabras, Métricas, Resistencia, Doble Sentido, Rima, Voz, Ingenio, Disciplina, Mandíbula, Vocales II, Rutina Pre-Audiencia, + 3 antecesoras) |
-| Git | ✅ versionado local + Netlify CI — pendiente: `index.html` modificado y `pistas/`, `.claude/`, 6 archivos de `versiones/` sin trackear |
+| Git | ✅ todo commiteado al día (`b09b19f`) |
 
 ## Reglas de oro
 
