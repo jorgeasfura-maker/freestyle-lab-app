@@ -1,0 +1,22 @@
+Carpeta de pistas gratis para entrenar (sección "Descarga tus pistas gratis" del sitio)
+
+Estado actual: ya hay 7 MP3 reales subidos (pista-01.mp3 ... pista-07.mp3),
+con nombres genéricos inventados en el array PISTAS de index.html.
+
+Cómo agregar o reemplazar MP3:
+1. Nombra cada archivo exactamente así: pista-01.mp3, pista-02.mp3, etc.
+   (sin tildes, sin espacios, sin mayúsculas — el número siempre con dos dígitos)
+2. Copia el archivo directamente dentro de esta carpeta "pistas/".
+3. Listo. No hay que tocar nada de código si solo reemplazas un archivo existente
+   con el mismo nombre.
+
+Recomendado: cada MP3 de máximo ~5 MB (para que la descarga sea rápida).
+
+Si quieres cambiar el nombre visible o el estilo de cada pista (lo que se ve
+en el modal, no el nombre del archivo), edita el array PISTAS dentro de
+index.html — buscar "const PISTAS=[".
+
+Si agregas u quitas pistas (más o menos de 7), ajusta también ese mismo array
+(agregando o quitando líneas) y sube los archivos con la numeración que uses.
+Si cambia el total de pistas, actualiza también el número en el banner
+("Descarga 7 beats gratis para entrenar") — buscar en index.html.
