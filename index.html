@@ -106,6 +106,38 @@
   @keyframes accent-pulso{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.06) rotate(-1.5deg)}}
   .hero-desc{margin:var(--sp-4) auto 0;max-width:430px;font-size:15px;line-height:1.62;color:var(--mist)}
   .hero-desc b{color:var(--paper)}
+  /* botón de entrada al Circuito: mismo lenguaje "sólido" que .tcard/.panel
+     (degradado tintado + borde con color + sombra), pero en dorado para que se
+     lea como una acción distinta de las 17 técnicas, no una técnica más */
+  .circuito-cta{display:flex;align-items:center;gap:14px;width:100%;margin:0 0 var(--sp-4);
+    background:linear-gradient(165deg,color-mix(in srgb,var(--gold) 14%,var(--surface)),var(--surface) 55%);
+    border:1px solid color-mix(in srgb,var(--gold) 28%,var(--line));border-radius:var(--radius-lg);
+    padding:15px 17px;cursor:pointer;font-family:inherit;color:var(--paper);text-align:left;
+    box-shadow:0 10px 28px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.05) inset;
+    transition:border-color .22s,transform .14s}
+  .circuito-cta:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .circuito-cta-ico{flex:0 0 auto;font-size:26px;line-height:1}
+  .circuito-cta-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .circuito-cta-txt b{font-family:"Anton",sans-serif;font-size:15px;letter-spacing:.01em;text-transform:uppercase}
+  .circuito-cta-txt em{font-style:normal;font-size:11.5px;color:var(--mist)}
+  .circuito-cta-go{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.02em}
+  /* insignia de progreso en la barra del entrenador, solo visible con un circuito activo */
+  .tbar-badge{flex:0 0 auto;font-size:10px;font-weight:700;letter-spacing:.06em;
+    color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,var(--surface-2));
+    border:1px solid color-mix(in srgb,var(--gold) 30%,var(--line));border-radius:100px;padding:4px 10px;white-space:nowrap}
+  /* picker del circuito: lista de técnicas como chips seleccionables (reusa el
+     modal .info-overlay/.info-card, esto solo estiliza el contenido) */
+  .circ-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:14px 0}
+  .circ-item{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:var(--radius-sm);padding:10px 12px;cursor:pointer;font-family:inherit;font-size:12.5px;
+    color:var(--paper);text-align:left;transition:border-color .18s,background .18s}
+  .circ-item i{flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:var(--tc,var(--mist));opacity:.5;transition:opacity .18s,box-shadow .18s}
+  .circ-item:hover{border-color:color-mix(in srgb,var(--tc,var(--stage)) 40%,var(--line))}
+  .circ-item.sel{border-color:var(--tc,var(--stage));background:color-mix(in srgb,var(--tc,var(--stage)) 12%,var(--surface-2))}
+  .circ-item.sel i{opacity:1;box-shadow:0 0 8px var(--tc,var(--stage))}
+  .circ-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
+  .circ-contador{font-size:11.5px;color:var(--mist)}
   .cards-home{display:flex;flex-direction:column;gap:6px}
   .fam-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
   /* cada técnica tiene su color: --tc. Sin glow: el color y el borde hacen el trabajo. */
@@ -285,8 +317,9 @@
   .info-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;
     background:rgba(6,4,10,.72);backdrop-filter:blur(3px);padding:0}
   .info-overlay.hide{display:none}
-  .info-card{width:100%;max-width:560px;max-height:82dvh;overflow-y:auto;background:var(--surface);
-    border:1px solid var(--line);border-radius:22px 22px 0 0;padding:26px 22px 30px;position:relative;
+  .info-card{width:100%;max-width:560px;max-height:82dvh;overflow-y:auto;
+    background:linear-gradient(165deg,color-mix(in srgb,var(--stage) 8%,var(--surface)),var(--surface) 55%);
+    border:1px solid color-mix(in srgb,var(--stage) 18%,var(--line));border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:26px 22px 30px;position:relative;
     box-shadow:0 -12px 44px rgba(0,0,0,.5);animation:info-up .28s cubic-bezier(.2,.9,.25,1) backwards}
   @keyframes info-up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
   .info-close{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:50%;
@@ -300,12 +333,12 @@
   .info-body h4:first-child{margin-top:0}
   .info-body p{font-size:13.5px;line-height:1.6;color:var(--mist);margin:0 0 6px}
   .info-body b{color:var(--paper)}
-  .info-body .ex{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;
+  .info-body .ex{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);
     padding:12px 14px;margin:8px 0;font-size:13px;color:var(--paper);line-height:1.55}
   .info-body .ex b{color:var(--gold)}
   @media (min-width:640px){
     .info-overlay{align-items:center;padding:24px}
-    .info-card{border-radius:22px;animation-name:info-pop}
+    .info-card{border-radius:var(--radius-lg);animation-name:info-pop}
   }
   @keyframes info-pop{from{transform:translateY(10px) scale(.97);opacity:0}to{transform:none;opacity:1}}
   .back{background:var(--surface);border:1px solid var(--line);color:var(--paper);font-family:inherit;font-size:13px;font-weight:700;padding:9px 14px;border-radius:100px;cursor:pointer;transition:background .2s,border-color .2s}
@@ -380,8 +413,12 @@
 
   /* position:relative es imprescindible: sin él, cualquier hijo absoluto del panel
      se posiciona contra .app y se sale por los lados, provocando scroll horizontal. */
-  .panel{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:20px;
-    box-shadow:0 0 0 1px rgba(255,46,99,.06),0 12px 40px rgba(0,0,0,.38)}
+  /* Mismo lenguaje "sólido" que .tcard: degradado tintado + borde con color +
+     sombra profunda, en vez del fondo plano/borde gris que tenía antes. */
+  .panel{position:relative;
+    background:linear-gradient(165deg,color-mix(in srgb,var(--stage) 10%,var(--surface)),var(--surface) 55%);
+    border:1px solid color-mix(in srgb,var(--stage) 20%,var(--line));border-radius:var(--radius-lg);padding:18px;margin-top:20px;
+    box-shadow:0 10px 28px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.05) inset}
   .panel-h{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mist);margin-bottom:10px}
   .live{min-height:56px;font-size:16px;line-height:1.5;color:var(--paper)}
   .live .interim{color:var(--mist)}
@@ -390,7 +427,7 @@
   textarea.edit:focus{outline:2px solid var(--stage-dim);border-color:var(--stage-dim)}
 
   /* ===== CÁMARA (Calentamiento de Mandíbula) ===== */
-  .cam-host{position:relative;width:100%;aspect-ratio:4/3;max-height:340px;border-radius:14px;overflow:hidden;
+  .cam-host{position:relative;width:100%;aspect-ratio:4/3;max-height:340px;border-radius:var(--radius-md);overflow:hidden;
     background:var(--ink);border:1px solid var(--line)}
   .cam-host video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)} /* espejo: se ve como te ves */
   .cam-gauge{position:absolute;left:14px;bottom:14px;width:14px;height:calc(100% - 28px);
@@ -414,8 +451,8 @@
   .btn-ghost:hover{background:var(--surface-2)}
   .btn-ghost:disabled{opacity:.4;cursor:not-allowed}
 
-  .verdict{margin-top:20px;border:1px solid var(--line);border-radius:18px;overflow:hidden;
-    box-shadow:0 14px 44px rgba(0,0,0,.5)}
+  .verdict{margin-top:20px;border:1px solid color-mix(in srgb,var(--gold) 22%,var(--line));border-radius:var(--radius-lg);overflow:hidden;
+    box-shadow:0 14px 44px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.05) inset}
   .verdict.show{animation:rise .4s ease}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .score-head{padding:26px 20px 24px;text-align:center;background:linear-gradient(180deg,rgba(255,201,77,.10),transparent 70%),var(--surface);
@@ -429,7 +466,7 @@
   .block:first-child{margin-top:0}
   .block-h{font-size:12px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:9px;color:var(--mist);font-weight:700}
   .stats{display:flex;gap:8px}
-  .stat{flex:1;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 6px}
+  .stat{flex:1;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 6px}
   .stat .n{font-family:"Space Mono",monospace;font-size:24px;font-weight:700;color:var(--paper)}
   .stat .t{font-size:10.5px;letter-spacing:.03em;color:var(--mist);margin-top:3px;text-transform:uppercase}
   .stat.ok .n{color:var(--ok)}
@@ -779,6 +816,21 @@
     </div>
   </div>
 </div>
+<div class="info-overlay hide" id="circuitoOverlay" role="dialog" aria-modal="true" aria-labelledby="circuitoTitle">
+  <div class="info-card">
+    <button class="info-close" id="circuitoCerrarBtn" aria-label="Cerrar">✕</button>
+    <div class="info-eyebrow">Circuito</div>
+    <h3 class="info-title" id="circuitoTitle">Arma tu Circuito</h3>
+    <div class="info-body">
+      <p>Elige entre 2 y 5 técnicas. Las vas a entrenar seguidas, con un descanso entre cada una.</p>
+      <div class="circ-list" id="circuitoLista"></div>
+      <div class="circ-foot">
+        <span class="circ-contador" id="circuitoContador">0 de 5 elegidas · mínimo 2</span>
+        <button class="btn btn-primary" id="circuitoEmpezarBtn" disabled>Empezar circuito</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="cascade left" id="cascadeL"></div>
 <div class="cascade right" id="cascadeR"></div>
 <div class="app">
@@ -828,6 +880,15 @@
       <div class="battle-bar" id="battleBar"><span class="quien" id="battleQuien"></span><span id="battleTxt"></span></div>
     </div>
 
+    <!-- Circuito: encadena 2-5 técnicas seguidas con descanso entre medio, en vez
+         de entrenar una técnica suelta. El picker reutiliza .info-overlay/.info-card
+         (mismo modal que "Cómo funciona"), solo cambia el contenido interno. -->
+    <button class="circuito-cta" id="circuitoBtn">
+      <span class="circuito-cta-ico">🔁</span>
+      <span class="circuito-cta-txt"><b>Arma tu Circuito</b><em>Encadena varias técnicas con descanso entre medio</em></span>
+      <span class="circuito-cta-go">Elegir →</span>
+    </button>
+
     <div class="cards-home">
       <div class="fam-group">
         <button class="fam-head" style="--fc:#FF2E63" aria-expanded="false">
@@ -837,7 +898,7 @@
         </button>
         <div class="fam-body">
           <div class="fam-cards">
-      <button class="tcard fam-rima" id="cardRimaMin">
+      <button class="tcard fam-rima" id="cardRimaMin" data-tech="rimamin">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
         <div class="tcard-tag">Rima</div>
@@ -845,7 +906,7 @@
         <div class="tcard-desc">Un minuto entero soltando rimas. Contamos cuántas acumulas en total, sin importar cuánto digas entre una y otra.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-disciplina" id="cardRep">
+      <button class="tcard fam-disciplina" id="cardRep" data-tech="sinrepetir">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
         <div class="tcard-tag">Disciplina</div>
@@ -853,7 +914,7 @@
         <div class="tcard-desc">45 segundos sin decir dos veces la misma palabra. Cuenta tu vocabulario real y te caza las muletillas.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-disciplina" id="cardMul">
+      <button class="tcard fam-disciplina" id="cardMul" data-tech="muletillas">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
         <div class="tcard-tag">Disciplina</div>
@@ -874,7 +935,7 @@
         </button>
         <div class="fam-body">
           <div class="fam-cards">
-      <button class="tcard fam-rima" id="cardMulti">
+      <button class="tcard fam-rima" id="cardMulti" data-tech="multi">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30-45s</span>
         <div class="tcard-tag">Rima</div>
@@ -882,7 +943,7 @@
         <div class="tcard-desc">Encadena rimas de dos o más sílabas y mete palabras al vuelo. Con 4 niveles de dificultad.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-rima" id="cardMetricas">
+      <button class="tcard fam-rima" id="cardMetricas" data-tech="metricas">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30s</span>
         <div class="tcard-tag">Rima</div>
@@ -890,7 +951,7 @@
         <div class="tcard-desc">Rima por vocales, no por sílabas: cuenta cuántas vocales finales de la palabra objetivo repites. Mientras más vocales calcen, más puntos.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-ingenio" id="cardCamaleon">
+      <button class="tcard fam-ingenio" id="cardCamaleon" data-tech="camaleon">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Ingenio</div>
@@ -898,7 +959,7 @@
         <div class="tcard-desc">Una palabra objetivo que debes esconder en tu flow de mil formas. La app cuenta cuántas logras.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-voz" id="cardTempo">
+      <button class="tcard fam-voz" id="cardTempo" data-tech="tempo">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
         <div class="tcard-tag">Voz</div>
@@ -906,7 +967,7 @@
         <div class="tcard-desc">Un minuto sobre un beat: rapea al doble del pulso y mide cuántas palabras sueltas y tu velocidad.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-voz" id="cardAlit">
+      <button class="tcard fam-voz" id="cardAlit" data-tech="aliteracion">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30s</span>
         <div class="tcard-tag">Voz</div>
@@ -914,7 +975,7 @@
         <div class="tcard-desc">Un sonido objetivo y todas tus palabras empezando por él. Cuenta el sonido, no la letra: casa y queso son la misma.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-ingenio" id="cardDoble">
+      <button class="tcard fam-ingenio" id="cardDoble" data-tech="doble">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Ingenio</div>
@@ -935,7 +996,7 @@
         </button>
         <div class="fam-body">
           <div class="fam-cards">
-      <button class="tcard fam-ingenio" id="cardTema">
+      <button class="tcard fam-ingenio" id="cardTema" data-tech="tematica">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Ingenio</div>
@@ -956,7 +1017,7 @@
         </button>
         <div class="fam-body">
           <div class="fam-cards">
-      <button class="tcard fam-voz" id="cardTT">
+      <button class="tcard fam-voz" id="cardTT" data-tech="trabalenguas">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
         <div class="tcard-tag">Voz</div>
@@ -964,7 +1025,7 @@
         <div class="tcard-desc">Repite el trabalenguas las más veces posibles sin trabarte. Medimos vueltas completas, precisión y velocidad.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-voz" id="cardAire">
+      <button class="tcard fam-voz" id="cardAire" data-tech="aire">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
         <div class="tcard-tag">Voz</div>
@@ -972,7 +1033,7 @@
         <div class="tcard-desc">Lee una lista entera en una sola exhalación, sin volver a tomar aire. Medimos cuánto aguantas y si la voz decae al final.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-rima" id="cardCadena">
+      <button class="tcard fam-rima" id="cardCadena" data-tech="cadena">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Rima</div>
@@ -980,7 +1041,7 @@
         <div class="tcard-desc">Encadena rimas sin frenar. Cada palabra que rima con la anterior suma; si cortas la cadena, vuelves a cero.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-rima" id="cardEnc">
+      <button class="tcard fam-rima" id="cardEnc" data-tech="encadenado">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Rima</div>
@@ -1001,7 +1062,7 @@
         </button>
         <div class="fam-body">
           <div class="fam-cards">
-      <button class="tcard fam-cuerpo" id="cardMandibula">
+      <button class="tcard fam-cuerpo" id="cardMandibula" data-tech="mandibula">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
         <div class="tcard-tag">Cuerpo</div>
@@ -1009,7 +1070,7 @@
         <div class="tcard-desc">Usa tu cámara: abre y cierra bien la boca frente al espejo digital. Ideal antes de hablar en público — abogados, profes, vendedores.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-cuerpo" id="cardVocales">
+      <button class="tcard fam-cuerpo" id="cardVocales" data-tech="vocales">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
         <div class="tcard-tag">Cuerpo</div>
@@ -1017,7 +1078,7 @@
         <div class="tcard-desc">Marca las 5 vocales bien exageradas frente a tu cámara. Calienta la articulación completa de la boca, no solo la mandíbula.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-      <button class="tcard fam-cuerpo" id="cardRutina">
+      <button class="tcard fam-cuerpo" id="cardRutina" data-tech="rutina">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
         <div class="tcard-tag">Cuerpo</div>
@@ -1041,6 +1102,7 @@
     <div class="tbar">
       <button class="back" id="backBtn">← Menú</button>
       <div class="tbar-name" id="techName">Multisílabas</div>
+      <span class="tbar-badge hide" id="circuitoBadge"></span>
       <button class="info-btn" id="infoBtn" aria-label="Cómo funciona esta técnica" title="Cómo funciona">?</button>
       <img class="tbar-logo" src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566">
     </div>
@@ -2504,6 +2566,9 @@ const seg=k=>SEGS[k];
 /* en Palabras la exigencia no es el reloj sino cuántas palabras hay que colar */
 const palN=l=>Math.max(2, PAL_N[l]);
 let activeTech="multi", multiMode="multisilabas", palabrasLevel=1, camMode="cantidad", tempoBpm=90;
+/* Circuito: encadena varias técnicas con descanso entre medio. null = no hay
+   circuito activo. {queue, idx, resultados} mientras corre uno. */
+let circuito=null;
 let multiWord=null, camWord=null, alitSound=null, ttPhrase=null, ttName=null, encWord=null, temaActual=null, palabrasWords=[], revealTimers=[], metricasWord=null, poliWord=null;
 let aireList=null, aireSamples=[], aireSource=null, aireAnalyser=null, aireDataArr=null, aireSampleTimer=null, aireT0=0;
 let roundSeconds=30;
@@ -2787,6 +2852,7 @@ function fadeInView(el){
     {opacity:1,y:0,scale:1,duration:.42,ease:"back.out(1.6)",overwrite:"auto"});
 }
 function goHome(){
+  circuito=null;
   stopEverything();
   fadeOutThenSwap($("trainer"),()=>{
     $("trainer").classList.add("hide"); $("home").classList.remove("hide");
@@ -2794,31 +2860,36 @@ function goHome(){
     fadeInView($("home")); animateCardsIn();
   });
 }
-function openTech(tech){
+/* título de cada técnica: lo usan prepararTecnica() y el picker del Circuito,
+   una sola fuente de verdad en vez de tenerlo repetido en dos lugares */
+const TECH_TITLES={
+  multi:"Multisílabas & Palabras", camaleon:"Palabra Camaleón", tempo:"Doble Tempo",
+  cadena:"Cadena de Rimas", rimamin:"Rimas por Minuto", metricas:"Métricas",
+  doble:"Doble Sentido", aliteracion:"Aliteración", trabalenguas:"Trabalenguas",
+  encadenado:"Encadenado", sinrepetir:"Sin Repetir", tematica:"Temática",
+  muletillas:"Sin Muletillas", aire:"Resistencia de Exhalación",
+  mandibula:"Calentamiento de Mandíbula", vocales:"Espejo de Vocales",
+  rutina:"Rutina Pre-Audiencia"
+};
+/* deja el entrenador listo para "tech" SIN tocar la vista (sin fundido, sin
+   cambiar de sección) — openTech la usa al entrar desde el menú, y el Circuito
+   la usa para saltar de una técnica a la siguiente sin salir de #trainer */
+function prepararTecnica(tech){
   activeTech=tech;
+  syncSinger(tech==="tempo" ? tempoBpm : null);
+  $("subTabs").classList.add("hide"); $("camTabs").classList.add("hide"); $("levels").classList.add("hide"); $("lvlInfo").classList.add("hide"); $("bpmRow").classList.add("hide");
+  if(tech==="multi"){ $("subTabs").classList.remove("hide"); setMultiMode("multisilabas"); }
+  else if(tech==="camaleon"){ $("camTabs").classList.remove("hide"); $("techName").textContent=TECH_TITLES.camaleon; setCamMode("cantidad"); }
+  else if(tech==="tempo"){ $("bpmRow").classList.remove("hide"); $("techName").textContent=TECH_TITLES.tempo; newItem(); }
+  else { $("techName").textContent=TECH_TITLES[tech]; newItem(); }
+  pintarBadgeCircuito();
+}
+function openTech(tech){
   fadeOutThenSwap($("home"),()=>{
     $("home").classList.add("hide"); $("trainer").classList.remove("hide");
     document.body.classList.remove("home-active"); window.scrollTo(0,0);
     fadeInView($("trainer"));
-    syncSinger(tech==="tempo" ? tempoBpm : null);
-    $("subTabs").classList.add("hide"); $("camTabs").classList.add("hide"); $("levels").classList.add("hide"); $("lvlInfo").classList.add("hide"); $("bpmRow").classList.add("hide");
-    if(tech==="multi"){ $("subTabs").classList.remove("hide"); setMultiMode("multisilabas"); }
-    else if(tech==="camaleon"){ $("camTabs").classList.remove("hide"); $("techName").textContent="Palabra Camaleón"; setCamMode("cantidad"); }
-    else if(tech==="cadena"){ $("techName").textContent="Cadena de Rimas"; newItem(); }
-    else if(tech==="rimamin"){ $("techName").textContent="Rimas por Minuto"; newItem(); }
-    else if(tech==="metricas"){ $("techName").textContent="Métricas"; newItem(); }
-    else if(tech==="doble"){ $("techName").textContent="Doble Sentido"; newItem(); }
-    else if(tech==="aliteracion"){ $("techName").textContent="Aliteración"; newItem(); }
-    else if(tech==="trabalenguas"){ $("techName").textContent="Trabalenguas"; newItem(); }
-    else if(tech==="encadenado"){ $("techName").textContent="Encadenado"; newItem(); }
-    else if(tech==="sinrepetir"){ $("techName").textContent="Sin Repetir"; newItem(); }
-    else if(tech==="tematica"){ $("techName").textContent="Temática"; newItem(); }
-    else if(tech==="muletillas"){ $("techName").textContent="Sin Muletillas"; newItem(); }
-    else if(tech==="aire"){ $("techName").textContent="Resistencia de Exhalación"; newItem(); }
-    else if(tech==="mandibula"){ $("techName").textContent="Calentamiento de Mandíbula"; newItem(); }
-    else if(tech==="vocales"){ $("techName").textContent="Espejo de Vocales"; newItem(); }
-    else if(tech==="rutina"){ $("techName").textContent="Rutina Pre-Audiencia"; newItem(); }
-    else { $("bpmRow").classList.remove("hide"); $("techName").textContent="Doble Tempo"; newItem(); }
+    prepararTecnica(tech);
   });
 }
 function setMultiMode(mode){
@@ -3254,6 +3325,7 @@ function renderVerdict(cfg){
      </div>`;
   countUp(cfg.scoreValue);
   const v=$("verdictHost").querySelector(".verdict"); if(v) v.scrollIntoView({behavior:"smooth",block:"center"});
+  if(circuito) avanzarDespuesDelVeredicto(cfg);
 }
 function countUp(target){
   target=Math.max(0,parseInt(target)||0); const num=$("scoreNum"); if(!num) return;
@@ -3280,25 +3352,108 @@ function setNotice(html){
   } else n.innerHTML=html;
 }
 
-/* ----- eventos ----- */
-$("cardMulti").addEventListener("click",()=>openTech("multi"));
-$("cardCamaleon").addEventListener("click",()=>openTech("camaleon"));
-$("cardTempo").addEventListener("click",()=>openTech("tempo"));
-$("cardCadena").addEventListener("click",()=>openTech("cadena"));
-$("cardRimaMin").addEventListener("click",()=>openTech("rimamin"));
-$("cardAlit").addEventListener("click",()=>openTech("aliteracion"));
-$("cardTT").addEventListener("click",()=>openTech("trabalenguas"));
-$("cardEnc").addEventListener("click",()=>openTech("encadenado"));
-$("cardRep").addEventListener("click",()=>openTech("sinrepetir"));
-$("cardTema").addEventListener("click",()=>openTech("tematica"));
-$("cardMul").addEventListener("click",()=>openTech("muletillas"));
-$("cardMandibula").addEventListener("click",()=>openTech("mandibula"));
-$("cardVocales").addEventListener("click",()=>openTech("vocales"));
-$("cardRutina").addEventListener("click",()=>openTech("rutina"));
-$("cardAire").addEventListener("click",()=>openTech("aire"));
-$("cardMetricas").addEventListener("click",()=>openTech("metricas"));
-$("cardDoble").addEventListener("click",()=>openTech("doble"));
+/* ----- Circuito: encadena 2-5 técnicas con descanso entre medio ----- */
+const CIRCUITO_MIN=2, CIRCUITO_MAX=5, CIRCUITO_DESCANSO=12;
+function pintarBadgeCircuito(){
+  const b=$("circuitoBadge"); if(!b) return;
+  b.classList.toggle("hide",!circuito);
+  if(circuito) b.textContent=`Circuito · ${circuito.idx+1}/${circuito.queue.length}`;
+}
+function abrirPickerCircuito(){
+  const lista=$("circuitoLista"); lista.innerHTML="";
+  document.querySelectorAll(".tcard[data-tech]").forEach(c=>{
+    const tech=c.dataset.tech;
+    const tc=getComputedStyle(c).getPropertyValue("--tc").trim();
+    const b=document.createElement("button");
+    b.type="button"; b.className="circ-item"; b.dataset.tech=tech;
+    b.style.setProperty("--tc",tc); b.setAttribute("aria-pressed","false");
+    b.innerHTML=`<i></i><span>${esc(TECH_TITLES[tech]||c.querySelector(".tcard-title").textContent)}</span>`;
+    b.addEventListener("click",()=>{
+      const sel=lista.querySelectorAll(".circ-item.sel").length;
+      const yaSel=b.classList.contains("sel");
+      if(!yaSel && sel>=CIRCUITO_MAX) return;
+      b.classList.toggle("sel"); b.setAttribute("aria-pressed",b.classList.contains("sel")?"true":"false");
+      pintarContadorCircuito();
+    });
+    lista.appendChild(b);
+  });
+  pintarContadorCircuito();
+  $("circuitoOverlay").classList.remove("hide");
+}
+function cerrarPickerCircuito(){ $("circuitoOverlay").classList.add("hide"); }
+function pintarContadorCircuito(){
+  const n=$("circuitoLista").querySelectorAll(".circ-item.sel").length;
+  $("circuitoContador").textContent=`${n} de ${CIRCUITO_MAX} elegidas · mínimo ${CIRCUITO_MIN}`;
+  $("circuitoEmpezarBtn").disabled = n<CIRCUITO_MIN;
+}
+function iniciarCircuito(){
+  const queue=[...$("circuitoLista").querySelectorAll(".circ-item.sel")].map(b=>b.dataset.tech);
+  if(queue.length<CIRCUITO_MIN) return;
+  circuito={queue, idx:0, resultados:[]};
+  cerrarPickerCircuito();
+  openTech(queue[0]);
+}
+/* se llama desde renderVerdict() cuando termina una ronda con el circuito activo */
+function avanzarDespuesDelVeredicto(cfg){
+  circuito.resultados.push({title:$("techName").textContent, score:cfg.scoreValue, suffix:cfg.scoreSuffix});
+  circuito.idx++;
+  if(circuito.idx>=circuito.queue.length){
+    setTimeout(mostrarResumenCircuito,550); /* deja ver el último puntaje antes de resumir */
+    return;
+  }
+  const nextTitle=TECH_TITLES[circuito.queue[circuito.idx]]||circuito.queue[circuito.idx];
+  $("verdictHost").insertAdjacentHTML("beforeend",
+    `<div class="verdict show circuito-next">
+       <div class="verdict-body" style="text-align:center">
+         <div class="block-h">Circuito · ${circuito.idx} de ${circuito.queue.length}</div>
+         <p style="color:var(--mist);font-size:13.5px;margin:0 0 14px">Siguiente: <b style="color:var(--paper)">${esc(nextTitle)}</b></p>
+         <div class="row"><button class="btn btn-primary" id="circuitoContinuarBtn">Descansar y seguir →</button></div>
+       </div>
+     </div>`);
+  $("circuitoContinuarBtn").addEventListener("click",iniciarDescansoCircuito);
+}
+function iniciarDescansoCircuito(){
+  const body=document.querySelector(".circuito-next .verdict-body"); if(!body) return;
+  let t=CIRCUITO_DESCANSO;
+  const avanzar=()=>{ clearInterval(iv); prepararTecnica(circuito.queue[circuito.idx]); };
+  const pintar=()=>{
+    body.innerHTML=`<div class="block-h">Descanso</div><div class="score-num" style="font-size:56px">${t}</div>
+      <div class="row"><button class="btn btn-ghost" id="circuitoSaltarBtn">Saltar descanso →</button></div>`;
+    $("circuitoSaltarBtn").addEventListener("click",avanzar);
+  };
+  pintar();
+  const iv=setInterval(()=>{ t--; if(t<=0){ avanzar(); return; } pintar(); },1000);
+}
+function mostrarResumenCircuito(){
+  const r=circuito.resultados;
+  const stats=r.map((x,i)=>`<div class="stat" style="--i:${i}"><div class="n">${esc(x.score)}${esc(x.suffix||"")}</div><div class="t">${esc(x.title)}</div></div>`).join("");
+  $("verdictHost").innerHTML=
+    `<div class="verdict show">
+       <div class="score-head"><div class="lbl">Circuito completo</div>
+         <div class="score-num">${r.length}<small> técnicas</small></div></div>
+       <div class="verdict-body">
+         <div class="block"><div class="block-h">Tus resultados</div><div class="stats" style="flex-wrap:wrap">${stats}</div></div>
+         <div class="row" style="margin-top:18px"><button class="btn btn-primary" id="circuitoVolverBtn">Volver al menú</button></div>
+       </div>
+     </div>`;
+  $("circuitoVolverBtn").addEventListener("click",()=>{ circuito=null; goHome(); });
+  circuito=null; pintarBadgeCircuito();
+  const v=$("verdictHost").querySelector(".verdict"); if(v) v.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+/* ----- eventos -----
+   Las 17 tarjetas llevan data-tech="..." (mismo valor que antes se pasaba a mano
+   en 17 addEventListener sueltos): un solo listener delegado en vez de repetir
+   el mismo patrón 17 veces. También lo usa el picker del Circuito para no
+   mantener una segunda lista de técnicas por separado. */
+document.querySelectorAll(".tcard[data-tech]").forEach(c=>{
+  c.addEventListener("click",()=>{ circuito=null; openTech(c.dataset.tech); });
+});
 $("backBtn").addEventListener("click",goHome);
+$("circuitoBtn").addEventListener("click",abrirPickerCircuito);
+$("circuitoCerrarBtn").addEventListener("click",cerrarPickerCircuito);
+$("circuitoOverlay").addEventListener("click",e=>{ if(e.target.id==="circuitoOverlay") cerrarPickerCircuito(); });
+$("circuitoEmpezarBtn").addEventListener("click",iniciarCircuito);
 $("infoBtn").addEventListener("click",showInfo);
 $("infoClose").addEventListener("click",hideInfo);
 $("infoOverlay").addEventListener("click",e=>{ if(e.target.id==="infoOverlay") hideInfo(); });
