@@ -18,8 +18,8 @@ En vivo: https://freestyle-lab-app.netlify.app
 |---|---|
 | Último commit en master | `b09b19f` (10-ago) — sincroniza técnicas nuevas, duelo animado, pistas gratis y rediseño |
 | Feature actual | ✅ Rediseño de orden visual (tokens espaciado/radio, fam-head) — portada/menú/tarjetas hecho, falta trainer/modales/auth-bar |
-| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a7a862c297927379c00c091`, 10-ago) — al día con el repo local |
-| Técnicas implementadas | 16 (Aire, Vocales, Palabras, Métricas, Resistencia, Doble Sentido, Rima, Voz, Ingenio, Disciplina, Mandíbula, Vocales II, Rutina Pre-Audiencia, + 3 antecesoras) |
+| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a7e62d8770d41f4258edf07`, 13-ago) — una sola dificultad (sin Modo Bestia/Principiante) y menú en 5 secciones |
+| Técnicas implementadas | 17 (Aire, Vocales, Palabras, Métricas, Resistencia, Doble Sentido, Rima, Voz, Ingenio, Disciplina, Mandíbula, Vocales II, Rutina Pre-Audiencia, Rimas por Minuto, + 3 antecesoras) |
 | Git | ✅ todo commiteado al día (`b09b19f`) |
 
 ## Reglas de oro

@@ -90,64 +90,53 @@
 
   /* ===== PORTADA ===== */
   #home{display:flex;flex-direction:column;min-height:calc(100dvh - 82px)}
-  /* ===== LOGO OFICIAL — lamina de marca (marca/freestyle-lab-logos.png) ===== */
-  .home-brand{display:flex;align-items:center;justify-content:center;white-space:nowrap;
-    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:700;
-    font-size:23px;letter-spacing:-.005em;
-    color:var(--paper);text-transform:uppercase}
-  .home-brand .st{color:var(--stage)}
-  .home-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--stage);
-    box-shadow:0 0 14px var(--stage),0 0 32px rgba(255,46,99,.85);animation:dotpulse 2.4s ease-in-out infinite}
-  @keyframes dotpulse{0%,100%{box-shadow:0 0 14px var(--stage),0 0 32px rgba(255,46,99,.85)}50%{box-shadow:0 0 20px var(--stage),0 0 52px rgba(255,46,99,1)}}
+  /* ===== LOGO OFICIAL (14-ago) — marca/logo-oficial.png, recorte sin fondo del
+     arte que trajo el usuario. Reemplaza el wordmark de texto en la barra del
+     menú y en el splash (ver .sp-logo más abajo). */
+  .home-brand{display:flex;align-items:center;justify-content:center}
+  .home-brand img{height:68px;width:auto;display:block}
   .hero-wrap{flex:1;display:flex;align-items:center;padding:var(--sp-5) 0}
   .hero{text-align:center;width:100%}
   .hero-eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--mist);margin-bottom:var(--sp-3)}
   .hero-title{font-family:"Anton",sans-serif;font-size:clamp(34px,10.6vw,66px);line-height:.96;letter-spacing:.01em;text-transform:uppercase;
     background:linear-gradient(180deg,var(--paper),#cfc6dc);-webkit-background-clip:text;background-clip:text;color:transparent;
     filter:drop-shadow(0 8px 44px rgba(255,46,99,.22)) drop-shadow(0 0 14px rgba(242,238,247,.08))}
-  .hero-title .accent{color:var(--stage);-webkit-text-fill-color:var(--stage)}
+  .hero-title .accent{color:var(--stage);-webkit-text-fill-color:var(--stage);
+    display:inline-block;animation:accent-pulso 2.6s ease-in-out infinite}
+  @keyframes accent-pulso{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.06) rotate(-1.5deg)}}
   .hero-desc{margin:var(--sp-4) auto 0;max-width:430px;font-size:15px;line-height:1.62;color:var(--mist)}
   .hero-desc b{color:var(--paper)}
-  .cards-home{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .cards-home{display:flex;flex-direction:column;gap:6px}
+  .fam-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
   /* cada técnica tiene su color: --tc. Sin glow: el color y el borde hacen el trabajo. */
-  .tcard{--tc:var(--stage);--rot:0deg;
+  /* Rediseño "sólido y elegante" (14-ago): se quitó el ángulo aleatorio de sticker
+     (--rot) y la esquina despegada (.tcard-peel) — las tarjetas van derechas, sin
+     efecto de papel pegado. La identidad la da un fondo más denso, un borde
+     superior de acento y un reborde sutil del color de --tc, no la inclinación. */
+  .tcard{--tc:var(--stage);
     display:flex;flex-direction:column;text-align:left;
-    background:var(--surface);
-    background:linear-gradient(165deg,color-mix(in srgb,var(--tc) 8%,transparent),transparent 48%),var(--surface);
-    border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 13px 11px;cursor:pointer;position:relative;overflow:hidden;
-    box-shadow:0 6px 22px rgba(0,0,0,.32),0 1px 0 rgba(255,255,255,.04) inset;
-    transform:rotate(var(--rot));
-    /* transform y box-shadow ya no llevan transition CSS: el hover ahora lo maneja
-       GSAP (gsap.quickTo) para que el "rebote" del release sea posible; una
-       transition CSS sobre las mismas props competiría con GSAP por el mismo valor
-       en cada frame. */
+    background:linear-gradient(165deg,color-mix(in srgb,var(--tc) 13%,var(--surface)),var(--surface) 55%);
+    border:1px solid color-mix(in srgb,var(--tc) 22%,var(--line));border-radius:var(--radius-md);
+    padding:14px 14px 12px;cursor:pointer;position:relative;overflow:hidden;
+    box-shadow:0 10px 28px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.05) inset;
+    /* box-shadow ya no lleva transition CSS: el hover lo maneja GSAP (gsap.quickTo)
+       para que el "rebote" del release sea posible; una transition CSS sobre la
+       misma prop competiría con GSAP por el mismo valor en cada frame. */
     transition:border-color .22s;font-family:inherit;color:var(--paper)}
-  /* stickers pegados con un ángulo levemente distinto cada uno, como en un muro */
-  #home .tcard:nth-of-type(4n+1){--rot:-2.1deg}
-  #home .tcard:nth-of-type(4n+2){--rot:1.6deg}
-  #home .tcard:nth-of-type(4n+3){--rot:-1.3deg}
-  #home .tcard:nth-of-type(4n){--rot:2.2deg}
   .tcard:hover{border-color:var(--tc)} /* elevación/escala/sombra: gsap.quickTo, ver JS */
   .tcard:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-  .tcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tc);
-    opacity:.75;transition:opacity .22s}
+  .tcard::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--tc);
+    opacity:.85;transition:opacity .22s}
   .tcard:hover::before{opacity:1}
-  /* esquina despegada: elemento real (no ::after, que ya usan las llamas de Bestia) */
-  .tcard-peel{position:absolute;top:-1px;right:-1px;width:0;height:0;pointer-events:none;
-    border-style:solid;border-width:0 21px 21px 0;
-    border-color:transparent var(--ink) transparent transparent;
-    filter:drop-shadow(-2px 2px 3px rgba(0,0,0,.5));
-    transition:border-width .2s cubic-bezier(.2,.9,.25,1)}
-  .tcard:hover .tcard-peel{border-width:0 30px 30px 0}
-  /* usa var(--ink): en Bestia/Principiante esa variable ya cambia de tono con el tema,
-     así que la esquina despegada revela el fondo correcto sin reglas aparte */
   .tcard-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:6px}
   .tcard-time{position:absolute;top:12px;right:11px;font-family:"Space Mono",monospace;font-size:9.5px;font-weight:700;
     color:var(--mist);background:var(--surface-2);border:1px solid var(--line);border-radius:100px;padding:2px 7px}
   .tcard-title{font-family:"Anton",sans-serif;font-size:17px;line-height:1.08;letter-spacing:.01em;margin-bottom:5px;text-transform:uppercase}
   .tcard-title span{color:var(--tc)}
   .tcard-desc{flex:1;font-size:11.5px;color:var(--mist);line-height:1.4;margin-bottom:9px}
-  .tcard-go{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.02em}
+  .tcard-go{font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.02em;
+    display:inline-block;transition:transform .22s cubic-bezier(.2,.9,.25,1)}
+  .tcard:hover .tcard-go{transform:translateX(5px)}
   /* paleta por técnica — el rosa y el violeta salen de la lámina de marca */
   #cardMulti{--tc:#FF2E63}  #cardCamaleon{--tc:#5BE0A6} #cardTempo{--tc:#FFC94D}
   #cardCadena{--tc:#8B5CF6} #cardAlit{--tc:#4EC5F1}     #cardTT{--tc:#F2542D}
@@ -157,6 +146,7 @@
   #cardMandibula{--tc:#4F7CFF}
   #cardVocales{--tc:#22D3EE}
   #cardRutina{--tc:#D97757}
+  #cardRimaMin{--tc:#FB7185}
   /* ===== PERSONALIZACIÓN POR FAMILIA =====
      Cada familia (Rima/Voz/Ingenio/Disciplina/Cuerpo) tiene su propia letra de
      título (todas ya cargadas arriba para el ciclo del splash, cero peso extra)
@@ -190,200 +180,62 @@
      por el splash y la animación terminaría antes de que se vean). Si por lo
      que sea la clase nunca llega, .tcard ya es visible por defecto — no hay
      riesgo de que una tarjeta quede invisible para siempre. */
-  @keyframes cardIn{0%{opacity:0;transform:translateY(16px) rotate(var(--rot))}
-    100%{opacity:1;transform:translateY(0) rotate(var(--rot))}}
-  body.cards-in .cards-home .tcard{animation:cardIn .5s cubic-bezier(.22,.8,.24,1) both}
-  body.cards-in .cards-home .tcard:nth-of-type(1){animation-delay:0ms}
-  body.cards-in .cards-home .tcard:nth-of-type(2){animation-delay:45ms}
-  body.cards-in .cards-home .tcard:nth-of-type(3){animation-delay:90ms}
-  body.cards-in .cards-home .tcard:nth-of-type(4){animation-delay:135ms}
-  body.cards-in .cards-home .tcard:nth-of-type(5){animation-delay:180ms}
-  body.cards-in .cards-home .tcard:nth-of-type(6){animation-delay:225ms}
-  body.cards-in .cards-home .tcard:nth-of-type(7){animation-delay:270ms}
-  body.cards-in .cards-home .tcard:nth-of-type(8){animation-delay:315ms}
-  body.cards-in .cards-home .tcard:nth-of-type(9){animation-delay:360ms}
-  body.cards-in .cards-home .tcard:nth-of-type(10){animation-delay:405ms}
-  body.cards-in .cards-home .tcard:nth-of-type(11){animation-delay:450ms}
-  body.cards-in .cards-home .tcard:nth-of-type(12){animation-delay:495ms}
-  body.cards-in .cards-home .tcard:nth-of-type(13){animation-delay:540ms}
-  body.cards-in .cards-home .tcard:nth-of-type(14){animation-delay:585ms}
-  body.cards-in .cards-home .tcard:nth-of-type(15){animation-delay:630ms}
-  body.cards-in .cards-home .tcard:nth-of-type(16){animation-delay:675ms}
+  @keyframes cardIn{0%{opacity:0;transform:translateY(16px)}
+    100%{opacity:1;transform:translateY(0)}}
+  /* la entrada escalonada ahora se dispara cada vez que se ABRE una sección
+     (antes era una sola vez, las 17 juntas, al cerrar el splash) */
+  .fam-group.open .fam-cards .tcard{animation:cardIn .4s cubic-bezier(.22,.8,.24,1) both}
+  .fam-group.open .fam-cards .tcard:nth-of-type(1){animation-delay:0ms}
+  .fam-group.open .fam-cards .tcard:nth-of-type(2){animation-delay:50ms}
+  .fam-group.open .fam-cards .tcard:nth-of-type(3){animation-delay:100ms}
+  .fam-group.open .fam-cards .tcard:nth-of-type(4){animation-delay:150ms}
+  .fam-group.open .fam-cards .tcard:nth-of-type(5){animation-delay:200ms}
+  .fam-group.open .fam-cards .tcard:nth-of-type(6){animation-delay:250ms}
 
-  .tcard:last-child:nth-child(odd){grid-column:1/-1}
+  .fam-cards .tcard:last-child:nth-child(odd){grid-column:1/-1}
   /* cabecera de familia: agrupa las tarjetas por lo que entrenan (rima/voz/ingenio/disciplina).
      Rediseño 10-ago: la línea que crece a la derecha del label le da peso editorial
      y hace la jerarquía de secciones legible de un vistazo (antes era texto suelto). */
-  .fam-head{grid-column:1/-1;display:flex;align-items:center;gap:11px;
-    margin:var(--sp-6) 0 var(--sp-2);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--mist);font-weight:700}
-  .cards-home>.fam-head:first-child{margin-top:0}
+  /* cada sección es un desplegable: fam-head es ahora un <button> (accesible con
+     teclado, aria-expanded) y fam-body usa el truco grid-template-rows 0fr→1fr para
+     animar el alto sin medirlo por JS. Cerradas por defecto: el usuario elige qué
+     familia explorar, así el menú no abruma con las 17 técnicas de una. */
+  .fam-group+.fam-group{margin-top:var(--sp-2)}
+  .fam-head{width:100%;display:flex;align-items:center;gap:11px;
+    margin:var(--sp-4) 0 var(--sp-2);padding:6px 0;font:inherit;font-size:11px;
+    letter-spacing:.28em;text-transform:uppercase;color:var(--mist);font-weight:700;
+    background:none;border:none;cursor:pointer;text-align:left}
+  .cards-home>.fam-group:first-child .fam-head{margin-top:0}
+  .fam-head:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .fam-head:hover{color:var(--paper)}
+  .fam-head:hover::before,.fam-head:hover .fam-chev{transform:scale(1.3)}
+  .fam-group.open .fam-head:hover .fam-chev{transform:rotate(45deg) scale(1.3)}
   .fam-head::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--fc,var(--stage));
-    box-shadow:0 0 10px color-mix(in srgb,var(--fc,var(--stage)) 70%,transparent)}
-  .fam-head::after{content:"";flex:1;height:1px;
+    box-shadow:0 0 10px color-mix(in srgb,var(--fc,var(--stage)) 70%,transparent);transition:transform .2s}
+  /* flex:1 1 auto + min-width:0: si el título no cabe en una línea (pantallas
+     angostas), se ajusta y baja de renglón en vez de desbordar la tarjeta —
+     antes flex:0 0 auto lo forzaba a una sola línea sin importar el ancho */
+  .fam-head-text{flex:1 1 auto;min-width:0}
+  .fam-head-line{flex:1;height:1px;
     background:linear-gradient(90deg,color-mix(in srgb,var(--fc,var(--stage)) 45%,var(--line)),transparent)}
-  @media (max-width:430px){ .cards-home{gap:9px} .tcard{padding:11px 11px 10px} .tcard-title{font-size:15px} .tcard-desc{font-size:11px;line-height:1.38}
+  .fam-chev{flex:0 0 auto;width:9px;height:9px;border-right:1.6px solid var(--mist);
+    border-bottom:1.6px solid var(--mist);transform:rotate(-45deg);transition:transform .25s ease}
+  .fam-group.open .fam-chev{transform:rotate(45deg)}
+  .fam-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s ease}
+  .fam-group.open .fam-body{grid-template-rows:1fr}
+  .fam-body>.fam-cards{overflow:hidden;min-height:0}
+  /* el recorte solo hace falta MIENTRAS la sección está cerrada (alto 0); si se
+     deja siempre, corta la tarjeta agrandada por el hover — por eso se libera
+     apenas se abre. */
+  .fam-group.open .fam-body>.fam-cards{overflow:visible}
+  /* cierre de página: el logo otra vez, chico y discreto, después de las 17 tarjetas */
+  .home-foot{display:flex;justify-content:center;margin:var(--sp-6) 0 var(--sp-4);opacity:.7}
+  .home-foot img{height:44px;width:auto}
+  @media (max-width:430px){ .fam-cards{gap:9px} .tcard{padding:11px 11px 10px} .tcard-title{font-size:15px} .tcard-desc{font-size:11px;line-height:1.38}
     /* en dos columnas estrechas "Técnica NN" y la insignia quedan a 5px: se les da aire */
     .tcard-tag{font-size:9px;margin-bottom:6px;letter-spacing:.13em}
     .tcard-time{font-size:9.5px;padding:2px 6px;top:13px;right:11px} }
-  @media (max-width:330px){ .cards-home{grid-template-columns:1fr} .tcard-title{font-size:22px} .tcard-desc{font-size:13px} }
-
-  /* ===== MODO BESTIA ===== */
-  .bestia-btn{--bs:#F97316;
-    display:flex;align-items:center;gap:14px;width:100%;margin:var(--sp-4) 0 var(--sp-1);
-    background:linear-gradient(150deg,rgba(249,115,22,.07),transparent 55%),var(--surface);
-    border:1px solid var(--line);border-radius:var(--radius-lg);padding:15px 17px;cursor:pointer;
-    font-family:inherit;color:var(--paper);text-align:left;
-    transition:border-color .25s,box-shadow .25s,transform .14s}
-  .bestia-btn:hover{border-color:var(--bs);transform:translateY(-2px)}
-  .bestia-btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-  .bestia-tigre{flex:0 0 auto;width:46px;height:46px;color:var(--mist);transition:color .25s,transform .3s}
-  .bestia-tigre svg{width:100%;height:100%;display:block}
-  .bestia-txt{flex:1;display:flex;flex-direction:column;gap:2px}
-  .bestia-txt b{font-family:"Anton",sans-serif;font-size:18px;letter-spacing:.02em;text-transform:uppercase}
-  .bestia-txt em{font-style:normal;font-size:11.5px;color:var(--mist);letter-spacing:.02em}
-  .bestia-sw{flex:0 0 auto;width:46px;height:26px;border-radius:100px;background:var(--surface-2);
-    border:1px solid var(--line);position:relative;transition:background .25s,border-color .25s}
-  .bestia-sw i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
-    background:var(--mist);transition:transform .28s cubic-bezier(.2,.9,.25,1),background .25s}
-  /* encendido */
-  body.bestia-on .bestia-btn{border-color:var(--bs);
-    background:linear-gradient(150deg,rgba(249,115,22,.16),transparent 58%),var(--surface);
-    box-shadow:0 0 24px rgba(249,115,22,.22)}
-  body.bestia-on .bestia-tigre{color:var(--bs)}
-  body.bestia-on .bestia-txt b{color:var(--bs)}
-  body.bestia-on .bestia-sw{background:var(--bs);border-color:var(--bs)}
-  body.bestia-on .bestia-sw i{transform:translateX(20px);background:#fff}
-  /* aviso en el entrenador, para que se sepa por qué cambió el reloj */
-  .bestia-tag{display:none;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--bs);border:1px solid var(--bs);border-radius:100px;padding:3px 9px}
-  body.bestia-on .bestia-tag{display:inline-block}
-
-  /* los dos botones de modo, uno al lado del otro en escritorio */
-  .modos{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 var(--sp-5)}
-  .novato-btn{--bs:#7FC4E8}
-
-  /* ===== MODO PRINCIPIANTE: todo se vuelve pastel =====
-     Misma técnica que el infierno: se reescriben las variables sobre body.novato-on.
-     Aquí además se INVIERTE el tema (fondo claro, texto oscuro). */
-  body.novato-on{
-    --ink:#F4F8FE; --surface:#FFFFFF; --surface-2:#EDF4FC; --line:#D6E4F3;
-    --stage:#F58FBB; --stage-dim:#D96FA0; --gold:#F2B84B;
-    --mist:#7C8CA3; --paper:#33415A; --ok:#4FBFA0;
-    --brand-pink:#F58FBB; --brand-red:#8FD3F0; --brand-purple:#B9A7EC;
-    background:
-      radial-gradient(900px 520px at 50% -8%, rgba(143,211,240,.55), transparent 62%),
-      radial-gradient(680px 460px at 100% 12%, rgba(245,143,187,.34), transparent 60%),
-      radial-gradient(620px 480px at 0% 78%, rgba(185,167,236,.28), transparent 62%),
-      radial-gradient(900px 560px at 50% 108%, rgba(143,211,240,.40), transparent 66%),
-      var(--ink)}
-  /* en tema claro el degradado del titular tiene que ir de oscuro a medio, no a blanco */
-  body.novato-on .hero-title,body.novato-on .word,body.novato-on .sp-brand{
-    background:linear-gradient(180deg,var(--paper),#6A7B96);-webkit-background-clip:text;background-clip:text;
-    filter:drop-shadow(0 6px 22px rgba(245,143,187,.28))}
-  /* las 14 técnicas, en pastel */
-  body.novato-on #cardMulti{--tc:#F58FBB}   body.novato-on #cardCamaleon{--tc:#7FC4E8}
-  body.novato-on #cardTempo{--tc:#F2B84B}   body.novato-on #cardCadena{--tc:#B9A7EC}
-  body.novato-on #cardAlit{--tc:#69C9D8}    body.novato-on #cardTT{--tc:#F79BA0}
-  body.novato-on #cardEnc{--tc:#8FD08A}     body.novato-on #cardRep{--tc:#F5B383}
-  body.novato-on #cardTema{--tc:#C79BE0}    body.novato-on #cardMul{--tc:#68C7B4}
-  body.novato-on #cardAire{--tc:#B9E8F2}    body.novato-on #cardMetricas{--tc:#EFB3F5}
-  body.novato-on #cardDoble{--tc:#8FD8B8}   body.novato-on #cardMandibula{--tc:#A8B8F5}
-  body.novato-on #cardVocales{--tc:#8DE6EF}
-  body.novato-on #cardRutina{--tc:#E8B49C}
-  body.novato-on::before{background-image:
-    linear-gradient(rgba(80,120,170,.07) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(80,120,170,.07) 1px,transparent 1px)}
-  body.novato-on .bg .b1{background:radial-gradient(circle,rgba(143,211,240,.42),transparent 66%)}
-  body.novato-on .bg .b2{background:radial-gradient(circle,rgba(245,143,187,.34),transparent 66%)}
-  body.novato-on .bg .b3{background:radial-gradient(circle,rgba(185,167,236,.28),transparent 66%)}
-  body.novato-on .bg .b4{background:radial-gradient(circle,rgba(127,196,232,.26),transparent 66%)}
-  /* en tema claro la viñeta oscura sobra: se aclara */
-  body.novato-on .bg::after{background:radial-gradient(ellipse 92% 72% at 50% 42%,transparent 45%,rgba(120,160,205,.20) 100%)}
-  body.novato-on .grano,body.novato-on::after{opacity:.03}
-  /* el texto blanco de los estados activos no se lee sobre pastel */
-  body.novato-on .tab.active,body.novato-on .level.active,body.novato-on .bpm.active,
-  body.novato-on .btn-primary,body.novato-on .sp-enter{color:#fff}
-  body.novato-on .card.active{color:var(--paper)}
-
-  /* ---- burbujas en los recuadros, en vez de llamas ---- */
-  body.novato-on .tcard::after,body.novato-on .panel::after,body.novato-on .verdict::after{
-    mix-blend-mode:normal;filter:blur(.3px);height:52px;opacity:.85;
-    background:
-      radial-gradient(9px 9px at 12% 74%, rgba(255,255,255,.95), rgba(143,211,240,.55) 62%, transparent 72%),
-      radial-gradient(6px 6px at 27% 52%, rgba(255,255,255,.9), rgba(245,143,187,.5) 60%, transparent 72%),
-      radial-gradient(12px 12px at 43% 80%, rgba(255,255,255,.95), rgba(185,167,236,.5) 62%, transparent 74%),
-      radial-gradient(7px 7px at 59% 46%, rgba(255,255,255,.9), rgba(143,211,240,.5) 60%, transparent 72%),
-      radial-gradient(10px 10px at 75% 76%, rgba(255,255,255,.95), rgba(245,143,187,.45) 62%, transparent 74%),
-      radial-gradient(5px 5px at 90% 55%, rgba(255,255,255,.9), rgba(185,167,236,.45) 60%, transparent 72%)}
-  /* ---- las brasas se vuelven burbujas ---- */
-  body.novato-on .brasas i{
-    background:radial-gradient(circle at 34% 30%, rgba(255,255,255,.98), rgba(143,211,240,.55) 46%, rgba(245,143,187,.30) 72%, transparent 78%);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
-  body.novato-on .brasas{display:block}
-
-  /* ===== EL SITIO SE VA AL INFIERNO =====
-     Se reescriben las variables sobre body.bestia-on: como las custom properties
-     se heredan, con esto cambia TODO (botones, bordes, glows, chips) sin tocar
-     ni una regla más. */
-  body.bestia-on{
-    --ink:#0A0503; --surface:#180F0A; --surface-2:#26160D; --line:#4A2714;
-    --stage:#FF6A00; --stage-dim:#B84600; --gold:#FFC24A;
-    --mist:#CBA88C; --paper:#FFF2E6; --ok:#FFD166;
-    --brand-pink:#FF6A00; --brand-red:#E02200; --brand-purple:#FF9A2E;
-    background:
-      radial-gradient(900px 520px at 50% -8%, rgba(255,106,0,.24), transparent 62%),
-      radial-gradient(680px 460px at 100% 12%, rgba(224,34,0,.16), transparent 60%),
-      radial-gradient(620px 480px at 0% 78%, rgba(255,154,46,.10), transparent 62%),
-      radial-gradient(900px 560px at 50% 108%, rgba(255,60,0,.30), transparent 66%),
-      var(--ink)}
-  /* las 14 técnicas pasan de arcoíris a escala de brasa */
-  body.bestia-on #cardMulti{--tc:#FF3B00}   body.bestia-on #cardCamaleon{--tc:#FF9A2E}
-  body.bestia-on #cardTempo{--tc:#FFC24A}   body.bestia-on #cardCadena{--tc:#E02200}
-  body.bestia-on #cardAlit{--tc:#FF6A00}    body.bestia-on #cardTT{--tc:#FF2A00}
-  body.bestia-on #cardEnc{--tc:#FFB020}     body.bestia-on #cardRep{--tc:#FF7A1A}
-  body.bestia-on #cardTema{--tc:#FF5A00}    body.bestia-on #cardMul{--tc:#FFA83A}
-  body.bestia-on #cardAire{--tc:#FF8A3D}    body.bestia-on #cardMetricas{--tc:#FF4D6A}
-  body.bestia-on #cardDoble{--tc:#FFD24A}   body.bestia-on #cardMandibula{--tc:#FF8A00}
-  body.bestia-on #cardVocales{--tc:#FF5C1A}
-  body.bestia-on #cardRutina{--tc:#FF7043}
-  /* retícula y aurora, en tonos de fuego */
-  body.bestia-on::before{background-image:
-    linear-gradient(rgba(255,140,60,.06) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,140,60,.06) 1px,transparent 1px)}
-  body.bestia-on .bg .b1{background:radial-gradient(circle,rgba(255,60,0,.26),transparent 66%)}
-  body.bestia-on .bg .b2{background:radial-gradient(circle,rgba(224,34,0,.20),transparent 66%)}
-  body.bestia-on .bg .b3{background:radial-gradient(circle,rgba(255,154,46,.16),transparent 66%)}
-  body.bestia-on .bg .b4{background:radial-gradient(circle,rgba(255,106,0,.15),transparent 66%)}
-  /* resplandor desde abajo, como si el suelo ardiera */
-  body.bestia-on .bg::before{content:"";position:absolute;left:-10%;right:-10%;bottom:-18%;height:58%;
-    background:radial-gradient(ellipse at 50% 100%,rgba(255,80,0,.34),rgba(224,34,0,.12) 45%,transparent 72%)}
-
-  /* ---- llamas lamiendo los recuadros ---- */
-  body.bestia-on .panel{overflow:hidden}
-  .tcard::after,.panel::after,.verdict::after{content:"";position:absolute;left:-6%;right:-6%;bottom:0;height:44px;
-    pointer-events:none;z-index:0;opacity:0;transition:opacity .4s;
-    transform-origin:50% 100%;mix-blend-mode:screen;filter:blur(.5px);
-    background:
-      radial-gradient(13px 30px at 10% 100%, rgba(255,206,90,.95), rgba(255,96,0,.45) 45%, transparent 72%),
-      radial-gradient(10px 22px at 24% 100%, rgba(255,150,40,.9), transparent 70%),
-      radial-gradient(16px 36px at 39% 100%, rgba(255,226,120,.95), rgba(255,70,0,.45) 46%, transparent 74%),
-      radial-gradient(11px 24px at 55% 100%, rgba(255,140,30,.9), transparent 70%),
-      radial-gradient(15px 33px at 71% 100%, rgba(255,210,80,.92), rgba(255,84,0,.42) 46%, transparent 72%),
-      radial-gradient(10px 20px at 88% 100%, rgba(255,120,20,.88), transparent 70%)}
-  body.bestia-on .tcard::after,body.bestia-on .panel::after,body.bestia-on .verdict::after{opacity:1}
-  /* el contenido se levanta por encima de las llamas para que siga legible */
-  /* OJO: no tocar el position de .tcard-time — es absolute y vive en la esquina.
-     Si se le pone relative cae al flujo y se monta sobre "Técnica NN". */
-  body.bestia-on .tcard>*:not(.tcard-time),
-  body.bestia-on .panel>*,body.bestia-on .verdict>*{position:relative;z-index:1}
-  body.bestia-on .tcard-time{z-index:1}
-
-  /* ---- brasas subiendo ---- */
-  .brasas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;display:none}
-  body.bestia-on .brasas{display:block}
-  .brasas i{position:absolute;bottom:-12px;border-radius:50%;
-    background:radial-gradient(circle,#FFE0A8,#FF6A00 55%,rgba(224,34,0,0) 72%)}
+  @media (max-width:330px){ .fam-cards{grid-template-columns:1fr} .tcard-title{font-size:22px} .tcard-desc{font-size:13px} }
 
   /* ===== BARRA DE CUENTA (solo escritorio; se enciende en el bloque min-width) ===== */
   /* con cuatro botones puede no haber sitio en escritorios pequeños: que envuelva */
@@ -404,30 +256,9 @@
     transition:opacity .25s,transform .25s}
   .auth-aviso.ver{opacity:1;transform:none}
 
-  /* ===== BANNER DE PISTAS GRATIS =====
-     A propósito NO va dentro de .auth-bar (esa es solo escritorio): esto es un
-     imán de contacto, vale la pena mostrarlo también en móvil. */
-  .pistas-banner{display:flex;align-items:center;gap:8px;width:100%;margin:8px 0 14px;
-    background:linear-gradient(120deg,rgba(255,201,77,.14),rgba(255,46,99,.10)),var(--surface);
-    border:1px solid rgba(255,201,77,.38);border-radius:var(--radius-sm);padding:8px 10px;
-    box-shadow:0 0 0 1px rgba(255,201,77,.05),0 6px 16px rgba(0,0,0,.28)}
-  .pistas-banner-icon{flex:0 0 auto;width:26px;height:26px;border-radius:8px;
-    background:rgba(255,201,77,.14);display:flex;align-items:center;justify-content:center;font-size:13px}
-  .pistas-banner-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
-  .pistas-banner-text b{font-size:12px;color:var(--paper);letter-spacing:.01em}
-  .pistas-banner-text span{font-size:10px;color:var(--mist)}
-  .pistas-banner-btn{flex:0 0 auto;font-family:inherit;font-size:11px;font-weight:700;
-    letter-spacing:.02em;padding:7px 12px;border-radius:100px;border:none;cursor:pointer;
-    background:var(--gold);color:#241a05;white-space:nowrap;transition:filter .2s,transform .1s}
-  .pistas-banner-btn:hover{filter:brightness(1.06)}
-  .pistas-banner-btn:active{transform:translateY(1px)}
-  .pistas-banner-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-  @media (max-width:430px){
-    .pistas-banner{padding:7px 9px}
-    .pistas-banner-text span{display:none} /* en pantallas chicas, solo el titular */
-    .pistas-banner-btn{padding:6px 10px;font-size:10.5px}
-  }
-
+  /* ===== PISTAS GRATIS =====
+     El banner de descarga se quitó del menú para dejarlo más limpio; el modal y
+     su lista siguen aquí porque las pistas se usan como fondo al grabar. */
   /* lista dentro del modal (reusa .info-overlay/.info-card, ver #infoOverlay) */
   .pistas-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
   .pista-row{display:flex;align-items:center;gap:12px;background:var(--surface-2);
@@ -444,6 +275,9 @@
 
   /* ===== TRAINER ===== */
   .tbar{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  /* marca de agua discreta: cierra la barra del entrenador, sin competir con el
+     nombre de la técnica ni el botón de info */
+  .tbar-logo{height:30px;width:auto;margin-left:auto;opacity:.85;flex-shrink:0}
   .info-btn{width:26px;height:26px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);
     background:var(--surface-2);color:var(--mist);font-family:"Space Mono",monospace;font-weight:700;
     font-size:13px;line-height:1;cursor:pointer;transition:border-color .18s,color .18s}
@@ -530,7 +364,10 @@
     background:radial-gradient(circle at 50% 38%,var(--surface-2),var(--surface));color:var(--paper);cursor:pointer;
     box-shadow:0 0 26px rgba(255,46,99,.12),inset 0 0 34px rgba(255,46,99,.06);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:transform .12s,box-shadow .2s,border-color .2s}
-  .rec-btn:hover{transform:scale(1.02);border-color:var(--stage);box-shadow:0 0 40px rgba(255,46,99,.3),inset 0 0 40px rgba(255,46,99,.1)}
+  .rec-btn:hover{transform:scale(1.05) rotate(-1deg);border-color:var(--stage);box-shadow:0 0 40px rgba(255,46,99,.3),inset 0 0 40px rgba(255,46,99,.1)}
+  body.recording .rec-btn{animation:rec-pulso 1.4s ease-in-out infinite}
+  @keyframes rec-pulso{0%,100%{box-shadow:0 0 0 6px rgba(255,46,99,.14),0 0 80px rgba(255,46,99,.34),inset 0 0 50px rgba(255,46,99,.12)}
+    50%{box-shadow:0 0 0 14px rgba(255,46,99,.05),0 0 100px rgba(255,46,99,.44),inset 0 0 50px rgba(255,46,99,.12)}}
   .rec-btn:active{transform:scale(.98)}
   .rec-btn:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
   .rec-btn .icon{width:26px;height:26px;border-radius:50%;background:var(--stage);box-shadow:0 0 22px var(--stage),0 0 48px rgba(255,46,99,.7);transition:.18s}
@@ -541,9 +378,8 @@
   body.recording .word{filter:drop-shadow(0 6px 40px rgba(255,46,99,.4))}
   @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
 
-  /* position:relative es imprescindible: si no, .panel::after (las llamas del modo
-     bestia) se posiciona contra .app y se sale 72px por cada lado, provocando
-     scroll horizontal y dibujando el fuego donde no toca. */
+  /* position:relative es imprescindible: sin él, cualquier hijo absoluto del panel
+     se posiciona contra .app y se sale por los lados, provocando scroll horizontal. */
   .panel{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:20px;
     box-shadow:0 0 0 1px rgba(255,46,99,.06),0 12px 40px rgba(0,0,0,.38)}
   .panel-h{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mist);margin-bottom:10px}
@@ -670,23 +506,22 @@
      portada al ciclar) en vez de la sans del resto de la interfaz, y una
      "colita" triangular (::after) que apunta hacia la cabeza que habla —
      así se lee como diálogo, no como otra tarjeta de técnica. */
-  .battle-mc{margin:0 0 24px;min-height:96px;display:flex}
-  .battle-bar{position:relative;max-width:76%;padding:12px 14px 10px;border-radius:16px;
-    background:var(--ink);border:2px solid var(--stage);
-    box-shadow:0 10px 26px rgba(0,0,0,.5);
-    font-family:"Permanent Marker",cursive;font-size:13.5px;line-height:1.48;
-    color:var(--paper);white-space:pre-line;text-transform:none;
-    opacity:0;transition:opacity .35s ease}
-  .battle-bar::after{content:"";position:absolute;top:-9px;left:22px;
-    width:16px;height:16px;background:var(--ink);border-top:2px solid var(--stage);
-    border-left:2px solid var(--stage);border-radius:3px 0 0 0;transform:rotate(45deg)}
-  .battle-bar.der{margin-left:auto;text-align:right;border-color:var(--brand-purple)}
-  .battle-bar.der::after{left:auto;right:22px;
-    border-top:2px solid var(--brand-purple);border-left:none;
-    border-right:2px solid var(--brand-purple);border-radius:0 3px 0 0}
-  .battle-bar.on{opacity:1}
+  /* La batalla no es un globo: el verso va directo sobre el fondo, sin marco ni
+     relleno. Se escribe palabra a palabra (máquina de escribir) y las que ya se
+     leyeron se disuelven, así nunca hay más de 5 en pantalla — el alto fijo evita
+     que el menú salte cada vez que cambia el largo del verso. */
+  .battle-mc{margin:0 0 20px;min-height:58px;display:flex;align-items:center}
+  .battle-bar{position:relative;max-width:76%;
+    font-family:"Space Mono",monospace;font-size:13px;line-height:1.6;letter-spacing:.02em;
+    color:var(--paper);text-transform:none}
+  .battle-bar.der{margin-left:auto;text-align:right}
   .battle-bar .quien{display:block;font-family:"Anton",sans-serif;font-size:9.5px;
-    letter-spacing:.18em;text-transform:uppercase;color:var(--mist);margin-bottom:7px}
+    letter-spacing:.18em;text-transform:uppercase;color:var(--mist);margin-bottom:6px}
+  .battle-bar .bw{display:inline-block;margin-right:.42em;
+    transition:opacity .75s ease,filter .75s ease}
+  .battle-bar .bw.fin{opacity:0;filter:blur(2px)}   /* la que ya se leyó, disolviéndose */
+  .battle-bar .bw.esc::after{content:"_";opacity:.7;animation:bw-cursor .6s steps(1) infinite}
+  @keyframes bw-cursor{0%,49%{opacity:.7}50%,100%{opacity:0}}
   .singer svg{position:absolute;inset:0;overflow:visible}
   .singer .om-onda{transform-origin:252px 356px}
   .singer .om-jaw,.singer .om-brow,.singer .om-eye,.singer .om-throat{transform-box:view-box}
@@ -748,14 +583,18 @@
   .sp-tag{margin-top:20px;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--mist);
     text-shadow:0 0 18px rgba(180,169,196,.4);animation:sp-in .85s .16s cubic-bezier(.2,.85,.25,1) both}
   @keyframes sp-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  /* al pulsar Entrar el ciclo se detiene y la marca aterriza en el logo real */
-  .sp-brand.locked{letter-spacing:-.005em;animation:sp-lock .5s cubic-bezier(.2,.9,.25,1) both}
-  .sp-brand.locked .st{color:var(--stage);-webkit-text-fill-color:var(--stage)}
+  /* al pulsar Entrar el ciclo de tipografías se detiene y la marca aterriza en
+     el logo oficial (imagen), no en texto: se ocultan .sp-brand/.sp-tag y aparece
+     .sp-logo con el mismo golpe de escala que antes usaba el texto. */
+  .sp-logo{display:none;max-width:min(92vw,840px);max-height:48vh;width:auto;height:auto;
+    filter:drop-shadow(0 0 28px rgba(255,46,99,.55)) drop-shadow(0 8px 46px rgba(255,46,99,.3))}
+  .sp-brand-wrap.locked .sp-brand{display:none}
+  .sp-brand-wrap.locked .sp-logo{display:block;animation:sp-lock .5s cubic-bezier(.2,.9,.25,1) both}
   @keyframes sp-lock{
-    0%{transform:scale(.93)}
-    55%{transform:scale(1.05);
+    0%{transform:scale(.93);opacity:0}
+    55%{transform:scale(1.05);opacity:1;
         filter:drop-shadow(0 0 36px rgba(255,46,99,.95)) drop-shadow(0 8px 50px rgba(255,46,99,.5))}
-    100%{transform:scale(1);
+    100%{transform:scale(1);opacity:1;
         filter:drop-shadow(0 0 28px rgba(255,46,99,.55)) drop-shadow(0 8px 46px rgba(255,46,99,.3))}}
   .sp-enter{margin-top:38px;display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;border-radius:100px;
     padding:16px 42px;font-family:"Space Grotesk",system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
@@ -787,6 +626,7 @@
       column-gap:40px;align-items:center;min-height:0}
     /* fila superior: logo a la izquierda, cuenta a la derecha */
     .home-brand{grid-column:1;justify-content:flex-start;margin-bottom:10px}
+    .home-brand img{height:84px}
     .auth-bar{display:flex;grid-column:2;justify-self:end;margin-bottom:10px}
     .hero-wrap{grid-column:1;padding:0}
     .hero{text-align:left}
@@ -798,12 +638,10 @@
        del grid), apretado contra el párrafo del hero — tenía que abarcar las 2 */
     .battle-mc{grid-column:1/-1;margin-top:18px}
     .battle-bar{max-width:46%;font-size:15px}
-    .cards-home{grid-column:1/-1;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-      gap:16px;margin-top:34px}
+    .cards-home{grid-column:1/-1;margin-top:34px}
+    .fam-cards{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
     .tcard{padding:18px 17px 16px}
     .tcard-desc{font-size:12.5px}
-    .modos{grid-column:1/-1;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0 38px}
-    .bestia-btn{margin:0}
 
     /* ---- ENTRENADOR: consigna y reloj a la izquierda, lo que dices a la derecha ---- */
     .tr-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
@@ -860,47 +698,6 @@
   .choque-palabras span.der{animation:cp-va-izq var(--dur,3.2s) ease-in-out infinite!important;
     animation-delay:var(--delay,0s)!important}
 
-  /* ---- burbujas del modo principiante ---- */
-  @keyframes flotar{
-    0%,100%{transform:translateY(0) scale(1)}
-    30%{transform:translateY(-7px) scale(1.05)}
-    62%{transform:translateY(3px) scale(.96)}}
-  @keyframes subir-burbuja{
-    0%{transform:translate(0,0) scale(.7);opacity:0}
-    14%{opacity:.9}
-    82%{opacity:.75}
-    100%{transform:translate(var(--dx,20px),-104vh) scale(1.15);opacity:0}}
-  body.novato-on .llama .bu{animation:flotar 3.4s ease-in-out infinite!important}
-  body.novato-on .llama .bu-b{animation-duration:2.6s!important;animation-delay:-.7s!important}
-  body.novato-on .llama .bu-c{animation-duration:4.1s!important;animation-delay:-1.4s!important}
-  body.novato-on .llama .bu-d{animation-duration:3s!important;animation-delay:-2.1s!important}
-  body.novato-on .llama .bu-e{animation-duration:2.2s!important;animation-delay:-.4s!important}
-  /* los recuadros respiran en vez de arder */
-  body.novato-on .tcard::after,body.novato-on .panel::after,body.novato-on .verdict::after{
-    animation:flotar calc(2.8s + var(--i,0) * .22s) ease-in-out infinite!important}
-  /* y las brasas suben como burbujas: más lentas y sin encogerse */
-  body.novato-on .brasas i{animation-name:subir-burbuja!important}
-
-  /* ---- fuego del modo bestia (fuera del media query para que no lo apague) ---- */
-  @keyframes lamer{
-    0%,100%{transform:scaleY(1) translateX(0)}
-    22%{transform:scaleY(1.28) translateX(-2px)}
-    44%{transform:scaleY(.86) translateX(2px)}
-    68%{transform:scaleY(1.16) translateX(-1px)}
-    86%{transform:scaleY(.94) translateX(1px)}}
-  @keyframes brasa{
-    0%{transform:translate(0,0) scale(1);opacity:0}
-    12%{opacity:1}
-    80%{opacity:.85}
-    100%{transform:translate(var(--dx,20px),-104vh) scale(.35);opacity:0}}
-  @keyframes latido-infierno{0%,100%{opacity:.75}50%{opacity:1}}
-  /* cada recuadro titila a su propio ritmo, con --i que ya usan las entradas */
-  body.bestia-on .tcard::after,body.bestia-on .panel::after,body.bestia-on .verdict::after{
-    animation:lamer calc(.85s + var(--i,0) * .11s) ease-in-out infinite!important}
-  body.bestia-on .brasas i{animation-name:brasa!important;animation-timing-function:linear!important;
-    animation-iteration-count:infinite!important}
-  body.bestia-on .bg::before{animation:latido-infierno 4.5s ease-in-out infinite!important}
-
   /* ===== MOTION: entradas escalonadas =====
      Todas usan fill-mode "backwards" a propósito: con "both" el último fotograma
      quedaría fijado y pisaría los transform de :hover (las tarjetas dejarían de levantarse). */
@@ -956,14 +753,13 @@
   <div class="cascade splash-casc right" id="cascadeSR" aria-hidden="true"></div>
   <div class="sp-inner">
     <span class="sp-dot"></span>
-    <div class="sp-brand-wrap"><div class="sp-brand" id="spBrand">Free<span class="st">style</span><br>Lab</div></div>
+    <div class="sp-brand-wrap" id="spBrandWrap"><div class="sp-brand" id="spBrand">Free<span class="st">style</span><br>Lab</div><img class="sp-logo" src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566"></div>
     <div class="sp-tag">Laboratorio de improvisación</div>
     <button class="sp-enter" id="spEnter">Entrar</button>
     <div class="sp-hint">Toca para empezar</div>
   </div>
 </div>
 <div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div>
-<div class="brasas" id="brasas" aria-hidden="true"></div>
 <div class="info-overlay hide" id="infoOverlay" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
   <div class="info-card">
     <button class="info-close" id="infoClose" aria-label="Cerrar">✕</button>
@@ -989,19 +785,7 @@
 
   <!-- ===================== PORTADA ===================== -->
   <section id="home" class="view">
-    <div class="home-brand">Free<span class="st">style</span>&nbsp;Lab</div>
-
-    <!-- Imán de contacto: pistas de entrenamiento gratis. Se ve en móvil Y escritorio
-         (a diferencia de la barra de cuenta, que es solo escritorio) porque el punto
-         es que lo vea la mayor cantidad de gente posible. -->
-    <div class="pistas-banner" id="pistasBanner">
-      <div class="pistas-banner-icon">🎧</div>
-      <div class="pistas-banner-text">
-        <b>Descarga 7 beats gratis para entrenar</b>
-        <span>MP3 — practica cuando quieras, sin conexión</span>
-      </div>
-      <button class="pistas-banner-btn" id="pistasBtn">Ver pistas →</button>
-    </div>
+    <div class="home-brand"><img src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566"></div>
 
     <!-- Barra de cuenta. Por ahora son marcadores: las cuentas no existen todavía,
          así que al pulsar avisan en vez de no hacer nada. Solo en escritorio. -->
@@ -1045,101 +829,22 @@
     </div>
 
     <div class="cards-home">
-      <div class="fam-head" style="--fc:#FF2E63">Rima · construye rimas</div>
-      <button class="tcard fam-rima" id="cardMulti">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">30-45s</span>
-        <div class="tcard-tag">Rima</div>
-        <div class="tcard-title">Multisílabas <span>&</span> Palabras</div>
-        <div class="tcard-desc">Encadena rimas de dos o más sílabas y mete palabras al vuelo. Con 4 niveles de dificultad.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-rima" id="cardCadena">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Rima</div>
-        <div class="tcard-title">Cadena de <span>Rimas</span></div>
-        <div class="tcard-desc">Encadena rimas sin frenar. Cada palabra que rima con la anterior suma; si cortas la cadena, vuelves a cero.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-rima" id="cardMetricas">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">30s</span>
-        <div class="tcard-tag">Rima</div>
-        <div class="tcard-title">Métricas</div>
-        <div class="tcard-desc">Rima por vocales, no por sílabas: cuenta cuántas vocales finales de la palabra objetivo repites. Mientras más vocales calcen, más puntos.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-rima" id="cardEnc">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Rima</div>
-        <div class="tcard-title">Encadenado <span>Silábico</span></div>
-        <div class="tcard-desc">La sílaba final de una palabra abre la siguiente: casa → sapo → poder. Mide tu cadena más larga sin romperla.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-
-      <div class="fam-head" style="--fc:#4EC5F1">Voz · sonido, velocidad y aire</div>
-      <button class="tcard fam-voz" id="cardAire">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">25s</span>
-        <div class="tcard-tag">Voz</div>
-        <div class="tcard-title">Resistencia de <span>Exhalación</span></div>
-        <div class="tcard-desc">Lee una lista entera en una sola exhalación, sin volver a tomar aire. Medimos cuánto aguantas y si la voz decae al final.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-voz" id="cardAlit">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">30s</span>
-        <div class="tcard-tag">Voz</div>
-        <div class="tcard-title">Aliteración</div>
-        <div class="tcard-desc">Un sonido objetivo y todas tus palabras empezando por él. Cuenta el sonido, no la letra: casa y queso son la misma.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-voz" id="cardTT">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">25s</span>
-        <div class="tcard-tag">Voz</div>
-        <div class="tcard-title">Traba<span>lenguas</span></div>
-        <div class="tcard-desc">Repite el trabalenguas las más veces posibles sin trabarte. Medimos vueltas completas, precisión y velocidad.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-voz" id="cardTempo">
+      <div class="fam-group">
+        <button class="fam-head" style="--fc:#FF2E63" aria-expanded="false">
+          <span class="fam-head-text">Técnicas básicas · empieza por aquí</span>
+          <span class="fam-head-line"></span>
+          <i class="fam-chev" aria-hidden="true"></i>
+        </button>
+        <div class="fam-body">
+          <div class="fam-cards">
+      <button class="tcard fam-rima" id="cardRimaMin">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
-        <div class="tcard-tag">Voz</div>
-        <div class="tcard-title">Doble Tempo</div>
-        <div class="tcard-desc">Un minuto sobre un beat: rapea al doble del pulso y mide cuántas palabras sueltas y tu velocidad.</div>
+        <div class="tcard-tag">Rima</div>
+        <div class="tcard-title">Rimas por <span>Minuto</span></div>
+        <div class="tcard-desc">Un minuto entero soltando rimas. Contamos cuántas acumulas en total, sin importar cuánto digas entre una y otra.</div>
         <div class="tcard-go">Entrar →</div>
       </button>
-
-      <div class="fam-head" style="--fc:#5BE0A6">Ingenio · esconder y sostener</div>
-      <button class="tcard fam-ingenio" id="cardCamaleon">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Ingenio</div>
-        <div class="tcard-title">Palabra Camaleón</div>
-        <div class="tcard-desc">Una palabra objetivo que debes esconder en tu flow de mil formas. La app cuenta cuántas logras.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-ingenio" id="cardDoble">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Ingenio</div>
-        <div class="tcard-title">Doble <span>Sentido</span></div>
-        <div class="tcard-desc">Una palabra, varios significados. Dila las veces que quieras, pero solo suma cuando cambias lo que significa.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-      <button class="tcard fam-ingenio" id="cardTema">
-        <i class="tcard-motif" aria-hidden="true"></i>
-        <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Ingenio</div>
-        <div class="tcard-title">Temática <span>Obligada</span></div>
-        <div class="tcard-desc">Sale un tema y no puedes salirte de él. Medimos cuánto vocabulario de ese mundo lograste meter.</div>
-        <div class="tcard-go">Entrar →</div>
-      </button>
-
-      <div class="fam-head" style="--fc:#F97316">Disciplina · lo que no debes decir</div>
       <button class="tcard fam-disciplina" id="cardRep">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
@@ -1157,7 +862,145 @@
         <div class="tcard-go">Entrar →</div>
       </button>
 
-      <div class="fam-head" style="--fc:#4F7CFF">Cuerpo · calentamiento físico y facial</div>
+      
+          </div>
+        </div>
+      </div>
+      <div class="fam-group">
+        <button class="fam-head" style="--fc:#4EC5F1" aria-expanded="false">
+          <span class="fam-head-text">Técnicas profesionales · el nivel de tarima</span>
+          <span class="fam-head-line"></span>
+          <i class="fam-chev" aria-hidden="true"></i>
+        </button>
+        <div class="fam-body">
+          <div class="fam-cards">
+      <button class="tcard fam-rima" id="cardMulti">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">30-45s</span>
+        <div class="tcard-tag">Rima</div>
+        <div class="tcard-title">Multisílabas <span>&</span> Palabras</div>
+        <div class="tcard-desc">Encadena rimas de dos o más sílabas y mete palabras al vuelo. Con 4 niveles de dificultad.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-rima" id="cardMetricas">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">30s</span>
+        <div class="tcard-tag">Rima</div>
+        <div class="tcard-title">Métricas</div>
+        <div class="tcard-desc">Rima por vocales, no por sílabas: cuenta cuántas vocales finales de la palabra objetivo repites. Mientras más vocales calcen, más puntos.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-ingenio" id="cardCamaleon">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">40s</span>
+        <div class="tcard-tag">Ingenio</div>
+        <div class="tcard-title">Palabra Camaleón</div>
+        <div class="tcard-desc">Una palabra objetivo que debes esconder en tu flow de mil formas. La app cuenta cuántas logras.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-voz" id="cardTempo">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">60s</span>
+        <div class="tcard-tag">Voz</div>
+        <div class="tcard-title">Doble Tempo</div>
+        <div class="tcard-desc">Un minuto sobre un beat: rapea al doble del pulso y mide cuántas palabras sueltas y tu velocidad.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-voz" id="cardAlit">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">30s</span>
+        <div class="tcard-tag">Voz</div>
+        <div class="tcard-title">Aliteración</div>
+        <div class="tcard-desc">Un sonido objetivo y todas tus palabras empezando por él. Cuenta el sonido, no la letra: casa y queso son la misma.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-ingenio" id="cardDoble">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">40s</span>
+        <div class="tcard-tag">Ingenio</div>
+        <div class="tcard-title">Doble <span>Sentido</span></div>
+        <div class="tcard-desc">Una palabra, varios significados. Dila las veces que quieras, pero solo suma cuando cambias lo que significa.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+
+      
+          </div>
+        </div>
+      </div>
+      <div class="fam-group">
+        <button class="fam-head" style="--fc:#5BE0A6" aria-expanded="false">
+          <span class="fam-head-text">Modalidades · formatos de batalla</span>
+          <span class="fam-head-line"></span>
+          <i class="fam-chev" aria-hidden="true"></i>
+        </button>
+        <div class="fam-body">
+          <div class="fam-cards">
+      <button class="tcard fam-ingenio" id="cardTema">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">40s</span>
+        <div class="tcard-tag">Ingenio</div>
+        <div class="tcard-title">Temática <span>Obligada</span></div>
+        <div class="tcard-desc">Sale un tema y no puedes salirte de él. Medimos cuánto vocabulario de ese mundo lograste meter.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+
+      
+          </div>
+        </div>
+      </div>
+      <div class="fam-group">
+        <button class="fam-head" style="--fc:#F97316" aria-expanded="false">
+          <span class="fam-head-text">Entrenamiento educativo · mecánica y aguante</span>
+          <span class="fam-head-line"></span>
+          <i class="fam-chev" aria-hidden="true"></i>
+        </button>
+        <div class="fam-body">
+          <div class="fam-cards">
+      <button class="tcard fam-voz" id="cardTT">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">25s</span>
+        <div class="tcard-tag">Voz</div>
+        <div class="tcard-title">Traba<span>lenguas</span></div>
+        <div class="tcard-desc">Repite el trabalenguas las más veces posibles sin trabarte. Medimos vueltas completas, precisión y velocidad.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-voz" id="cardAire">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">25s</span>
+        <div class="tcard-tag">Voz</div>
+        <div class="tcard-title">Resistencia de <span>Exhalación</span></div>
+        <div class="tcard-desc">Lee una lista entera en una sola exhalación, sin volver a tomar aire. Medimos cuánto aguantas y si la voz decae al final.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-rima" id="cardCadena">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">40s</span>
+        <div class="tcard-tag">Rima</div>
+        <div class="tcard-title">Cadena de <span>Rimas</span></div>
+        <div class="tcard-desc">Encadena rimas sin frenar. Cada palabra que rima con la anterior suma; si cortas la cadena, vuelves a cero.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+      <button class="tcard fam-rima" id="cardEnc">
+        <i class="tcard-motif" aria-hidden="true"></i>
+        <span class="tcard-time">40s</span>
+        <div class="tcard-tag">Rima</div>
+        <div class="tcard-title">Encadenado <span>Silábico</span></div>
+        <div class="tcard-desc">La sílaba final de una palabra abre la siguiente: casa → sapo → poder. Mide tu cadena más larga sin romperla.</div>
+        <div class="tcard-go">Entrar →</div>
+      </button>
+
+      
+          </div>
+        </div>
+      </div>
+      <div class="fam-group">
+        <button class="fam-head" style="--fc:#4F7CFF" aria-expanded="false">
+          <span class="fam-head-text">Calentamiento previo · antes de soltar la voz</span>
+          <span class="fam-head-line"></span>
+          <i class="fam-chev" aria-hidden="true"></i>
+        </button>
+        <div class="fam-body">
+          <div class="fam-cards">
       <button class="tcard fam-cuerpo" id="cardMandibula">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
@@ -1183,55 +1026,14 @@
         <div class="tcard-go">Entrar →</div>
       </button>
     </div>
+          </div>
+        </div>
+      </div>
 
-    <div class="modos">
-    <button class="bestia-btn novato-btn" id="novatoBtn" aria-pressed="false">
-      <span class="bestia-tigre">
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"
-             stroke-linecap="round" stroke-linejoin="round">
-          <!-- cabeza de bebé: redonda, mofletes, rulo y chupete -->
-          <path d="M50 14 C 73 14, 87 32, 87 53 C 87 76, 71 91, 50 91 C 29 91, 13 76, 13 53 C 13 32, 27 14, 50 14 Z"/>
-          <path d="M50 14 C 48 6, 55 3, 60 7 C 64 10, 62 16, 57 16" stroke-width="3.4"/>
-          <path d="M13 52 C 6 52, 5 62, 12 63" stroke-width="3"/>
-          <path d="M87 52 C 94 52, 95 62, 88 63" stroke-width="3"/>
-          <ellipse cx="36" cy="49" rx="4.4" ry="5" fill="currentColor" stroke="none"/>
-          <ellipse cx="64" cy="49" rx="4.4" ry="5" fill="currentColor" stroke="none"/>
-          <circle cx="27" cy="63" r="5" fill="currentColor" stroke="none" opacity=".38"/>
-          <circle cx="73" cy="63" r="5" fill="currentColor" stroke="none" opacity=".38"/>
-          <path d="M41 68 C 45 74, 55 74, 59 68" stroke-width="3.4"/>
-        </svg>
-      </span>
-      <span class="bestia-txt">
-        <b>Modo Principiante</b>
-        <em id="novatoEstado">Desactivado · dificultad normal</em>
-      </span>
-      <span class="bestia-sw"><i></i></span>
-    </button>
-
-    <button class="bestia-btn" id="bestiaBtn" aria-pressed="false">
-      <span class="bestia-tigre">
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 31 L 25 9 L 42 18"/><path d="M82 31 L 75 9 L 58 18"/>
-          <path d="M50 13 C 72 13, 86 29, 86 51 C 86 74, 70 90, 50 90 C 30 90, 14 74, 14 51 C 14 29, 28 13, 50 13 Z"/>
-          <path d="M50 15 L 50 27" stroke-width="3.4"/>
-          <path d="M37 19 L 33 30" stroke-width="3"/><path d="M63 19 L 67 30" stroke-width="3"/>
-          <ellipse cx="37" cy="47" rx="4.6" ry="5.2" fill="currentColor" stroke="none"/>
-          <ellipse cx="63" cy="47" rx="4.6" ry="5.2" fill="currentColor" stroke="none"/>
-          <path d="M44 58 L 56 58 L 50 64 Z" fill="currentColor" stroke="none"/>
-          <path d="M50 64 C 50 71, 45 74, 40 71" stroke-width="3.2"/>
-          <path d="M50 64 C 50 71, 55 74, 60 71" stroke-width="3.2"/>
-          <path d="M30 61 L 11 57" stroke-width="2.6"/><path d="M30 66 L 12 69" stroke-width="2.6"/>
-          <path d="M70 61 L 89 57" stroke-width="2.6"/><path d="M70 66 L 88 69" stroke-width="2.6"/>
-        </svg>
-      </span>
-      <span class="bestia-txt">
-        <b>Modo Bestia</b>
-        <em id="bestiaEstado">Desactivado · las 10 técnicas al límite</em>
-      </span>
-      <span class="bestia-sw"><i></i></span>
-    </button>
+    <div class="home-foot">
+      <img src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566">
     </div>
+
   </section>
 
   <!-- ===================== TRAINER ===================== -->
@@ -1240,7 +1042,7 @@
       <button class="back" id="backBtn">← Menú</button>
       <div class="tbar-name" id="techName">Multisílabas</div>
       <button class="info-btn" id="infoBtn" aria-label="Cómo funciona esta técnica" title="Cómo funciona">?</button>
-      <span class="bestia-tag">Bestia</span>
+      <img class="tbar-logo" src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566">
     </div>
 
     <!-- Envoltorios para las dos columnas de escritorio. En móvil llevan
@@ -1381,6 +1183,25 @@ function stressStart(ph){
 }
 function rhymeTail(word){ const ph=phon(word); return deAccent(ph.slice(stressStart(ph))); }
 function vowelsOf(s){ return s.split("").filter(isV).join(""); }
+/* Clave de rima española: el trozo final que tiene que coincidir para que dos
+   palabras rimen, contando desde la vocal TÓNICA. Cuál es la tónica se deduce
+   con la regla de acentuación: si lleva tilde en la última sílaba, o termina en
+   consonante distinta de n/s, es aguda (rima desde la última vocal: -ar, -ón);
+   si no, es llana (rima desde la penúltima: -ando, -ebro). Los monosílabos van
+   siempre desde su única vocal. Sin esto, "ejecutar"/"adaptar" no rimarían. */
+function claveRima(w){
+  const ph=phon(w); if(!ph) return null;
+  const gr=vowelGroups(ph); if(!gr.length) return null;
+  const ult=ph[ph.length-1];
+  const gFin=ph.slice(gr[gr.length-1][0],gr[gr.length-1][1]);
+  const aguda = /[áéíóú]/.test(gFin) || (!isV(ult) && ult!=="n" && ult!=="s");
+  const g = (aguda||gr.length<2) ? gr[gr.length-1] : gr[gr.length-2];
+  let idx=g[0];
+  /* dentro de un diptongo la tónica es la que lleva tilde: "canción" rima en
+     -ón, no en -ión, así que engancha con "corazón" */
+  for(let i=g[0];i<g[1];i++) if(/[áéíóú]/.test(ph[i])){ idx=i; break; }
+  return deAccent(ph.slice(idx));
+}
 function commonSuffix(a,b){ let i=a.length-1,j=b.length-1,n=0; while(i>=0&&j>=0&&a[i]===b[j]){i--;j--;n++;} return a.slice(a.length-n); }
 function sylCount(s){ return vowelGroups(s).length; }
 function sylWord(w){ return vowelGroups(phon(w)).length; }
@@ -1609,7 +1430,7 @@ const TECH_INFO={
     <p>Un beat suena a 80, 90 o 100 BPM (elegible arriba) durante 1 minuto. Tu trabajo es rapear al <b>doble</b> del pulso: meter el doble de sílabas por compás de lo que marca el beat.</p>
     <h4>Cómo se mide</h4>
     <p>Contamos las <b>sílabas por segundo</b> de todo lo que dijiste (sin filtrar relleno — esto mide la velocidad real de tu boca) y lo comparamos contra el objetivo de doble tempo para el BPM elegido.</p>
-    <div class="ex">A 90 BPM, doble tempo pide ≈4,2 sílabas por segundo. El modo Bestia exige el doble completo; el modo Principiante se conforma con la mitad.</div>
+    <div class="ex">A 90 BPM, doble tempo pide ≈4,2 sílabas por segundo. El objetivo está en el 70% de esa cifra.</div>
     <h4>Ojo con esto</h4>
     <p>Usa audífonos: si el beat se cuela por el micrófono, se mezcla con tu voz y ensucia la transcripción.</p>
   `},
@@ -1621,6 +1442,15 @@ const TECH_INFO={
     <div class="ex">"casa → masa → pasa → tasa" = una cadena de 4 eslabones. Si después dices una palabra que no rima con "tasa", esa cadena se cierra y empieza una nueva.</div>
     <h4>Ojo con esto</h4>
     <p>A diferencia de Multisílabas, acá <b>sí</b> importa que las rimas vengan pegadas: no puedes meter una frase larga sin rima en el medio sin cortar la cadena.</p>
+  `},
+  rimamin:{title:"Rimas por Minuto",body:`
+    <h4>Qué es</h4>
+    <p>Un minuto completo soltando rimas. No hay palabra objetivo ni tema: el reto es <b>cuántas rimas logras acumular</b> en 60 segundos.</p>
+    <h4>Cómo se mide</h4>
+    <p>Agrupamos todas tus palabras por <b>familia de rima</b> (las que comparten terminación). Cada palabra extra dentro de una familia suma una rima. <b>No importa cuánto texto haya en medio</b>: la rima cuenta igual, como en una barra de verdad.</p>
+    <div class="ex">Si dices "casa" al inicio y "masa" veinte palabras después, igual suma. Y si más adelante sueltas "pasa", suma otra: esa familia ya vale 2 rimas.</div>
+    <h4>Ojo con esto</h4>
+    <p>Es la hermana suelta de <b>Cadena de Rimas</b>: allá las rimas tienen que venir pegadas o la cadena vuelve a cero, acá solo importa cuántas acumulas. Repetir la misma palabra no suma.</p>
   `},
   aliteracion:{title:"Aliteración",body:`
     <h4>Qué es</h4>
@@ -2003,8 +1833,8 @@ function analyzeTempo(transcript){
   let S=0; all.forEach(w=>S+=sylWord(w));
   const wpm=Math.round(W/DT_SECONDS*60);
   const sps=S/DT_SECONDS;
-  /* bestia exige el doble tempo entero; principiante se conforma con la mitad */
-  const eighth=tempoBpm*2/60, sixteenth=tempoBpm*4/60, target=sixteenth*(bestia?1:novato?0.5:0.7);
+  /* el objetivo es el 70% del doble tempo entero */
+  const eighth=tempoBpm*2/60, sixteenth=tempoBpm*4/60, target=sixteenth*0.7;
   let ritmo,cls;
   if(sps>=target){ ritmo="¡Doble tempo alcanzado!"; cls="ok"; }
   else if(sps>=eighth){ ritmo="Entre tiempo simple y doble"; cls="gold"; }
@@ -2088,6 +1918,68 @@ function analyzeCadena(transcript){
   blocks.push({kind:"text",label:"Qué ajustar",text:obs});
   blocks.push({kind:"text",label:"Consejo del juez",text:consejo,cls:"tip"});
   return {scoreLabel:"Cadena más larga",scoreValue:maxLen,scoreSuffix:(maxLen===1?"eslabón":"eslabones"),blocks};
+}
+
+/* ----- Rimas por Minuto: cuenta VOLUMEN de rimas en 60s.
+   A diferencia de Cadena (que exige palabras pegadas y se corta), aquí las rimas
+   se agrupan por familia sin importar cuánto texto haya en medio — que es como
+   riman las barras de verdad: la rima cae al final, con frases entremedio.
+   Cada palabra extra dentro de una familia suma una rima. ----- */
+function analyzeRimasMinuto(transcript){
+  const words=tokenize(transcript).filter(w=>!STOP.has(w)&&w.length>2);
+  if(words.length<2){
+    return {scoreLabel:"Rimas logradas",scoreValue:0,scoreSuffix:"rimas",
+      blocks:[{kind:"text",label:"Qué pasó",text:"No hubo suficientes palabras para contar rimas. Suelta al menos dos que rimen entre sí."},
+              {kind:"text",label:"Consejo",text:"No hace falta que las rimas vengan pegadas: puedes soltar una frase entera entre una rima y la siguiente. Lo que cuenta es cuántas acumulas en el minuto.",cls:"tip"}]};
+  }
+  /* familia de rima = terminación desde la vocal tónica (ver claveRima).
+     Dentro de cada familia se marca si además hay coincidencia perfecta (2+ sílabas). */
+  const fams=new Map();
+  words.forEach(w=>{
+    const key=claveRima(w); if(!key||key.length<2) return;
+    const p=deAccent(phon(w));
+    if(!fams.has(key)) fams.set(key,[]);
+    const arr=fams.get(key);
+    if(!arr.some(x=>deAccent(phon(x))===p)) arr.push(w); /* repetir la misma palabra no suma */
+  });
+  const grupos=[...fams.values()].filter(a=>a.length>=2).sort((a,b)=>b.length-a.length);
+  const total=grupos.reduce((s,g)=>s+(g.length-1),0);
+  /* una familia es "perfecta" si sus dos palabras más largas comparten 2+ sílabas finales */
+  const perfectas=grupos.reduce((s,g)=>{
+    let n=0;
+    for(let i=1;i<g.length;i++){
+      const pa=deAccent(phon(g[i-1])), pb=deAccent(phon(g[i]));
+      if(sylCount(commonSuffix(pa,pb))>=2) n++;
+    }
+    return s+n;
+  },0);
+
+  const blocks=[
+    {kind:"stats",items:[
+      {n:total,label:"Rimas logradas",cls:total>=12?"ok":total>=6?"gold":"pink"},
+      {n:grupos.length,label:"Familias",cls:""},
+      {n:perfectas,label:"Perfectas",cls:perfectas?"gold":""}
+    ]}
+  ];
+  if(grupos.length) blocks.push({kind:"chips",label:"Tus familias de rima",
+    items:grupos.slice(0,6).map(g=>({html:esc(g.join(" · ")),cls:g.length>=3?"ok":"gold"}))});
+
+  let obs;
+  if(total===0) obs="No se detectó ninguna rima en tu minuto: no hubo dos palabras que compartieran terminación.";
+  else if(total<6) obs=`Lograste ${total} ${total===1?"rima":"rimas"} en el minuto. Vas arrancando — no tienes que apurarte, pero sí volver a la rima más seguido.`;
+  else if(total<12) obs=`${total} rimas en 60 segundos. Buen volumen: estás cerrando barras con rima de forma constante.`;
+  else obs=`¡${total} rimas en un minuto! Estás rimando casi en cada barra.`;
+  if(grupos.length===1 && total>=3) obs+=" Eso sí: te quedaste en una sola terminación todo el minuto.";
+
+  let consejo;
+  if(total===0) consejo="Cierra cada frase con una palabra pensada para rimar, y en la siguiente frase busca otra que termine igual. La rima va al final de la barra, no en medio.";
+  else if(grupos.length===1) consejo="Estiraste una sola familia de rima. Cambia de terminación cada 3 o 4 barras para que no suene repetitivo.";
+  else if(perfectas<total/2) consejo="La mayoría de tus rimas son asonantes (misma vocal final). Busca también rimas perfectas: mismas 2+ sílabas finales completas.";
+  else consejo="Ya tienes volumen y variedad. Ahora sube la exigencia: que las rimas sean multisilábicas, no solo la última sílaba.";
+
+  blocks.push({kind:"text",label:"Qué ajustar",text:obs});
+  blocks.push({kind:"text",label:"Consejo del juez",text:consejo,cls:"tip"});
+  return {scoreLabel:"Rimas logradas",scoreValue:total,scoreSuffix:(total===1?"rima":"rimas"),blocks};
 }
 
 function hlInit(w){
@@ -2597,33 +2489,33 @@ function flashBeat(q){ const dots=document.querySelectorAll("#metro .beat-dot");
 const R=120, CIRC=2*Math.PI*R;
 const DT_SECONDS=60;
 
-/* ===== MODO BESTIA =====
-   Sube la exigencia de las 10 técnicas. Ojo con la dirección: "más difícil" NO es
-   siempre menos tiempo. En Sin Repetir y Sin Muletillas lo difícil es AGUANTAR más,
-   así que ahí el tiempo sube en vez de bajar. */
-/* Tres modos excluyentes: principiante (novato) · normal · bestia.
-   n = normal, b = bestia, p = principiante. Ojo con la dirección en cada técnica:
-   en Sin Repetir y Sin Muletillas lo difícil es AGUANTAR, así que bestia sube el
-   reloj y principiante lo baja; en el resto es al revés. */
-let bestia=false, novato=false;
+/* Duración de cada técnica, en segundos. Una sola dificultad para todo el sitio. */
 const SEGS={
-  multi:{n:30,b:20,p:45},        palabras:{n:45,b:45,p:45},   tempo:{n:60,b:60,p:60},
-  camaleon:{n:40,b:28,p:55},     cadena:{n:40,b:28,p:55},     aliteracion:{n:30,b:20,p:45},
-  trabalenguas:{n:25,b:18,p:35}, encadenado:{n:40,b:28,p:55},
-  sinrepetir:{n:45,b:75,p:30},   tematica:{n:40,b:28,p:55},   muletillas:{n:45,b:75,p:30},
-  mandibula:{n:40,b:28,p:55},    vocales:{n:25,b:15,p:35},
-  rutina:{n:60,b:40,p:80}
+  multi:30,        palabras:45,     tempo:60,
+  camaleon:40,     cadena:40,       aliteracion:30,
+  rimamin:60,      /* el minuto es la premisa de la técnica */
+  trabalenguas:25, encadenado:40,
+  sinrepetir:45,   tematica:40,     muletillas:45,
+  mandibula:40,    vocales:25,
+  rutina:60
 };
 const claveTecnica=()=> (activeTech==="multi" && multiMode==="palabras") ? "palabras" : activeTech;
-const seg=k=>SEGS[k][bestia?"b":novato?"p":"n"];
+const seg=k=>SEGS[k];
 /* en Palabras la exigencia no es el reloj sino cuántas palabras hay que colar */
-const palN=l=>Math.max(2, PAL_N[l]+(bestia?2:novato?-1:0));
+const palN=l=>Math.max(2, PAL_N[l]);
 let activeTech="multi", multiMode="multisilabas", palabrasLevel=1, camMode="cantidad", tempoBpm=90;
 let multiWord=null, camWord=null, alitSound=null, ttPhrase=null, ttName=null, encWord=null, temaActual=null, palabrasWords=[], revealTimers=[], metricasWord=null, poliWord=null;
 let aireList=null, aireSamples=[], aireSource=null, aireAnalyser=null, aireDataArr=null, aireSampleTimer=null, aireT0=0;
 let roundSeconds=30;
 let mediaRecorder, chunks=[], audioURL=null, audioEl=null;
 let recog=null, finalText="", interimText="", baseFinal="";
+/* El reconocimiento del navegador sigue entregando resultados un rato DESPUÉS de
+   pedirle stop(). Si eso pasa, el textarea se quedaba con lo poco que había en el
+   instante del corte mientras el panel de arriba mostraba la ronda completa, y se
+   analizaba el recorte (de ahí los "0 rimas" con una ronda llena de rimas).
+   Con esta bandera sabemos si el texto del textarea lo escribió el usuario: si no
+   lo tocó, los tramos que lleguen tarde lo actualizan y se analiza la ronda entera. */
+let editTocado=false;
 
 /* ----- Calentamiento de Mandíbula: cámara + MediaPipe Face Landmarker -----
    Es la única técnica que no usa micrófono/voz. La librería se carga recién
@@ -2887,12 +2779,19 @@ function fadeOutThenSwap(el, swapNow){
     gsap.set(el,{clearProps:"opacity,y"});
   }});
 }
+/* entrada de la vista que RECIÉN se muestra: escala+fundido más marcado que el
+   fundido de salida (ese es rápido a propósito, para no demorar la navegación) */
+function fadeInView(el){
+  if(typeof gsap==="undefined" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  gsap.fromTo(el,{opacity:0,y:18,scale:.97},
+    {opacity:1,y:0,scale:1,duration:.42,ease:"back.out(1.6)",overwrite:"auto"});
+}
 function goHome(){
   stopEverything();
   fadeOutThenSwap($("trainer"),()=>{
     $("trainer").classList.add("hide"); $("home").classList.remove("hide");
     document.body.classList.add("home-active"); window.scrollTo(0,0);
-    animateCardsIn();
+    fadeInView($("home")); animateCardsIn();
   });
 }
 function openTech(tech){
@@ -2900,11 +2799,13 @@ function openTech(tech){
   fadeOutThenSwap($("home"),()=>{
     $("home").classList.add("hide"); $("trainer").classList.remove("hide");
     document.body.classList.remove("home-active"); window.scrollTo(0,0);
+    fadeInView($("trainer"));
     syncSinger(tech==="tempo" ? tempoBpm : null);
     $("subTabs").classList.add("hide"); $("camTabs").classList.add("hide"); $("levels").classList.add("hide"); $("lvlInfo").classList.add("hide"); $("bpmRow").classList.add("hide");
     if(tech==="multi"){ $("subTabs").classList.remove("hide"); setMultiMode("multisilabas"); }
     else if(tech==="camaleon"){ $("camTabs").classList.remove("hide"); $("techName").textContent="Palabra Camaleón"; setCamMode("cantidad"); }
     else if(tech==="cadena"){ $("techName").textContent="Cadena de Rimas"; newItem(); }
+    else if(tech==="rimamin"){ $("techName").textContent="Rimas por Minuto"; newItem(); }
     else if(tech==="metricas"){ $("techName").textContent="Métricas"; newItem(); }
     else if(tech==="doble"){ $("techName").textContent="Doble Sentido"; newItem(); }
     else if(tech==="aliteracion"){ $("techName").textContent="Aliteración"; newItem(); }
@@ -2960,7 +2861,7 @@ function setBpm(b){
 /* ----- nueva ronda ----- */
 function newItem(){
   stopEverything(); clearReveals();
-  isRec=false; finalText=""; interimText=""; baseFinal=""; chunks=[]; audioURL=null;
+  isRec=false; finalText=""; interimText=""; baseFinal=""; chunks=[]; audioURL=null; editTocado=false;
   $("verdictHost").innerHTML="";
   const live=$("live"); live.textContent="Aquí aparece lo que vas diciendo…"; live.className="live empty"; live.style.display="block";
   $("edit").style.display="none"; $("edit").value=""; $("tHead").textContent="En vivo";
@@ -3071,6 +2972,14 @@ function newItem(){
        <div class="word">CADENA<br>DE RIMAS</div>
        <div class="ways"><span class="way"><b>Cada</b> palabra rima con la anterior</span><span class="way"><b>Si cortas</b>, la cadena vuelve a cero</span></div>
        <div class="word-sub">Suelta rimas <b>una tras otra</b>, sin relleno en medio. Medimos tu cadena más larga sin romperse.</div>`;
+  } else if(activeTech==="rimamin"){
+    roundSeconds=60;
+    $("primaryBtn").textContent="Contar mis rimas";
+    $("promptHost").innerHTML=
+      `<div class="kicker">Todas las rimas que puedas · 1 minuto</div>
+       <div class="word">RIMAS POR<br>MINUTO</div>
+       <div class="ways"><span class="way">Rima al <b>final</b> de cada barra</span><span class="way">Cuenta el <b>volumen</b>, no la racha</span></div>
+       <div class="word-sub">Suelta barras durante todo el minuto. Cada palabra que rime con otra que ya dijiste <b>suma</b>, aunque hayan pasado varias frases en medio.</div>`;
   } else if(activeTech==="metricas"){
     roundSeconds=30; metricasWord=pick(WORDS4);
     $("primaryBtn").textContent="Medir mis vocales";
@@ -3118,7 +3027,6 @@ function newItem(){
        <div class="word">${esc(multiWord)}</div>
        <div class="word-sub">Suelta la mayor cantidad de rimas <b>multisilábicas</b> antes de que baje el reloj</div>`;
   }
-  if((bestia||novato) && SEGS[claveTecnica()]) roundSeconds=seg(claveTecnica());
   remaining=roundSeconds; $("timer").textContent=fmt(roundSeconds); $("recLabel").textContent="Grabar"; setRing(1);
   if(activeTech==="tempo") setNotice('🎧 Usa audífonos para que el beat no se cuele en el micrófono. Medimos tu densidad: doble tempo = meter el doble de sílabas en el mismo tiempo.');
   else if(activeTech==="muletillas") setNotice('🎙️ Ojo: el navegador suele <b>borrar</b> los "eh" y "mmm" al transcribir. Si sabes que se te escaparon, <b>escríbelos en el texto</b> antes de evaluar para que el conteo sea real.');
@@ -3205,14 +3113,15 @@ async function startRec(){
         }
         finalText=baseFinal+fusionarTramos(fin);
         interimText=inter.length ? inter[inter.length-1].trim() : "";
-        renderLive();
+        if(isRec) renderLive(); else sincronizarEdit();
       };
       recog.onerror=ev=>{ if(ev && (ev.error==="not-allowed"||ev.error==="service-not-allowed")) setNotice("⚠️ El navegador bloqueó el micrófono. Revisa los permisos del sitio y vuelve a intentar."); };
       /* al reiniciar, la lista de resultados arranca vacía: hay que consolidar
          lo ya dicho en baseFinal, si no se perdería al reconstruir */
       recog.onend=()=>{
-        baseFinal=finalText; interimText=""; renderLive();
-        if(isRec){ try{recog.start()}catch(_){}}
+        baseFinal=finalText; interimText="";
+        if(isRec){ renderLive(); try{recog.start()}catch(_){} }
+        else sincronizarEdit();
       };
       recog.start();
     }catch(_){}
@@ -3262,6 +3171,14 @@ function stopEverything(){
   $("live").style.display="block";
 }
 function renderLive(){ const live=$("live"); live.style.display="block"; live.className="live"; live.innerHTML=finalText+`<span class="interim">${interimText}</span>`; }
+/* Vuelca al textarea lo transcrito cuando la ronda ya terminó. Respeta lo que el
+   usuario haya escrito a mano: si tocó el textarea, no se pisa nada. */
+function sincronizarEdit(){
+  if(editTocado) return;
+  const edit=$("edit"); if(edit.style.display!=="block") return;
+  const texto=(finalText+interimText).trim();
+  if(texto.length>edit.value.trim().length) edit.value=texto;
+}
 
 /* ----- acción principal ----- */
 function onPrimary(){
@@ -3278,16 +3195,20 @@ function onPrimary(){
     },200);
     return;
   }
+  /* red de seguridad: si el textarea no fue editado a mano y quedó más corto que
+     lo transcrito (tramos que llegaron tarde), se analiza la ronda completa */
+  sincronizarEdit();
   const transcript = $("edit").style.display==="block" ? $("edit").value.trim() : (finalText+interimText).trim();
   if(!transcript){ setNotice("Escribe o graba algo antes de continuar."); return; }
   const btn=$("primaryBtn"); const orig=btn.textContent;
-  const busy = (activeTech==="camaleon"||activeTech==="tempo"||activeTech==="cadena"||activeTech==="aliteracion"||activeTech==="encadenado"||activeTech==="sinrepetir"||activeTech==="tematica"||activeTech==="muletillas") ? "Contando…" : (activeTech==="aire" ? "Midiendo tu aire…" : "Evaluando…");
+  const busy = (activeTech==="camaleon"||activeTech==="tempo"||activeTech==="cadena"||activeTech==="rimamin"||activeTech==="aliteracion"||activeTech==="encadenado"||activeTech==="sinrepetir"||activeTech==="tematica"||activeTech==="muletillas") ? "Contando…" : (activeTech==="aire" ? "Midiendo tu aire…" : "Evaluando…");
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>'+busy;
   setTimeout(()=>{
     try{
       let cfg;
       if(activeTech==="tempo") cfg=analyzeTempo(transcript);
       else if(activeTech==="cadena") cfg=analyzeCadena(transcript);
+      else if(activeTech==="rimamin") cfg=analyzeRimasMinuto(transcript);
       else if(activeTech==="metricas") cfg=analyzeMetricas(metricasWord, transcript);
       else if(activeTech==="doble") cfg=analyzeDobleSentido(poliWord, transcript);
       else if(activeTech==="aliteracion") cfg=analyzeAliteracion(transcript);
@@ -3364,6 +3285,7 @@ $("cardMulti").addEventListener("click",()=>openTech("multi"));
 $("cardCamaleon").addEventListener("click",()=>openTech("camaleon"));
 $("cardTempo").addEventListener("click",()=>openTech("tempo"));
 $("cardCadena").addEventListener("click",()=>openTech("cadena"));
+$("cardRimaMin").addEventListener("click",()=>openTech("rimamin"));
 $("cardAlit").addEventListener("click",()=>openTech("aliteracion"));
 $("cardTT").addEventListener("click",()=>openTech("trabalenguas"));
 $("cardEnc").addEventListener("click",()=>openTech("encadenado"));
@@ -3380,7 +3302,7 @@ $("backBtn").addEventListener("click",goHome);
 $("infoBtn").addEventListener("click",showInfo);
 $("infoClose").addEventListener("click",hideInfo);
 $("infoOverlay").addEventListener("click",e=>{ if(e.target.id==="infoOverlay") hideInfo(); });
-$("pistasBtn").addEventListener("click",showPistas);
+/* el banner de descarga se quitó; showPistas queda para uso futuro */
 $("pistasClose").addEventListener("click",hidePistas);
 $("pistasOverlay").addEventListener("click",e=>{ if(e.target.id==="pistasOverlay") hidePistas(); });
 document.addEventListener("keydown",e=>{
@@ -3388,29 +3310,6 @@ document.addEventListener("keydown",e=>{
   if(!$("infoOverlay").classList.contains("hide")) hideInfo();
   if(!$("pistasOverlay").classList.contains("hide")) hidePistas();
 });
-
-/* ----- esquina despegada de cada tarjeta (efecto sticker) -----
-   Elemento real, no ::after: ese pseudo-elemento ya lo usan las llamas de Bestia. */
-document.querySelectorAll(".tcard").forEach(c=>{
-  const peel=document.createElement("i"); peel.className="tcard-peel"; peel.setAttribute("aria-hidden","true");
-  c.appendChild(peel);
-});
-
-/* ----- brasas que suben (solo se ven con el modo bestia) ----- */
-(function(){
-  const host=$("brasas"); if(!host) return;
-  for(let i=0;i<20;i++){
-    const b=document.createElement("i");
-    const s=2+Math.random()*3.5;
-    b.style.width=b.style.height=s.toFixed(1)+"px";
-    b.style.left=(Math.random()*100).toFixed(1)+"%";
-    b.style.setProperty("--dx",(Math.random()*90-45).toFixed(0)+"px");
-    /* con prioridad: si no, la regla global de "reducir movimiento" las deja en 0s */
-    b.style.setProperty("animation-duration",(7+Math.random()*9).toFixed(1)+"s","important");
-    b.style.setProperty("animation-delay",(-Math.random()*14).toFixed(1)+"s","important");
-    host.appendChild(b);
-  }
-})();
 
 /* ----- barra de cuenta: marcadores hasta que existan las cuentas -----
    Un botón que no hace nada es peor que no tenerlo: estos avisan. */
@@ -3431,44 +3330,6 @@ document.querySelectorAll(".tcard").forEach(c=>{
   });
 })();
 
-/* ----- modo bestia ----- */
-const BADGE={cardCamaleon:"camaleon",cardTempo:"tempo",cardCadena:"cadena",cardAlit:"aliteracion",
-  cardTT:"trabalenguas",cardEnc:"encadenado",cardRep:"sinrepetir",cardTema:"tematica",cardMul:"muletillas",
-  cardMandibula:"mandibula", cardVocales:"vocales", cardRutina:"rutina"};
-function pintarBestia(){
-  document.body.classList.toggle("bestia-on",bestia);
-  document.body.classList.toggle("novato-on",novato);
-  const b=$("bestiaBtn"); if(b) b.setAttribute("aria-pressed",bestia?"true":"false");
-  const n=$("novatoBtn"); if(n) n.setAttribute("aria-pressed",novato?"true":"false");
-  const e=$("bestiaEstado");
-  if(e) e.textContent = bestia ? "Activado · las 10 técnicas al límite" : "Desactivado · dificultad normal";
-  const en=$("novatoEstado");
-  if(en) en.textContent = novato ? "Activado · más tiempo y menos exigencia" : "Desactivado · dificultad normal";
-  /* las insignias de las tarjetas tienen que decir la verdad */
-  const m=$("cardMulti") && $("cardMulti").querySelector(".tcard-time");
-  if(m) m.textContent=`${seg("multi")}-${seg("palabras")}s`;
-  Object.keys(BADGE).forEach(id=>{
-    const el=$(id) && $(id).querySelector(".tcard-time");
-    if(el) el.textContent=seg(BADGE[id])+"s";
-  });
-}
-/* los dos modos son excluyentes: encender uno apaga el otro */
-function guardarModo(){
-  try{ localStorage.setItem("flBestia",bestia?"1":"0");
-       localStorage.setItem("flNovato",novato?"1":"0"); }catch(_){}
-}
-$("bestiaBtn").addEventListener("click",()=>{
-  bestia=!bestia; if(bestia) novato=false;
-  pintarBestia(); guardarModo();
-});
-$("novatoBtn").addEventListener("click",()=>{
-  novato=!novato; if(novato) bestia=false;
-  pintarBestia(); guardarModo();
-});
-try{ bestia=localStorage.getItem("flBestia")==="1";
-     novato=localStorage.getItem("flNovato")==="1";
-     if(bestia&&novato) novato=false; }catch(_){}
-pintarBestia();
 $("tabMulti").addEventListener("click",()=>setMultiMode("multisilabas"));
 $("tabPalabras").addEventListener("click",()=>setMultiMode("palabras"));
 $("tabCantidad").addEventListener("click",()=>setCamMode("cantidad"));
@@ -3478,6 +3339,7 @@ document.querySelectorAll("#bpmRow .bpm").forEach(b=>b.addEventListener("click",
 $("recBtn").addEventListener("click",()=> isRec ? stopRec() : startRec());
 $("primaryBtn").addEventListener("click",onPrimary);
 $("newBtn").addEventListener("click",newItem);
+$("edit").addEventListener("input",()=>{ editTocado=true; });
 $("playBtn").addEventListener("click",()=>{ if(!audioURL) return; if(!audioEl) audioEl=new Audio(); audioEl.src=audioURL; audioEl.play(); });
 
 if(isMobile && supportsRecog) $("playBtn").classList.add("hide");
@@ -3509,28 +3371,37 @@ setNotice("");
 
 /* ----- entrada de las tarjetas del menú (GSAP): sigue la grilla real de filas/
    columnas ("grid:'auto'"), no solo el orden del DOM, con un pequeño rebote al
-   asentarse. Cada tarjeta lee su propio --rot (el ángulo "sticker" ya fijado por
-   CSS) y aterriza exactamente ahí — nunca se pierde ese detalle. Se repite cada
-   vez que se vuelve al menú (goHome), igual que hacía la versión CSS anterior. */
+   asentarse. Sin inclinación (las tarjetas van derechas desde el rediseño
+   "sólido y elegante" del 14-ago). Se repite cada vez que se vuelve al menú
+   (goHome), igual que hacía la versión CSS anterior. */
 /* El resto del sitio respeta "reducir movimiento" en sus animaciones CSS
    (con excepciones documentadas y deliberadas). GSAP no sabe nada de eso por su
    cuenta — hay que preguntarle a mano, o esto queda animando de más para quien
    pidió lo contrario. Se relee en cada llamada por si el usuario lo cambia en
    caliente durante la sesión (algunos SO lo permiten sin recargar). */
 const prefiereMenosMovimiento=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
-function leerRot(t){ return parseFloat(getComputedStyle(t).getPropertyValue("--rot"))||0; }
 function animateCardsIn(){
   const cards=document.querySelectorAll("#home .cards-home .tcard");
   if(!cards.length || typeof gsap==="undefined") return;
   gsap.killTweensOf(cards);
-  if(prefiereMenosMovimiento()){ gsap.set(cards,{opacity:1,y:0,scale:1,rotation:(i,t)=>leerRot(t)}); return; }
+  if(prefiereMenosMovimiento()){ gsap.set(cards,{opacity:1,y:0,scale:1}); return; }
   gsap.fromTo(cards,
-    {opacity:0, y:22, scale:.9, rotation:(i,t)=>leerRot(t)+7},
-    {opacity:1, y:0, scale:1, rotation:(i,t)=>leerRot(t),
+    {opacity:0, y:22, scale:.9},
+    {opacity:1, y:0, scale:1,
      duration:.55, ease:"back.out(1.5)",
      stagger:{each:.045, from:"start", grid:"auto"}});
 }
 animateCardsIn();
+
+/* ----- secciones plegables del menú: todas cerradas al entrar, cada una
+   independiente (no es acordeón exclusivo) ----- */
+document.querySelectorAll(".fam-head").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const grupo=btn.closest(".fam-group");
+    const abierto=grupo.classList.toggle("open");
+    btn.setAttribute("aria-expanded",abierto?"true":"false");
+  });
+});
 
 /* ----- hover más rico en las tarjetas (GSAP): antes lo hacía CSS :hover (ver
    .tcard:hover más arriba, ahora solo cambia border-color). Se ata una vez al
@@ -3542,14 +3413,14 @@ function wireCardHover(){
   document.querySelectorAll("#home .cards-home .tcard").forEach(card=>{
     card.addEventListener("mouseenter",()=>{
       const d=prefiereMenosMovimiento()?0:.28;
-      gsap.to(card,{y:-7,scale:1.035,rotation:0,
-        boxShadow:"0 20px 40px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.06) inset",
+      gsap.to(card,{y:-11,scale:1.06,
+        boxShadow:"0 26px 50px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.06) inset",
         duration:d,ease:"power2.out",overwrite:"auto"});
     });
     card.addEventListener("mouseleave",()=>{
       const d=prefiereMenosMovimiento()?0:.4;
-      gsap.to(card,{y:0,scale:1,rotation:leerRot(card),
-        boxShadow:"0 6px 22px rgba(0,0,0,.32), 0 1px 0 rgba(255,255,255,.04) inset",
+      gsap.to(card,{y:0,scale:1,
+        boxShadow:"0 10px 28px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.05) inset",
         duration:d,ease:"back.out(1.6)",overwrite:"auto"});
     });
   });
@@ -3668,20 +3539,44 @@ function proximoVerso(){
   if(!battleQueue.length) battleQueue=shuffle(BATTLE_BARS.map((_,i)=>i));
   return BATTLE_BARS[battleQueue.pop()];
 }
+/* Escribe el verso palabra a palabra. Cuando hay más de MAX_EN_PANTALLA vivas,
+   la más antigua se empieza a disolver: siempre se está formando una y borrando otra. */
+const MAX_EN_PANTALLA=5;
 function cicloBatalla(){
   const bar=$("battleBar"), quien=$("battleQuien"), txt=$("battleTxt");
   if(!bar) return;
   const sinMovimiento=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  bar.style.transitionDuration=sinMovimiento?"0s":"";
-  bar.classList.remove("on");
-  setTimeout(()=>{
-    battleLado=1-battleLado;
-    bar.classList.toggle("der",battleLado===1);
-    quien.textContent=battleLado===1?"Responde →":"← Ataca";
-    txt.textContent=proximoVerso();
-    bar.classList.add("on");
-    setTimeout(cicloBatalla,11000);
-  },sinMovimiento?0:450);
+  battleLado=1-battleLado;
+  bar.classList.toggle("der",battleLado===1);
+  quien.textContent=battleLado===1?"Responde →":"← Ataca";
+  txt.textContent="";
+  /* los saltos de línea del verso no aportan aquí: se lee como un flujo continuo */
+  const palabras=proximoVerso().split(/\s+/).filter(Boolean);
+  let i=0, vivas=[];
+  const disolver=el=>{ el.classList.add("fin");
+    setTimeout(()=>el.remove(),sinMovimiento?0:760); };
+  function siguiente(){
+    if(!txt.isConnected) return;
+    if(i>=palabras.length){                     /* verso terminado: se disuelve la cola */
+      vivas.forEach((el,k)=>setTimeout(()=>disolver(el),k*260));
+      setTimeout(cicloBatalla,2600);
+      return;
+    }
+    const el=document.createElement("span"); el.className="bw";
+    txt.appendChild(el); vivas.push(el);
+    if(vivas.length>MAX_EN_PANTALLA) disolver(vivas.shift());
+    const palabra=palabras[i++];
+    if(sinMovimiento){ el.textContent=palabra; setTimeout(siguiente,420); return; }
+    el.classList.add("esc");
+    let c=0;
+    (function tipear(){
+      el.textContent=palabra.slice(0,++c);
+      if(c<palabra.length) return setTimeout(tipear,42+Math.random()*38);
+      el.classList.remove("esc");
+      setTimeout(siguiente,150);
+    })();
+  }
+  siguiente();
 }
 setTimeout(cicloBatalla,1200);
 
@@ -3705,7 +3600,7 @@ setTimeout(cicloBatalla,1200);
 /* ----- splash de bienvenida ----- */
 (function(){
   const sp=$("splash"); if(!sp) return;
-  const brand=$("spBrand"), btn=$("spEnter");
+  const brand=$("spBrand"), btn=$("spEnter"), brandWrap=$("spBrandWrap");
   document.body.classList.add("splash-on");
 
   /* fuente + factor de tamaño (cada tipografía ocupa distinto ancho) */
@@ -3736,10 +3631,8 @@ setTimeout(cicloBatalla,1200);
   function enter(){
     if(done) return; done=true;
     if(timer) clearInterval(timer);
-    /* el ciclo aterriza en el logo real antes de irse */
-    brand.style.fontFamily='"Helvetica Neue",Helvetica,Arial,sans-serif';
-    brand.style.setProperty("--sp-scale",.80);
-    brand.classList.add("locked");
+    /* el ciclo aterriza en el logo oficial (imagen) antes de irse */
+    brandWrap.classList.add("locked");
     setTimeout(()=>{
       sp.classList.add("gone");
       document.body.classList.remove("splash-on");
