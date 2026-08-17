@@ -1,6 +1,10 @@
 # Local Netlify folder
 .netlify
 
+# Versiones descartadas archivadas acá para no tenerlas sueltas por el disco —
+# no son parte del sitio, cada una es su propio repo/prototipo viejo.
+_archivo-versiones-anteriores/
+
 # Artefactos regenerables de HyperFrames (proof frames, thumbnails de preview)
 videos/*/.thumbnails/
 videos/*/snapshots/

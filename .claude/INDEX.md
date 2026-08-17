@@ -11,16 +11,19 @@ En vivo: https://freestyle-lab-app.netlify.app
 | Pistas gratis (MP3s) | `./pistas/` | 🟢 | 7 beats reales | [modules/pistas-gratis.md](modules/pistas-gratis.md) |
 | Versiones/Backups | `./versiones/` | 🟢 | archivo histórico | — |
 | Media (logos, videos) | `./marca/`, `./videos/` | 🟢 | assets estáticos | — |
+| Memoria heredada (checkpoints viejos) | `./.claude/memoria-heredada/` | 📦 | archivo, no se lee en sesiones normales | — |
+| Prototipos descartados (HTML suelto, intento React, copia intermedia) | `./_archivo-versiones-anteriores/` | 📦 | fuera de git y de Netlify (`.gitignore`/`.netlifyignore`) | — |
 
 ## Estado del repo
 
 | Campo | Valor |
 |---|---|
-| Último commit en master | `b09b19f` (10-ago) — sincroniza técnicas nuevas, duelo animado, pistas gratis y rediseño |
-| Feature actual | ✅ Rediseño de orden visual (tokens espaciado/radio, fam-head) — portada/menú/tarjetas hecho, falta trainer/modales/auth-bar |
-| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a7e62d8770d41f4258edf07`, 13-ago) — una sola dificultad (sin Modo Bestia/Principiante) y menú en 5 secciones |
-| Técnicas implementadas | 17 (Aire, Vocales, Palabras, Métricas, Resistencia, Doble Sentido, Rima, Voz, Ingenio, Disciplina, Mandíbula, Vocales II, Rutina Pre-Audiencia, Rimas por Minuto, + 3 antecesoras) |
-| Git | ✅ todo commiteado al día (`b09b19f`) |
+| Último commit en master | `9de9713` (15-ago) — modo Circuito + rediseño trainer/modales |
+| Feature actual | ✅ Modo Circuito (encadena 2-5 técnicas con descanso). Rediseño "sólido y elegante" ya cubre portada/menú/tarjetas/trainer/modales |
+| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a80ee512db1afaae9fa3d7f`, 15-ago) |
+| Técnicas implementadas | 17 — ver detalle completo en [progress/current.md](progress/current.md) |
+| Git | ✅ todo commiteado al día (`9de9713`) |
+| Memoria | Separada del resto de proyectos: vive toda acá en `.claude/` (15-ago) — antes algunas notas estaban en el pool compartido de esquirlafinal |
 
 ## Reglas de oro
 
