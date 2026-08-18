@@ -3184,7 +3184,7 @@ function startRec(){
 
 /* Único reloj de ronda para todas las técnicas (voz y cámara). En los últimos
    segundos marca el body para que el aro y el número parpadeen de aviso. */
-const AVISO_SEG=5;
+const AVISO_SEG=10;
 function arrancarReloj(){
   clearInterval(ticking);
   document.body.classList.remove("por-terminar");
