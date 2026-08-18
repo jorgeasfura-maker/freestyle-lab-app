@@ -18,9 +18,10 @@ En vivo: https://freestyle-lab-app.netlify.app
 
 | Campo | Valor |
 |---|---|
-| Último commit en master | `9de9713` (15-ago) — modo Circuito + rediseño trainer/modales |
-| Feature actual | ✅ Modo Circuito (encadena 2-5 técnicas con descanso). Rediseño "sólido y elegante" ya cubre portada/menú/tarjetas/trainer/modales |
-| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a80ee512db1afaae9fa3d7f`, 15-ago) |
+| Último commit en master | `067b216` (18-ago) — cuenta regresiva con metrónomo + aviso de últimos segundos |
+| Feature actual | ✅ Cuenta regresiva (4·3·2·1 con metrónomo) antes de cada ronda + parpadeo de aviso en los últimos 5s. Antes: modo Circuito, rediseño "sólido y elegante" en todo el sitio |
+| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a83db9538c7f124dfc4d04f`, 18-ago — md5 `2da76c12daa2771b6dbce678ebb08e3d`, verificado local == producción) |
+| GitHub | https://github.com/jorgeasfura-maker/freestyle-lab-app (remoto `origin`, rama `master`) |
 | Técnicas implementadas | 17 — ver detalle completo en [progress/current.md](progress/current.md) |
 | Git | ✅ todo commiteado al día (`9de9713`) |
 | Memoria | Separada del resto de proyectos: vive toda acá en `.claude/` (15-ago) — antes algunas notas estaban en el pool compartido de esquirlafinal |
