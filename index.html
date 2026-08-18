@@ -3182,17 +3182,21 @@ function startRec(){
   iniciarCuenta(arrancarRonda);
 }
 
-/* Único reloj de ronda para todas las técnicas (voz y cámara). En los últimos
-   segundos marca el body para que el aro y el número parpadeen de aviso. */
-const AVISO_SEG=10;
+/* Único reloj de ronda para todas las técnicas (voz y cámara). Al final marca
+   el body para que el aro y el número parpadeen de aviso.
+   El aviso es PROPORCIONAL a la ronda (un cuarto) con tope de 10s: en las
+   largas (60s) avisa los últimos 10s, y en las cortas (25s: vocales, aire,
+   trabalenguas) solo 6s, para no pasarse media ronda parpadeando. */
+const AVISO_MAX=10, AVISO_FRAC=0.25;
 function arrancarReloj(){
   clearInterval(ticking);
   document.body.classList.remove("por-terminar");
+  const avisoDesde=Math.min(AVISO_MAX, roundSeconds*AVISO_FRAC);
   ticking=setInterval(()=>{
     remaining-=0.1;
     if(remaining<=0){ remaining=0; $("timer").textContent=fmt(0); setRing(0); stopRec(); return; }
     $("timer").textContent=fmt(remaining); setRing(remaining/roundSeconds);
-    document.body.classList.toggle("por-terminar", remaining<=AVISO_SEG);
+    document.body.classList.toggle("por-terminar", remaining<=avisoDesde);
   },100);
 }
 
