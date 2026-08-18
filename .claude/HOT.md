@@ -23,6 +23,8 @@
 
 | Fecha | Decisión |
 |---|---|
+| 18-08-2026 | **Cuenta regresiva con metrónomo** (4·3·2·1) entre pulsar "Grabar" y el inicio real de la ronda, en las 17 técnicas; y **parpadeo de aviso** en los últimos 5s. El reloj de ronda, antes duplicado (camino voz / camino cámara), se unificó en `arrancarReloj()` |
+| 17-08-2026 | Repo publicado en GitHub (`jorgeasfura-maker/freestyle-lab-app`) con README + BRIEFING.md para el ingeniero de backend. Logo vectorizado a SVG (`marca/logo-oficial.svg`, 6KB) |
 | 15-08-2026 | Memoria del proyecto separada del resto de proyectos de Claude Code: todo vive en este `.claude/`, prototipos descartados archivados en `_archivo-versiones-anteriores/` (fuera de git y Netlify) |
 | 15-08-2026 | Modo **Circuito**: encadena 2-5 técnicas con descanso entre medio. Rediseño "sólido y elegante" extendido a trainer/modales (quedaba pendiente desde el 10-ago) |
 | 04-08-2026 | Freestyle Lab se trabaja en **HTML vanilla de un solo archivo, no en React** — la migración a React (`freestyle-lab-react/`, ahora archivada) rompió el diseño y se descartó |

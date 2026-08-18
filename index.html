@@ -411,6 +411,26 @@
   body.recording .word{filter:drop-shadow(0 6px 40px rgba(255,46,99,.4))}
   @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
 
+  /* Cuenta regresiva con metrónomo antes de arrancar la ronda. Va encima del
+     botón pero con pointer-events:none, para que el propio botón siga recibiendo
+     el clic debajo — pulsarlo durante la cuenta la cancela. */
+  .cuenta-atras{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;
+    pointer-events:none;font-family:"Space Mono",monospace;font-weight:700;font-size:96px;color:var(--paper);
+    text-shadow:0 0 30px rgba(255,46,99,.8),0 0 70px rgba(255,46,99,.45)}
+  .cuenta-atras.hide{display:none}
+  .cuenta-atras span{display:block;animation:cuenta-pop .55s cubic-bezier(.2,.9,.25,1) both}
+  @keyframes cuenta-pop{0%{transform:scale(1.9);opacity:0}30%{transform:scale(1);opacity:1}100%{transform:scale(.85);opacity:.2}}
+  /* mientras cuenta, el contenido del botón se apaga para no competir con el número */
+  body.contando .rec-btn .timer,body.contando .rec-btn .label,body.contando .rec-btn .icon{opacity:.12}
+
+  /* Aviso de últimos segundos: parpadean el aro y el número. El cambio de COLOR
+     va aparte de la animación a propósito — bajo prefers-reduced-motion el reset
+     global (*{animation:none}) apaga el parpadeo, pero el aviso en rojo queda. */
+  body.por-terminar .rec-btn{border-color:var(--stage)}
+  body.por-terminar .rec-btn .timer{color:var(--stage);animation:aviso-parpadeo .6s steps(1,end) infinite}
+  body.por-terminar .clock .prog{animation:aviso-parpadeo .6s steps(1,end) infinite}
+  @keyframes aviso-parpadeo{0%,49%{opacity:1}50%,100%{opacity:.18}}
+
   /* position:relative es imprescindible: sin él, cualquier hijo absoluto del panel
      se posiciona contra .app y se sale por los lados, provocando scroll horizontal. */
   /* Mismo lenguaje "sólido" que .tcard: degradado tintado + borde con color +
@@ -1177,6 +1197,7 @@
         <span class="label" id="recLabel">Grabar</span>
         <span class="timer" id="timer">00:30</span>
       </button>
+      <div class="cuenta-atras hide" id="cuentaAtras" aria-hidden="true"></div>
     </div>
     <div class="pista-now hide" id="pistaNow">🎵 <span id="pistaNowNombre"></span> <span class="pista-now-tip">— usa audífonos si estás grabando tu voz</span></div>
     <audio id="pistaAudio" preload="none"></audio>
@@ -2530,6 +2551,42 @@ function dtScheduler(){
 function startBeat(){ ensureAudio(); beatStep=0; nextNoteTime=audioCtx.currentTime+0.12; clearInterval(beatTimer); beatTimer=setInterval(dtScheduler,25); }
 function stopBeat(){ clearInterval(beatTimer); beatTimer=null; document.querySelectorAll("#metro .beat-dot").forEach(d=>d.classList.remove("on")); }
 
+/* ----- cuenta regresiva con metrónomo antes de cada ronda -----
+   Cuatro golpes (4·3·2·1) entre que pulsas "Grabar" y que empieza a correr el
+   reloj: da tiempo a acomodarse frente al micrófono y marca el pulso de entrada.
+   La grabación arranca DESPUÉS del último golpe, así que los clics no se cuelan
+   en el audio. ----- */
+const CUENTA_GOLPES=4;
+let cuentaTimers=[], contando=false;
+function metroClick(t,fuerte){
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type="square"; o.frequency.value=fuerte?1560:1040;
+  g.gain.setValueAtTime(fuerte?0.5:0.3,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.07);
+  o.connect(g).connect(masterGain); o.start(t); o.stop(t+0.08);
+}
+function cancelarCuenta(){
+  contando=false;
+  cuentaTimers.forEach(clearTimeout); cuentaTimers=[];
+  document.body.classList.remove("contando");
+  const host=$("cuentaAtras"); host.classList.add("hide"); host.innerHTML="";
+}
+function iniciarCuenta(alTerminar){
+  /* En Doble Tempo la cuenta va al bpm elegido, para entrar en tiempo con el
+     beat que arranca justo después; en el resto, un pulso fijo cómodo. */
+  const bpm  = activeTech==="tempo" ? tempoBpm : 100;
+  const paso = 60/bpm;
+  try{ ensureAudio(); }catch(_){}
+  contando=true;
+  document.body.classList.add("contando");
+  $("recLabel").textContent="Prepárate";
+  const host=$("cuentaAtras"); host.classList.remove("hide");
+  for(let i=0;i<CUENTA_GOLPES;i++){
+    if(audioCtx) metroClick(audioCtx.currentTime+0.06+i*paso, i===0);
+    cuentaTimers.push(setTimeout(()=>{ host.innerHTML=`<span>${CUENTA_GOLPES-i}</span>`; }, i*paso*1000));
+  }
+  cuentaTimers.push(setTimeout(()=>{ cancelarCuenta(); alTerminar(); }, CUENTA_GOLPES*paso*1000));
+}
+
 /* ----- pista de fondo al azar: suena mientras grabas, para tener con qué orientarte.
    "Doble Tempo" ya trae su propio clic de metrónomo (startBeat), así que no suma pista encima. ----- */
 function startPistaFondo(){
@@ -3117,7 +3174,29 @@ function schedulePalabras(){ clearReveals(); const n=palabrasWords.length;
   for(let i=0;i<n;i++){ const at=Math.floor(i*(roundSeconds/n))*1000; revealTimers.push(setTimeout(()=>revealCard(i),at)); } }
 
 /* ----- grabación ----- */
-async function startRec(){
+/* Pulsar "Grabar" ya no arranca de inmediato: primero corre la cuenta con
+   metrónomo y recién ahí empieza la ronda. Volver a pulsar durante la cuenta
+   la cancela. */
+function startRec(){
+  if(contando){ cancelarCuenta(); $("recLabel").textContent="Grabar"; return; }
+  iniciarCuenta(arrancarRonda);
+}
+
+/* Único reloj de ronda para todas las técnicas (voz y cámara). En los últimos
+   segundos marca el body para que el aro y el número parpadeen de aviso. */
+const AVISO_SEG=5;
+function arrancarReloj(){
+  clearInterval(ticking);
+  document.body.classList.remove("por-terminar");
+  ticking=setInterval(()=>{
+    remaining-=0.1;
+    if(remaining<=0){ remaining=0; $("timer").textContent=fmt(0); setRing(0); stopRec(); return; }
+    $("timer").textContent=fmt(remaining); setRing(remaining/roundSeconds);
+    document.body.classList.toggle("por-terminar", remaining<=AVISO_SEG);
+  },100);
+}
+
+async function arrancarRonda(){
   mediaRecorder=null; recog=null;
   if(activeTech==="mandibula"||activeTech==="vocales"||activeTech==="rutina"){
     isRec=true; restartSinger(); document.body.classList.add("recording"); $("recLabel").textContent="Detener"; $("verdictHost").innerHTML="";
@@ -3127,7 +3206,7 @@ async function startRec(){
     if(activeTech==="mandibula") startCamMandibula();
     else if(activeTech==="vocales"){ avanzarVocal(0); startCamVocales(); scheduleVocales(); }
     else { avanzarRutina(0); startCamRutina(); scheduleRutina(); }
-    ticking=setInterval(()=>{ remaining-=0.1; if(remaining<=0){remaining=0;$("timer").textContent=fmt(0);setRing(0);stopRec();return;} $("timer").textContent=fmt(remaining); setRing(remaining/roundSeconds); },100);
+    arrancarReloj();
     return;
   }
   if(activeTech==="tempo") startBeat();
@@ -3202,10 +3281,11 @@ async function startRec(){
   startPistaFondo();
   remaining=roundSeconds;
   if(activeTech==="multi" && multiMode==="palabras") schedulePalabras();
-  ticking=setInterval(()=>{ remaining-=0.1; if(remaining<=0){remaining=0;$("timer").textContent=fmt(0);setRing(0);stopRec();return;} $("timer").textContent=fmt(remaining); setRing(remaining/roundSeconds); },100);
+  arrancarReloj();
 }
 function stopRec(){
   isRec=false; clearInterval(ticking); clearReveals(); stopBeat(); stopPistaFondo();
+  cancelarCuenta(); document.body.classList.remove("por-terminar");
   clearInterval(aireSampleTimer); if(aireSource){ try{aireSource.disconnect()}catch(_){} aireSource=null; }
   document.body.classList.remove("recording"); $("recLabel").textContent="Grabar";
   if(activeTech==="mandibula"||activeTech==="vocales"||activeTech==="rutina"){
@@ -3235,6 +3315,7 @@ function stopRec(){
 }
 function stopEverything(){
   clearInterval(ticking); clearReveals(); stopBeat(); stopPistaFondo(); stopCam();
+  cancelarCuenta(); document.body.classList.remove("por-terminar");
   clearInterval(aireSampleTimer); if(aireSource){ try{aireSource.disconnect()}catch(_){} aireSource=null; }
   if(mediaRecorder && mediaRecorder.state!=="inactive"){ try{mediaRecorder.stop()}catch(_){} }
   if(recog){ try{recog.stop()}catch(_){} recog=null; }
