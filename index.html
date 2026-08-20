@@ -90,7 +90,7 @@
 
   /* ===== PORTADA ===== */
   #home{display:flex;flex-direction:column;min-height:calc(100dvh - 82px)}
-  /* ===== LOGO OFICIAL (14-ago) — marca/logo-oficial.png, recorte sin fondo del
+  /* ===== LOGO OFICIAL (14-ago, vectorizado a SVG 18-ago) — marca/logo-oficial.svg, recorte sin fondo del
      arte que trajo el usuario. Reemplaza el wordmark de texto en la barra del
      menú y en el splash (ver .sp-logo más abajo). */
   .home-brand{display:flex;align-items:center;justify-content:center}
@@ -160,7 +160,7 @@
   .tcard::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--tc);
     opacity:.85;transition:opacity .22s}
   .tcard:hover::before{opacity:1}
-  .tcard-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:6px}
+  .tcard-tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:7px}
   .tcard-time{position:absolute;top:12px;right:11px;font-family:"Space Mono",monospace;font-size:9.5px;font-weight:700;
     color:var(--mist);background:var(--surface-2);border:1px solid var(--line);border-radius:100px;padding:2px 7px}
   .tcard-title{font-family:"Anton",sans-serif;font-size:17px;line-height:1.08;letter-spacing:.01em;margin-bottom:5px;text-transform:uppercase}
@@ -247,7 +247,15 @@
   /* flex:1 1 auto + min-width:0: si el título no cabe en una línea (pantallas
      angostas), se ajusta y baja de renglón en vez de desbordar la tarjeta —
      antes flex:0 0 auto lo forzaba a una sola línea sin importar el ancho */
-  .fam-head-text{flex:1 1 auto;min-width:0}
+  /* Título + bajada del acordeón, separados en dos pesos: antes era una sola
+     línea de 11px uppercase — la navegación principal del sitio (5 secciones,
+     puerta a las 17 técnicas) quedaba con la misma voz tipográfica que un
+     rótulo secundario. El título ahora pesa como corresponde; la bajada
+     sigue discreta al lado, separada por un punto vía ::before. */
+  .fam-head-text{flex:1 1 auto;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:9px;row-gap:2px}
+  .fam-head-title{font-size:15px;letter-spacing:.05em;color:var(--paper);font-weight:800}
+  .fam-head-sub{font-size:10.5px;letter-spacing:.16em;color:var(--mist);font-weight:600;opacity:.7}
+  .fam-head-sub::before{content:"· ";opacity:.7}
   .fam-head-line{flex:1;height:1px;
     background:linear-gradient(90deg,color-mix(in srgb,var(--fc,var(--stage)) 45%,var(--line)),transparent)}
   .fam-chev{flex:0 0 auto;width:9px;height:9px;border-right:1.6px solid var(--mist);
@@ -256,6 +264,13 @@
   .fam-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s ease}
   .fam-group.open .fam-body{grid-template-rows:1fr}
   .fam-body>.fam-cards{overflow:hidden;min-height:0}
+  /* Panel tintado al abrir: mismo lenguaje "sólido y elegante" que ya usan
+     .tcard/.panel/.info-card (degradado + borde + sombra con el color de la
+     sección), pero acá faltaba — una sección abierta se veía exactamente
+     igual que una cerrada, sin ninguna distinción de superficie. */
+  .fam-group{border-radius:var(--radius-md);transition:background .25s,border-color .25s}
+  .fam-group.open{background:linear-gradient(165deg,color-mix(in srgb,var(--fc,var(--stage)) 7%,var(--surface)),transparent 70%);
+    border:1px solid color-mix(in srgb,var(--fc,var(--stage)) 16%,transparent);padding:2px var(--sp-3) var(--sp-3)}
   /* el recorte solo hace falta MIENTRAS la sección está cerrada (alto 0); si se
      deja siempre, corta la tarjeta agrandada por el hover — por eso se libera
      apenas se abre. */
@@ -265,7 +280,7 @@
   .home-foot img{height:44px;width:auto}
   @media (max-width:430px){ .fam-cards{gap:9px} .tcard{padding:11px 11px 10px} .tcard-title{font-size:15px} .tcard-desc{font-size:11px;line-height:1.38}
     /* en dos columnas estrechas "Técnica NN" y la insignia quedan a 5px: se les da aire */
-    .tcard-tag{font-size:9px;margin-bottom:6px;letter-spacing:.13em}
+    .tcard-tag{font-size:10px;margin-bottom:6px;letter-spacing:.16em}
     .tcard-time{font-size:9.5px;padding:2px 6px;top:13px;right:11px} }
   @media (max-width:330px){ .fam-cards{grid-template-columns:1fr} .tcard-title{font-size:22px} .tcard-desc{font-size:13px} }
 
@@ -443,7 +458,16 @@
   .live{min-height:56px;font-size:16px;line-height:1.5;color:var(--paper)}
   .live .interim{color:var(--mist)}
   .live.empty{color:#6a627a;font-style:italic}
-  textarea.edit{width:100%;min-height:88px;resize:vertical;background:var(--ink);border:1px solid var(--line);border-radius:12px;color:var(--paper);font-family:inherit;font-size:16px;line-height:1.5;padding:12px}
+  /* Antes era un textarea genérico (fondo plano, radio propio de 12px sin
+     relación con el resto de la escala) sentado dentro de un .panel ya
+     tintado — se notaba como si el formulario de otro sitio se hubiera
+     pegado adentro de la tarjeta. Ahora respeta el mismo radio de la escala
+     (--radius-sm, igual que .stat) y un tinte apenas perceptible del color
+     de la técnica, coherente con el resto del "sólido y elegante". */
+  textarea.edit{width:100%;min-height:88px;resize:vertical;
+    background:color-mix(in srgb,var(--stage) 4%,var(--ink));
+    border:1px solid color-mix(in srgb,var(--stage) 14%,var(--line));border-radius:var(--radius-sm);
+    color:var(--paper);font-family:inherit;font-size:16px;line-height:1.5;padding:12px;transition:border-color .2s}
   textarea.edit:focus{outline:2px solid var(--stage-dim);border-color:var(--stage-dim)}
 
   /* ===== CÁMARA (Calentamiento de Mandíbula) ===== */
@@ -810,7 +834,7 @@
   <div class="cascade splash-casc right" id="cascadeSR" aria-hidden="true"></div>
   <div class="sp-inner">
     <span class="sp-dot"></span>
-    <div class="sp-brand-wrap" id="spBrandWrap"><div class="sp-brand" id="spBrand">Free<span class="st">style</span><br>Lab</div><img class="sp-logo" src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566"></div>
+    <div class="sp-brand-wrap" id="spBrandWrap"><div class="sp-brand" id="spBrand">Free<span class="st">style</span><br>Lab</div><img class="sp-logo" src="marca/logo-oficial.svg" alt="Freestyle Lab" width="838" height="566"></div>
     <div class="sp-tag">Laboratorio de improvisación</div>
     <button class="sp-enter" id="spEnter">Entrar</button>
     <div class="sp-hint">Toca para empezar</div>
@@ -857,7 +881,7 @@
 
   <!-- ===================== PORTADA ===================== -->
   <section id="home" class="view">
-    <div class="home-brand"><img src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566"></div>
+    <div class="home-brand"><img src="marca/logo-oficial.svg" alt="Freestyle Lab" width="838" height="566"></div>
 
     <!-- Barra de cuenta. Por ahora son marcadores: las cuentas no existen todavía,
          así que al pulsar avisan en vez de no hacer nada. Solo en escritorio. -->
@@ -876,11 +900,16 @@
         <p class="hero-desc">Tu gimnasio para el freestyle. Cada técnica es un ejercicio con cronómetro y puntaje: eliges, entrenas, te mides — y sales con más filo del que entraste. Porque improvisar no es cuestión de suerte: es un <b>músculo</b>. Ven a entrenarlo.</p>
       </div>
     </div>
-    <!-- duelo de bocas: ilustración real (marca/bocas.svg, provista por el usuario) +
-         palabras que salen de cada boca y se cruzan/chocan al medio. Sin fuego/rayo:
-         la energía del duelo la cargan las palabras, no un efecto aparte. -->
+    <!-- duelo de bocas: ilustración real (provista por el usuario) + palabras que
+         salen de cada boca y se cruzan/chocan al medio. Sin fuego/rayo: la energía
+         del duelo la cargan las palabras, no un efecto aparte.
+         bocas.webp (no .svg): el original es un SVG de 7000+ paths / 4.1MB —
+         880KB solo de transferencia y 2.3s de parseo+pintado en la carga inicial,
+         siendo que en pantalla nunca se ve a más de 300px de alto. Se re-renderizó
+         a WebP a 900px de alto (3x el tope de display) para seguir nítido en
+         pantallas retina: 70KB, ~12x más liviano. -->
     <div class="duelo-bocas" id="duelBocas" aria-hidden="true">
-      <img src="marca/bocas.svg" alt="">
+      <img src="marca/bocas.webp" alt="" width="920" height="900">
       <div class="choque-palabras">
         <span class="izq"     style="--top:8%;  --fs:30px; --dur:3.2s; --delay:0s">flow</span>
         <span class="der ac"  style="--top:22%; --fs:22px; --dur:3.6s; --delay:.3s">eco</span>
@@ -912,7 +941,7 @@
     <div class="cards-home">
       <div class="fam-group">
         <button class="fam-head" style="--fc:#FF2E63" aria-expanded="false">
-          <span class="fam-head-text">Técnicas básicas · empieza por aquí</span>
+          <span class="fam-head-text"><span class="fam-head-title">Técnicas básicas</span><span class="fam-head-sub">empieza por aquí</span></span>
           <span class="fam-head-line"></span>
           <i class="fam-chev" aria-hidden="true"></i>
         </button>
@@ -921,7 +950,7 @@
       <button class="tcard fam-rima" id="cardRimaMin" data-tech="rimamin">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
-        <div class="tcard-tag">Rima</div>
+        <div class="tcard-tag">Volumen</div>
         <div class="tcard-title">Rimas por <span>Minuto</span></div>
         <div class="tcard-desc">Un minuto entero soltando rimas. Contamos cuántas acumulas en total, sin importar cuánto digas entre una y otra.</div>
         <div class="tcard-go">Entrar →</div>
@@ -929,7 +958,7 @@
       <button class="tcard fam-disciplina" id="cardRep" data-tech="sinrepetir">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
-        <div class="tcard-tag">Disciplina</div>
+        <div class="tcard-tag">Vocabulario</div>
         <div class="tcard-title">Sin <span>Repetir</span></div>
         <div class="tcard-desc">45 segundos sin decir dos veces la misma palabra. Cuenta tu vocabulario real y te caza las muletillas.</div>
         <div class="tcard-go">Entrar →</div>
@@ -937,7 +966,7 @@
       <button class="tcard fam-disciplina" id="cardMul" data-tech="muletillas">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">45s</span>
-        <div class="tcard-tag">Disciplina</div>
+        <div class="tcard-tag">Muletillas</div>
         <div class="tcard-title">Sin <span>Muletillas</span></div>
         <div class="tcard-desc">Los "eh", "o sea", "tipo" que rellenan cuando no sabes qué decir. Aquí se cuentan todos.</div>
         <div class="tcard-go">Entrar →</div>
@@ -949,7 +978,7 @@
       </div>
       <div class="fam-group">
         <button class="fam-head" style="--fc:#4EC5F1" aria-expanded="false">
-          <span class="fam-head-text">Técnicas profesionales · el nivel de tarima</span>
+          <span class="fam-head-text"><span class="fam-head-title">Técnicas profesionales</span><span class="fam-head-sub">el nivel de tarima</span></span>
           <span class="fam-head-line"></span>
           <i class="fam-chev" aria-hidden="true"></i>
         </button>
@@ -958,7 +987,7 @@
       <button class="tcard fam-rima" id="cardMulti" data-tech="multi">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30-45s</span>
-        <div class="tcard-tag">Rima</div>
+        <div class="tcard-tag">Multisílabas</div>
         <div class="tcard-title">Multisílabas <span>&</span> Palabras</div>
         <div class="tcard-desc">Encadena rimas de dos o más sílabas y mete palabras al vuelo. Con 4 niveles de dificultad.</div>
         <div class="tcard-go">Entrar →</div>
@@ -966,7 +995,7 @@
       <button class="tcard fam-rima" id="cardMetricas" data-tech="metricas">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30s</span>
-        <div class="tcard-tag">Rima</div>
+        <div class="tcard-tag">Métrica</div>
         <div class="tcard-title">Métricas</div>
         <div class="tcard-desc">Rima por vocales, no por sílabas: cuenta cuántas vocales finales de la palabra objetivo repites. Mientras más vocales calcen, más puntos.</div>
         <div class="tcard-go">Entrar →</div>
@@ -974,7 +1003,7 @@
       <button class="tcard fam-ingenio" id="cardCamaleon" data-tech="camaleon">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Ingenio</div>
+        <div class="tcard-tag">Camuflaje</div>
         <div class="tcard-title">Palabra Camaleón</div>
         <div class="tcard-desc">Una palabra objetivo que debes esconder en tu flow de mil formas. La app cuenta cuántas logras.</div>
         <div class="tcard-go">Entrar →</div>
@@ -982,7 +1011,7 @@
       <button class="tcard fam-voz" id="cardTempo" data-tech="tempo">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
-        <div class="tcard-tag">Voz</div>
+        <div class="tcard-tag">Densidad</div>
         <div class="tcard-title">Doble Tempo</div>
         <div class="tcard-desc">Un minuto sobre un beat: rapea al doble del pulso y mide cuántas palabras sueltas y tu velocidad.</div>
         <div class="tcard-go">Entrar →</div>
@@ -990,7 +1019,7 @@
       <button class="tcard fam-voz" id="cardAlit" data-tech="aliteracion">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">30s</span>
-        <div class="tcard-tag">Voz</div>
+        <div class="tcard-tag">Sonido</div>
         <div class="tcard-title">Aliteración</div>
         <div class="tcard-desc">Un sonido objetivo y todas tus palabras empezando por él. Cuenta el sonido, no la letra: casa y queso son la misma.</div>
         <div class="tcard-go">Entrar →</div>
@@ -998,7 +1027,7 @@
       <button class="tcard fam-ingenio" id="cardDoble" data-tech="doble">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Ingenio</div>
+        <div class="tcard-tag">Significados</div>
         <div class="tcard-title">Doble <span>Sentido</span></div>
         <div class="tcard-desc">Una palabra, varios significados. Dila las veces que quieras, pero solo suma cuando cambias lo que significa.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1010,7 +1039,7 @@
       </div>
       <div class="fam-group">
         <button class="fam-head" style="--fc:#5BE0A6" aria-expanded="false">
-          <span class="fam-head-text">Modalidades · formatos de batalla</span>
+          <span class="fam-head-text"><span class="fam-head-title">Modalidades</span><span class="fam-head-sub">formatos de batalla</span></span>
           <span class="fam-head-line"></span>
           <i class="fam-chev" aria-hidden="true"></i>
         </button>
@@ -1019,7 +1048,7 @@
       <button class="tcard fam-ingenio" id="cardTema" data-tech="tematica">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Ingenio</div>
+        <div class="tcard-tag">Vocabulario</div>
         <div class="tcard-title">Temática <span>Obligada</span></div>
         <div class="tcard-desc">Sale un tema y no puedes salirte de él. Medimos cuánto vocabulario de ese mundo lograste meter.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1031,7 +1060,7 @@
       </div>
       <div class="fam-group">
         <button class="fam-head" style="--fc:#F97316" aria-expanded="false">
-          <span class="fam-head-text">Entrenamiento educativo · mecánica y aguante</span>
+          <span class="fam-head-text"><span class="fam-head-title">Entrenamiento educativo</span><span class="fam-head-sub">mecánica y aguante</span></span>
           <span class="fam-head-line"></span>
           <i class="fam-chev" aria-hidden="true"></i>
         </button>
@@ -1040,7 +1069,7 @@
       <button class="tcard fam-voz" id="cardTT" data-tech="trabalenguas">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
-        <div class="tcard-tag">Voz</div>
+        <div class="tcard-tag">Precisión</div>
         <div class="tcard-title">Traba<span>lenguas</span></div>
         <div class="tcard-desc">Repite el trabalenguas las más veces posibles sin trabarte. Medimos vueltas completas, precisión y velocidad.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1048,7 +1077,7 @@
       <button class="tcard fam-voz" id="cardAire" data-tech="aire">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
-        <div class="tcard-tag">Voz</div>
+        <div class="tcard-tag">Aire</div>
         <div class="tcard-title">Resistencia de <span>Exhalación</span></div>
         <div class="tcard-desc">Lee una lista entera en una sola exhalación, sin volver a tomar aire. Medimos cuánto aguantas y si la voz decae al final.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1056,7 +1085,7 @@
       <button class="tcard fam-rima" id="cardCadena" data-tech="cadena">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Rima</div>
+        <div class="tcard-tag">Constancia</div>
         <div class="tcard-title">Cadena de <span>Rimas</span></div>
         <div class="tcard-desc">Encadena rimas sin frenar. Cada palabra que rima con la anterior suma; si cortas la cadena, vuelves a cero.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1064,7 +1093,7 @@
       <button class="tcard fam-rima" id="cardEnc" data-tech="encadenado">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Rima</div>
+        <div class="tcard-tag">Sílaba final</div>
         <div class="tcard-title">Encadenado <span>Silábico</span></div>
         <div class="tcard-desc">La sílaba final de una palabra abre la siguiente: casa → sapo → poder. Mide tu cadena más larga sin romperla.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1076,7 +1105,7 @@
       </div>
       <div class="fam-group">
         <button class="fam-head" style="--fc:#4F7CFF" aria-expanded="false">
-          <span class="fam-head-text">Calentamiento previo · antes de soltar la voz</span>
+          <span class="fam-head-text"><span class="fam-head-title">Calentamiento previo</span><span class="fam-head-sub">antes de soltar la voz</span></span>
           <span class="fam-head-line"></span>
           <i class="fam-chev" aria-hidden="true"></i>
         </button>
@@ -1085,7 +1114,7 @@
       <button class="tcard fam-cuerpo" id="cardMandibula" data-tech="mandibula">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">40s</span>
-        <div class="tcard-tag">Cuerpo</div>
+        <div class="tcard-tag">Apertura</div>
         <div class="tcard-title">Calentamiento de <span>Mandíbula</span></div>
         <div class="tcard-desc">Usa tu cámara: abre y cierra bien la boca frente al espejo digital. Ideal antes de hablar en público — abogados, profes, vendedores.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1093,7 +1122,7 @@
       <button class="tcard fam-cuerpo" id="cardVocales" data-tech="vocales">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">25s</span>
-        <div class="tcard-tag">Cuerpo</div>
+        <div class="tcard-tag">Articulación</div>
         <div class="tcard-title">Espejo de <span>Vocales</span></div>
         <div class="tcard-desc">Marca las 5 vocales bien exageradas frente a tu cámara. Calienta la articulación completa de la boca, no solo la mandíbula.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1101,7 +1130,7 @@
       <button class="tcard fam-cuerpo" id="cardRutina" data-tech="rutina">
         <i class="tcard-motif" aria-hidden="true"></i>
         <span class="tcard-time">60s</span>
-        <div class="tcard-tag">Cuerpo</div>
+        <div class="tcard-tag">Ritual</div>
         <div class="tcard-title">Rutina <span>Pre-Audiencia</span></div>
         <div class="tcard-desc">Mandíbula, labios, lengua y respiración en un ritual guiado antes de hablar en público. No es una prueba: es tu calentamiento completo.</div>
         <div class="tcard-go">Entrar →</div>
@@ -1112,7 +1141,7 @@
       </div>
 
     <div class="home-foot">
-      <img src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566">
+      <img src="marca/logo-oficial.svg" alt="Freestyle Lab" width="838" height="566">
     </div>
 
   </section>
@@ -1124,7 +1153,7 @@
       <div class="tbar-name" id="techName">Multisílabas</div>
       <span class="tbar-badge hide" id="circuitoBadge"></span>
       <button class="info-btn" id="infoBtn" aria-label="Cómo funciona esta técnica" title="Cómo funciona">?</button>
-      <img class="tbar-logo" src="marca/logo-oficial.png" alt="Freestyle Lab" width="838" height="566">
+      <img class="tbar-logo" src="marca/logo-oficial.svg" alt="Freestyle Lab" width="838" height="566">
     </div>
 
     <!-- Envoltorios para las dos columnas de escritorio. En móvil llevan
