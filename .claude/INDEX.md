@@ -18,9 +18,9 @@ En vivo: https://freestyle-lab-app.netlify.app
 
 | Campo | Valor |
 |---|---|
-| Último commit en master | `067b216` (18-ago) — cuenta regresiva con metrónomo + aviso de últimos segundos |
-| Feature actual | ✅ Cuenta regresiva (4·3·2·1 con metrónomo) antes de cada ronda + parpadeo de aviso en los últimos 5s. Antes: modo Circuito, rediseño "sólido y elegante" en todo el sitio |
-| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a83db9538c7f124dfc4d04f`, 18-ago — md5 `2da76c12daa2771b6dbce678ebb08e3d`, verificado local == producción) |
+| Último commit en master | `8c4e1e2` (20-ago) — pasada estética en 4 frentes (chips, peso, jerarquía de menú, trainer) |
+| Feature actual | ✅ Pasada estética: chips con mecánica real por tarjeta, logo SVG (6KB) + bocas.webp (70KB), encabezados de sección con jerarquía + panel tintado al abrir, textarea alineado a la escala de radios. Antes: cuenta regresiva con metrónomo (4·3·2·1) + aviso proporcional en el último cuarto de ronda (tope 10s) |
+| Sitio en vivo | https://freestyle-lab-app.netlify.app (deploy `6a868a4ccf704b5fecd018c1`, 20-ago — md5 `9494bc61d15d027537185d31b74104cc`, verificado local == producción) |
 | GitHub | https://github.com/jorgeasfura-maker/freestyle-lab-app (remoto `origin`, rama `master`) |
 | Técnicas implementadas | 17 — ver detalle completo en [progress/current.md](progress/current.md) |
 | Git | ✅ todo commiteado al día (`9de9713`) |
